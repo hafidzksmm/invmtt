@@ -32,7 +32,7 @@
                 
                 <div class="position-absolute top-0 end-0 mt-3 mt-md-4 me-3 me-md-4 d-flex flex-column align-items-end gap-2 gap-md-3" style="z-index: 3;">
                   <!-- Button Logout --> 
-                  <form method="POST" action="{{ route('logout') }}">
+                  <form method="POST" action="{{ route('logout') }}" class="mt-n3 ">
                       @csrf
                       <button type="submit" class="button">
                           <div class="dots_border"></div>
@@ -50,52 +50,62 @@
                 </div>
 
 <div class="container-fluid py-10">
-    <div class="row align-items-center justify-content-between">
+    <div class="row align-items-start justify-content-between gy-4">
 
         <!-- ✅ KIRI -->
-        <div class="col-12 col-md-3 text-center">
+        <div class="kiri col-12 col-md-3 text-center">
             <h3 class="shine-text text-white fw-bold mb-3">INVENTORY</h3>
 
             <div class="d-flex justify-content-center gap-3 flex-wrap">
                 <div class="icon-item" onclick="window.location.href='{{ route('view-ws') }}'">
-                    <img src="{{ asset('assets/img/build icon.png') }}" class="rounded-circle icon-img shadow">
-                    <div class="label-text text-white">Workshop</div>
+                    <img src="{{ asset('assets/img/build icon.png') }}" class="rounded-circle icon-img shadow"
+                        style="width:80px; height:80px; object-fit:cover;">
+                    <div class="label-text text-white small mt-0">Workshop</div>
                 </div>
 
                 <div class="icon-item" onclick="window.location.href='{{ route('view-projek') }}'">
-                    <img src="{{ asset('assets/img/jeks.png') }}" class="rounded-circle icon-img shadow">
-                    <div class="label-text text-white">Project</div>
+                    <img src="{{ asset('assets/img/jeks.png') }}" class="rounded-circle icon-img shadow"
+                        style="width:80px; height:80px; object-fit:cover;">
+                    <div class="label-text text-white small mt-0">Project</div>
                 </div>
 
                 <div class="icon-item" onclick="window.location.href='{{ route('view-aset') }}'">
-                    <img src="{{ asset('assets/img/juals.png') }}" class="rounded-circle icon-img shadow">
-                    <div class="label-text text-white">Selling Assets</div>
+                    <img src="{{ asset('assets/img/juals.png') }}" class="rounded-circle icon-img shadow"
+                        style="width:80px; height:80px; object-fit:cover;">
+                    <div class="label-text text-white small mt-0">Selling Assets</div>
                 </div>
             </div>
         </div>
 
-<!-- ✅ KANAN -->
-<div class="col-12 col-md-3 text-center">
-    <div class="row g-3">
+        <!-- ✅ KANAN -->
+        <div class="col-12 col-md-3 text-center">
+            <div class="row g-3 justify-content-center">
 
-        <div class="col-6 icon-item" onclick="alert('Documentation Giat');">
-            <img src="{{ asset('assets/img/jual.png') }}" class="rounded-circle icon-img shadow">
-            <div class="small fw-bold text-white">Project<br>Documentation</div>
-        </div>
+                <div class="col-6 icon-item" onclick="alert('Documentation Giat');">
+                    <img src="{{ asset('assets/img/jual.png') }}" class="rounded-circle shadow"
+                        style="width:60px; height:60px; object-fit:cover;">
+                    <div class="small fw-bold text-white mt-0">Project<br>Documentation</div>
+                </div>
 
-        <div class="col-6 icon-item" onclick="alert('Document MTT');">
-            <img src="{{ asset('assets/img/ikons.png') }}" class="rounded-circle icon-img shadow">
-            <div class="small fw-bold text-white">Project Files</div>
-        </div>
+                <div class="col-6 icon-item" onclick="alert('Document MTT');">
+                    <img src="{{ asset('assets/img/ikons.png') }}" class="rounded-circle shadow"
+                        style="width:60px; height:60px; object-fit:cover;">
+                    <div class="small fw-bold text-white mt-0">Project Files</div>
+                </div>
 
-        <div class="col-6 icon-item" onclick="window.open('https://mttech.co.id', '_blank')">
-            <img src="{{ asset('assets/img/pany.png') }}" class="rounded-circle icon-img shadow">
-            <div class="small fw-bold text-white">Company Profile</div>
-        </div>
+                <div class="col-6 icon-item" onclick="window.open('https://mttech.co.id', '_blank')">
+                    <img src="{{ asset('assets/img/pany.png') }}" class="rounded-circle shadow"
+                        style="width:60px; height:60px; object-fit:cover;">
+                    <div class="small fw-bold text-white mt-0">Company Profile</div>
+                </div>
 
-        <div class="col-6 icon-item" onclick="alert('Documentation Project');">
-            <img src="{{ asset('assets/img/giats.png') }}" class="rounded-circle icon-img shadow">
-            <div class="small fw-bold text-white">Project Activity</div>
+                <div class="col-6 icon-item" onclick="alert('Documentation Project');">
+                    <img src="{{ asset('assets/img/giats.png') }}" class="rounded-circle shadow"
+                        style="width:60px; height:60px; object-fit:cover;">
+                    <div class="small fw-bold text-white mt-0">Project Activity</div>
+                </div>
+
+            </div>
         </div>
 
     </div>
@@ -258,8 +268,8 @@
 
         /* Chart container */
         .chart-container {
-            width: 500px;
-            height: 500px;
+            width: 400px;
+            height: 400px;
             max-width: 80vw;
             max-height: 65vh;
             position: relative;
@@ -333,7 +343,7 @@
             flex-direction: column;
             gap: 18px;
         }
-
+        
         /* 📱 Responsive */
         @media (max-width: 1200px) {
             .chart-container { width: 380px; height: 380px; }
@@ -356,254 +366,306 @@
         }
 
         @media (max-width: 576px) {
-            .animated-title { font-size: 1.4rem; top: 14px; left: 16px; }
-            .center-chart { top: 68%; left: 50%; }
-            .chart-container { width: 240px; height: 240px; }
-            .logo-center-wrapper { width: 90px; height: 90px; top: 58%; }
-            .icon-img { width: 53px; height: 53px; }
-        }
+        .animated-title {
+                font-size: 1.4rem;
+                top: 14px;
+                left: 16px;
+            }
+
+            .center-chart {
+                top: 50%;
+                left: 50%;
+            }
+
+            .chart-container {
+                width: 240px;
+                height: 240px;
+            }
+
+            .logo-center-wrapper {
+                width: 90px;
+                height: 90px;
+                top: 58%;
+            }
+
+            .icon-img {
+                width: 53px;
+                height: 53px;
+            }
+
+            .kiri {
+                margin-top: -45px;
+                position: relative;
+                z-index: 5;
+            }
+
+            .kiri h3 {
+                font-size: 1.2rem;
+                margin-bottom: 14px;
+            }
+
+            .kiri .d-flex {
+                gap: 10px;
+            }
+
+            .icon-item img {
+                width: 60px !important;
+                height: 60px !important;
+            }
+
+            .label-text {
+                font-size: 0.75rem;
+                margin-top: 3px;
+                display: block;
+            }
+
+            .col-12.col-md-3.text-center:nth-child(2) {
+                padding-top: 260px;
+            }        
+}
+
         /* From Uiverse.io by MuhammadHasann */ 
-.button {
-  --black-700: hsla(0 0% 12% / 1);
-  --border_radius: 9999px;
-  --transtion: 0.3s ease-in-out;
-  --offset: 2px;
+        .button {
+        --black-700: hsla(0 0% 12% / 1);
+        --border_radius: 9999px;
+        --transtion: 0.3s ease-in-out;
+        --offset: 2px;
 
-  cursor: pointer;
-  position: relative;
+        cursor: pointer;
+        position: relative;
 
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
 
-  transform-origin: center;
+        transform-origin: center;
 
-  padding: 1rem 2rem;
-  background-color: transparent;
+        padding: 1rem 2rem;
+        background-color: transparent;
 
-  border: none;
-  border-radius: var(--border_radius);
-  transform: scale(calc(1 + (var(--active, 0) * 0.1)));
+        border: none;
+        border-radius: var(--border_radius);
+        transform: scale(calc(1 + (var(--active, 0) * 0.1)));
 
-  transition: transform var(--transtion);
-}
+        transition: transform var(--transtion);
+        }
 
-.button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+        .button::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-  width: 80%;
-  height: 80%;
-  background-color: var(--black-700);
+        width: 80%;
+        height: 80%;
+        background-color: var(--black-700);
 
-  border-radius: var(--border_radius);
-  box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
-    0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
-    0 0 0 calc(var(--active, 0) * 0.375rem) hsl(260 97% 50% / 0.75);
+        border-radius: var(--border_radius);
+        box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
+            0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
+            0 0 0 calc(var(--active, 0) * 0.375rem) hsl(260 97% 50% / 0.75);
 
-  transition: all var(--transtion);
-  z-index: 0;
-}
+        transition: all var(--transtion);
+        z-index: 0;
+        }
 
-.button::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+        .button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-  width: 100%;
-  height: 100%;
-  background-color: hsla(260 97% 61% / 0.75);
-  background-image: radial-gradient(
-      at 51% 89%,
-      hsla(266, 45%, 74%, 1) 0px,
-      transparent 50%
-    ),
-    radial-gradient(at 100% 100%, hsla(266, 36%, 60%, 1) 0px, transparent 50%),
-    radial-gradient(at 22% 91%, hsla(266, 36%, 60%, 1) 0px, transparent 50%);
-  background-position: top;
+        width: 100%;
+        height: 100%;
+        background-color: hsla(260 97% 61% / 0.75);
+        background-image: radial-gradient(
+            at 51% 89%,
+            hsla(266, 45%, 74%, 1) 0px,
+            transparent 50%
+            ),
+            radial-gradient(at 100% 100%, hsla(266, 36%, 60%, 1) 0px, transparent 50%),
+            radial-gradient(at 22% 91%, hsla(266, 36%, 60%, 1) 0px, transparent 50%);
+        background-position: top;
 
-  opacity: var(--active, 0);
-  border-radius: var(--border_radius);
-  transition: opacity var(--transtion);
-  z-index: 2;
-}
+        opacity: var(--active, 0);
+        border-radius: var(--border_radius);
+        transition: opacity var(--transtion);
+        z-index: 2;
+        }
 
-.button:is(:hover, :focus-visible) {
-  --active: 1;
-}
-.button:active {
-  transform: scale(1);
-}
+        .button:is(:hover, :focus-visible) {
+        --active: 1;
+        }
+        .button:active {
+        transform: scale(1);
+        }
 
-.button .dots_border {
-  --size_border: calc(100% + 2px);
+        .button .dots_border {
+        --size_border: calc(100% + 2px);
 
-  overflow: hidden;
+        overflow: hidden;
 
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-  width: var(--size_border);
-  height: var(--size_border);
-  background-color: transparent;
+        width: var(--size_border);
+        height: var(--size_border);
+        background-color: transparent;
 
-  border-radius: var(--border_radius);
-  z-index: -10;
-}
+        border-radius: var(--border_radius);
+        z-index: -10;
+        }
 
-.button .dots_border::before {
-  content: "";
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transform-origin: left;
-  transform: rotate(0deg);
+        .button .dots_border::before {
+        content: "";
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: left;
+        transform: rotate(0deg);
 
-  width: 100%;
-  height: 2rem;
-  background-color: white;
+        width: 100%;
+        height: 2rem;
+        background-color: white;
 
-  mask: linear-gradient(transparent 0%, white 120%);
-  animation: rotate 2s linear infinite;
-}
+        mask: linear-gradient(transparent 0%, white 120%);
+        animation: rotate 2s linear infinite;
+        }
 
-@keyframes rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
+        @keyframes rotate {
+        to {
+            transform: rotate(360deg);
+        }
+        }
 
-.button .sparkle {
-  position: relative;
-  z-index: 10;
+        .button .sparkle {
+        position: relative;
+        z-index: 10;
 
-  width: 1.75rem;
-}
+        width: 1.75rem;
+        }
 
-.button .sparkle .path {
-  fill: currentColor;
-  stroke: currentColor;
+        .button .sparkle .path {
+        fill: currentColor;
+        stroke: currentColor;
 
-  transform-origin: center;
+        transform-origin: center;
 
-  color: hsl(0, 0%, 100%);
-}
+        color: hsl(0, 0%, 100%);
+        }
 
-.button:is(:hover, :focus) .sparkle .path {
-  animation: path 1.5s linear 0.5s infinite;
-}
+        .button:is(:hover, :focus) .sparkle .path {
+        animation: path 1.5s linear 0.5s infinite;
+        }
 
-.button .sparkle .path:nth-child(1) {
-  --scale_path_1: 1.2;
-}
-.button .sparkle .path:nth-child(2) {
-  --scale_path_2: 1.2;
-}
-.button .sparkle .path:nth-child(3) {
-  --scale_path_3: 1.2;
-}
+        .button .sparkle .path:nth-child(1) {
+        --scale_path_1: 1.2;
+        }
+        .button .sparkle .path:nth-child(2) {
+        --scale_path_2: 1.2;
+        }
+        .button .sparkle .path:nth-child(3) {
+        --scale_path_3: 1.2;
+        }
 
-@keyframes path {
-  0%,
-  34%,
-  71%,
-  100% {
-    transform: scale(1);
-  }
-  17% {
-    transform: scale(var(--scale_path_1, 1));
-  }
-  49% {
-    transform: scale(var(--scale_path_2, 1));
-  }
-  83% {
-    transform: scale(var(--scale_path_3, 1));
-  }
-}
+        @keyframes path {
+        0%,
+        34%,
+        71%,
+        100% {
+            transform: scale(1);
+        }
+        17% {
+            transform: scale(var(--scale_path_1, 1));
+        }
+        49% {
+            transform: scale(var(--scale_path_2, 1));
+        }
+        83% {
+            transform: scale(var(--scale_path_3, 1));
+        }
+        }
 
-.button .text_button {
-  position: relative;
-  z-index: 10;
+        .button .text_button {
+        position: relative;
+        z-index: 10;
 
-  background-image: linear-gradient(
-    90deg,
-    hsla(0 0% 100% / 1) 0%,
-    hsla(0 0% 100% / var(--active, 0)) 120%
-  );
-  background-clip: text;
+        background-image: linear-gradient(
+            90deg,
+            hsla(0 0% 100% / 1) 0%,
+            hsla(0 0% 100% / var(--active, 0)) 120%
+        );
+        background-clip: text;
 
-  font-size: 1rem;
-  color: transparent;
-}
-.shine-text {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-}
+        font-size: 1rem;
+        color: transparent;
+        }
+        .shine-text {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        }
 
-.shine-text::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  border-radius:20%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.8),
-    transparent
-  );
-  transform: skewX(-25deg);
-  animation: shine 2s infinite;
-}
+        .shine-text::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        border-radius:20%;
+        background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(255, 255, 255, 0.8),
+            transparent
+        );
+        transform: skewX(-25deg);
+        animation: shine 2s infinite;
+        }
 
-@keyframes shine {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 120%;
-  }
-}
-.glow-dashboard {
-  animation: glowPulse 2.5s ease-in-out infinite;
-}
+        @keyframes shine {
+        0% {
+            left: -100%;
+        }
+        100% {
+            left: 120%;
+        }
+        }
+        .glow-dashboard {
+        animation: glowPulse 2.5s ease-in-out infinite;
+        }
 
-@keyframes glowPulse {
-  0% {
-    text-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
-  }
-  50% {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-                 0 0 20px rgba(209, 0, 0, 0.6),
-                 0 0 30px rgba(167, 0, 0, 0.4);
-  }
-  100% {
-    text-shadow: 0 0 2px rgba(255, 255, 255, 1);
-  }
-}
-.icon-img {
-    width: 75px;
-    height: 75px;
-    object-fit: cover;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        @keyframes glowPulse {
+        0% {
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+        50% {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                        0 0 20px rgba(209, 0, 0, 0.6),
+                        0 0 30px rgba(167, 0, 0, 0.4);
+        }
+        100% {
+            text-shadow: 0 0 2px rgba(255, 255, 255, 1);
+        }
+        }
+        .icon-img {
+            width: 75px;
+            height: 75px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.icon-img:hover {
-    transform: scale(1.1);
-}
+        .icon-img:hover {
+            transform: scale(1.1);
+        }
 
-
+        
     </style>
 </x-app-layout>
