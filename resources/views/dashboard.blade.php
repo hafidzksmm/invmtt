@@ -366,6 +366,10 @@
         }
 
         @media (max-width: 576px) {
+            .button{
+                top:40px;
+                left:30px;
+            }
         .animated-title {
                 font-size: 1.4rem;
                 top: 14px;
