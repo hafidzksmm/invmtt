@@ -14,13 +14,15 @@ class ws extends Model
     protected $table = 'inventaris';
 
     protected $fillable = [
+        'pn',
         'nama_barang',
         'merk',
         'deskripsi',
         'dimensi',
         'qty',
-        'satuan',
+        // 'satuan',
         'lokasi',
+        'sn',
     ];
 
     public $timestamps = true;

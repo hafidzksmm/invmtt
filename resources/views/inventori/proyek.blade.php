@@ -187,6 +187,10 @@
     <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
         <div class="row g-3">
             <div class="col-md-6">
+                <label for="pn" class="form-label fw-semibold">Produk No(PN)</label>
+                <input type="text" class="form-control border-secondary" id="pn" name="pn" required>
+            </div>
+            <div class="col-md-6">
                 <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
                 <input type="text" class="form-control border-secondary" id="nama_barang" name="nama_barang" required>
             </div>
@@ -210,6 +214,10 @@
             <div class="col-md-4">
                 <label for="jumlah" class="form-label fw-semibold">Jumlah </label>
                 <input type="number" class="form-control border-secondary" id="jumlah" name="jumlah" min="1" required>
+            </div>
+            <div class="col-md-4">
+                <label for="sn" class="form-label fw-semibold">Serial No(SN)</label>
+                <input type="text" class="form-control border-secondary" id="sn" name="sn" required>
             </div>
             <div class="col-md-4">
                 <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
@@ -242,12 +250,14 @@
                                         <thead class="bg-gray-100">
                                             <tr>
                                                 <th>No</th>
+                                                <th>Produk No</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jenis</th>
                                                 <th>Tipe</th>
                                                 <th>Merk</th>
                                                 <th>Ukuran</th>
                                                 <th>Jumlah</th>
+                                                <th>Serial No</th>
                                                 <th>Lokasi</th>
                                                 <th>Dibuat Pada</th>
                                                 <th>Aksi</th>
@@ -257,12 +267,14 @@
                                             @forelse ($inventaryprojek as $index => $item)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
+                                                <td>{{ $item->pn }}</td>
                                                 <td>{{ $item->nama_barang }}</td>
                                                 <td>{{ $item->jenis }}</td>
                                                 <td class="text-wrap">{{ $item->tipe }}</td>
                                                 <td>{{ $item->merk }}</td>
                                                 <td>{{ $item->ukuran }}</td>
                                                 <td>{{ $item->jumlah }}</td>
+                                                <td>{{ $item->sn }}</td>
                                                 <td>{{ $item->lokasi }}</td>
                                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                                 <td>
@@ -302,6 +314,17 @@
                                                                             data-bs-dismiss="modal"
                                                                             aria-label="Close"></button>
                                                                     </div>
+
+                                                                    <div class="modal-body">
+                                                                        <div class="mb-3">
+                                                                            <label for="pn{{ $item->id }}"
+                                                                                class="form-label">Produk No(PN)</label>
+                                                                            <input type="text" name="pn"
+                                                                                class="form-control"
+                                                                                id="pn{{ $item->id }}"
+                                                                                value="{{ $item->pn }}"
+                                                                                required>
+                                                                        </div>
 
                                                                     <div class="modal-body">
                                                                         <div class="mb-3">
@@ -359,6 +382,15 @@
                                                                                 value="{{ $item->jumlah }}">
                                                                         </div>
                                                                         
+                                                                        <div class="mb-3">
+                                                                            <label for="sn{{ $item->id }}"
+                                                                                class="form-label">Serial No(SN)</label>
+                                                                            <input type="text" name="sn"
+                                                                                class="form-control"
+                                                                                id="sn{{ $item->id }}"
+                                                                                value="{{ $item->sn }}" required>
+                                                                        </div>
+
                                                                         <div class="mb-3">
                                                                             <label for="lokasi{{ $item->id }}"
                                                                                 class="form-label">Lokasi</label>

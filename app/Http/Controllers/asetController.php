@@ -22,6 +22,7 @@ return view('inventori.aset', compact('asset_jual'));
      public function store(Request $request)
     {
         $request->validate([
+            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
             'jenis' => 'required|string|max:100',
             'merk' => 'required|string',
@@ -29,7 +30,7 @@ return view('inventori.aset', compact('asset_jual'));
             'ukuran' => 'string|max:100',
             'dimensi' => 'string|max:100',
             'qty' => 'required|int|min:1',
-            'satuan' => 'required|string|max:255',
+            'sn' => 'required|string|max:100',
             'lokasi' => 'required|string|max:255',
         ]);
 
@@ -40,6 +41,7 @@ return view('inventori.aset', compact('asset_jual'));
     public function update(Request $request, $id)
     {
         $request->validate([
+            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
             'jenis' => 'required|string|max:100',
             'merk' => 'required|string',
@@ -47,18 +49,19 @@ return view('inventori.aset', compact('asset_jual'));
             'ukuran' => 'required|string',
             'dimensi' => 'required|string|max:100',
             'qty' => 'required|int|min:1',
-            'satuan' => 'required|string|max:255',
+            'sn' => 'required|string|max:100',
             'lokasi' => 'required|string|max:255',
         ]);
 
         $inventaris = asetjual::findOrFail($id);
         $inventaris->update([
+            'pn' => $request->pn,
             'nama_barang' => $request->nama_barang,
             'jenis' => $request->jenis,
             'ukuran' => $request->ukuran,
             'dimensi' => $request->dimensi,
             'qty' =>$request->qty,
-            'satuan'=>$request->satuan,
+            'sn'=>$request->sn,
             'lokasi'=>$request->lokasi,
         ]);
 
@@ -102,14 +105,14 @@ return view('inventori.aset', compact('asset_jual'));
         if ($ukuran) $query->where('ukuran', $ukuran);
 
         $data = $query->get([
-            'nama_barang',
+            'pn',
             'jenis',
             'merk',
             'tipe',
             'ukuran',
             'dimensi',
             'qty',
-            'satuan',
+            'sn',
             'lokasi',
             'created_at',
         ]);
@@ -118,6 +121,7 @@ return view('inventori.aset', compact('asset_jual'));
         $exportData = new Collection();
         $exportData->push([
             'No',
+            'Produk No',
             'Nama Barang',
             'Jenis',
             'Merk',
@@ -125,7 +129,7 @@ return view('inventori.aset', compact('asset_jual'));
             'Ukuran',
             'Dimensi',
             'Qty',
-            'Satuan',
+            'Serial No',
             'Lokasi',
             'Tanggal Dibuat',
         ]);
@@ -134,6 +138,7 @@ return view('inventori.aset', compact('asset_jual'));
         foreach ($data as $index => $item) {
             $exportData->push([
                 $index + 1,
+                $item->pn,
                 $item->nama_barang,
                 $item->jenis,
                 $item->merk,
@@ -141,7 +146,7 @@ return view('inventori.aset', compact('asset_jual'));
                 $item->ukuran,
                 $item->dimensi,
                 $item->qty,
-                $item->satuan,
+                $item->sn,
                 $item->lokasi,
                 $item->created_at ? $item->created_at->format('d-m-Y') : '',
             ]);
@@ -160,7 +165,7 @@ return view('inventori.aset', compact('asset_jual'));
                     return $this->exportData;
                 }
             },
-            'Data_Aset_' . now()->format('Ymd_His') . '.xlsx',
+            'Data_Aset_Jual_' . now()->format('Ymd_His') . '.xlsx',
             ExcelWriter::XLSX
         );
     }

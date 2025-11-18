@@ -13,6 +13,7 @@ class asetjual extends Model
     protected $table = 'asset_jual';
 
     protected $fillable = [
+        'pn',
         'nama_barang',
         'jenis',
         'merk',
@@ -20,7 +21,7 @@ class asetjual extends Model
         'ukuran',
         'dimensi',
         'qty',
-        'satuan',
+        'sn',
         'lokasi',
     ];
 

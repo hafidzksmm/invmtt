@@ -14,13 +14,15 @@ class InventoriExport implements FromCollection, WithHeadings
     public function collection()
     {
         return ws::select(
+            'pn',
             'nama_barang',
             'merk',
             'deskripsi',
             'dimensi',
             'qty',
             'satuan',
-            'lokasi'
+            'lokasi',
+            'sn'
         )->get();
     }
 
@@ -30,12 +32,13 @@ class InventoriExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
+            'Produk No',
             'Nama Barang',
             'Merk',
             'Deskripsi',
             'Dimensi',
             'Qty',
-            'Satuan',
+            'Serial No',
             'Lokasi',
         ];
     }

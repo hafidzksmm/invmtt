@@ -27,6 +27,7 @@ class proyekController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
             'jenis'       => 'required|string|max:100',
             'tipe'        => 'required|string|max:255',
@@ -34,10 +35,11 @@ class proyekController extends Controller
             'ukuran'      => 'nullable|string|max:100',
             'jumlah'      => 'required|integer|min:1',
             'lokasi'      => 'required|string|max:255',
+            'sn'      => 'required|string|max:100',
         ]);
 
         projek::create($request->only([
-            'nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi'
+            'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi','sn'
         ]));
 
         return redirect()->route('view-projek')->with('success', 'Data berhasil ditambahkan.');
@@ -49,6 +51,7 @@ class proyekController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
             'jenis'       => 'required|string|max:100',
             'tipe'        => 'required|string',
@@ -56,11 +59,12 @@ class proyekController extends Controller
             'ukuran'      => 'nullable|string|max:100',
             'jumlah'      => 'required|integer|min:1',
             'lokasi'      => 'required|string|max:255',
+            'sn'      => 'required|string|max:100',
         ]);
 
         $inventaris = projek::findOrFail($id);
         $inventaris->update($request->only([
-            'nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi'
+            'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi'.'sn'
         ]));
 
         return redirect()->back()->with('success', 'Data inventaris berhasil diperbarui!');
@@ -114,18 +118,19 @@ class proyekController extends Controller
         }
 
         $data = $query->get([
-            'nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi','created_at'
+            'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','sn','lokasi','created_at'
         ]);
 
         // Siapkan collection untuk export
         $exportData = new Collection();
         $exportData->push([
-            'No','Nama Barang','Jenis','Tipe','Merk','Ukuran','Jumlah','Lokasi','Tanggal Dibuat'
+            'No','Produk No','Nama Barang','Jenis','Tipe','Merk','Ukuran','Jumlah','Serial No','Lokasi','Tanggal Dibuat'
         ]);
 
         foreach ($data as $index => $item) {
             $exportData->push([
                 $index + 1,
+                $item->pn,
                 $item->nama_barang,
                 $item->jenis,
                 $item->tipe,
@@ -133,6 +138,7 @@ class proyekController extends Controller
                 $item->ukuran,
                 $item->jumlah,
                 $item->lokasi,
+                $item->sn,
                 $item->created_at ? $item->created_at->format('d-m-Y') : '',
             ]);
         }

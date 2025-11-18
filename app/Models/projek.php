@@ -14,6 +14,7 @@ class projek extends Model
     protected $table = 'inventaryprojek';
 
     protected $fillable = [
+        'pn',
         'nama_barang',
         'jenis',
         'tipe',
@@ -21,6 +22,7 @@ class projek extends Model
         'ukuran',
         'jumlah',
         'lokasi',
+        'sn',
     ];
 
     public $timestamps = true;

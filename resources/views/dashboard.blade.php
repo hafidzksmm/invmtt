@@ -370,63 +370,125 @@
                 top:40px;
                 left:30px;
             }
-        .animated-title {
-                font-size: 1.4rem;
-                top: 14px;
-                left: 16px;
-            }
+            .animated-title {
+                    font-size: 1.4rem;
+                    top: 14px;
+                    left: 16px;
+                }
 
-            .center-chart {
-                top: 50%;
-                left: 50%;
-            }
+                .center-chart {
+                    top: 50%;
+                    left: 50%;
+                }
 
-            .chart-container {
-                width: 240px;
-                height: 240px;
-            }
+                .chart-container {
+                    width: 240px;
+                    height: 240px;
+                }
 
-            .logo-center-wrapper {
-                width: 90px;
-                height: 90px;
-                top: 58%;
-            }
+                .logo-center-wrapper {
+                    width: 90px;
+                    height: 90px;
+                    top: 58%;
+                }
 
-            .icon-img {
-                width: 53px;
-                height: 53px;
-            }
+                .icon-img {
+                    width: 53px;
+                    height: 53px;
+                }
 
-            .kiri {
-                margin-top: -45px;
-                position: relative;
-                z-index: 5;
-            }
+                .kiri {
+                    margin-top: -45px;
+                    position: relative;
+                    z-index: 5;
+                }
 
-            .kiri h3 {
-                font-size: 1.2rem;
-                margin-bottom: 14px;
-            }
+                .kiri h3 {
+                    font-size: 1.2rem;
+                    margin-bottom: 14px;
+                }
 
-            .kiri .d-flex {
-                gap: 10px;
-            }
+                .kiri .d-flex {
+                    gap: 10px;
+                }
 
-            .icon-item img {
-                width: 60px !important;
-                height: 60px !important;
-            }
+                .icon-item img {
+                    width: 60px !important;
+                    height: 60px !important;
+                }
 
-            .label-text {
-                font-size: 0.75rem;
-                margin-top: 3px;
-                display: block;
-            }
+                .label-text {
+                    font-size: 0.75rem;
+                    margin-top: 3px;
+                    display: block;
+                }
 
-            .col-12.col-md-3.text-center:nth-child(2) {
-                padding-top: 260px;
-            }        
-}
+                .col-12.col-md-3.text-center:nth-child(2) {
+                    padding-top: 260px;
+                }        
+    }
+        @media (max-width: 400px) {
+            .button{
+                top:40px;
+                left:30px;
+            }
+            .animated-title {
+                    font-size: 1.4rem;
+                    top: 14px;
+                    left: 16px;
+                }
+
+                .center-chart {
+                    top: 55%;
+                    left: 50%;
+                }
+
+                .chart-container {
+                    width: 200px;
+                    height: 200px;
+                }
+
+                .logo-center-wrapper {
+                    width: 90px;
+                    height: 90px;
+                    top: 65%;
+                }
+
+                .icon-img {
+                    width: 53px;
+                    height: 53px;
+                }
+
+                .kiri {
+                    margin-top: -115px;
+                    position: relative;
+                    z-index: 5;
+                }
+
+                .kiri h3 {
+                    font-size: 1.2rem;
+                    margin-bottom: 14px;
+                }
+
+                .kiri .d-flex {
+                    gap: 10px;
+                }
+
+                .icon-item img {
+                    width: 60px !important;
+                    height: 60px !important;
+                }
+
+                .label-text {
+                    font-size: 0.75rem;
+                    margin-top: 3px;
+                    display: block;
+                }
+
+                .col-12.col-md-3.text-center:nth-child(2) {
+                    padding-top: 260px;
+                }        
+    }
 
         /* From Uiverse.io by MuhammadHasann */ 
         .button {

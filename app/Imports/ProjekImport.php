@@ -12,6 +12,7 @@ class ProjekImport implements ToModel, WithHeadingRow
     {
         // Pastikan nama kolom Excel sesuai heading (case-insensitive)
         return new projek([
+            'pn' => $row['pn'] ?? null,
             'nama_barang' => $row['nama_barang'] ?? null,
             'jenis'       => $row['jenis'] ?? null,
             'tipe'        => $row['tipe'] ?? null,
@@ -19,6 +20,7 @@ class ProjekImport implements ToModel, WithHeadingRow
             'ukuran'      => $row['ukuran'] ?? null,
             'jumlah'      => $row['jumlah'] ?? 0,
             'lokasi'      => $row['lokasi'] ?? null,
+            'sn'      => $row['sn'] ?? null,
         ]);
     }
 }

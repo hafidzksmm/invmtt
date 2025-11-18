@@ -20,13 +20,15 @@ class inventoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
             'merk' => 'required|string|max:100',
             'deskripsi' => 'required|string|max:255',
             'dimensi' => 'required|string|max:100',
             'qty' => 'required|integer|min:1',
-            'satuan' => 'required|string|max:255',
+            // 'satuan' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
+            'sn' => 'required|string|max:100',
         ]);
 
         ws::create($request->all());
@@ -36,13 +38,15 @@ class inventoriController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
             'merk' => 'required|string|max:100',
             'deskripsi' => 'required|string|max:255',
             'dimensi' => 'required|string|max:100',
             'qty' => 'required|integer|min:1',
-            'satuan' => 'required|string|max:255',
+            // 'satuan' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
+            'sn' => 'required|string|max:100',
         ]);
 
         $inventaris = ws::findOrFail($id);
@@ -83,22 +87,23 @@ class inventoriController extends Controller
         }
 
         $data = $query->get([
-            'nama_barang', 'merk', 'deskripsi', 'dimensi', 'qty', 'satuan', 'lokasi', 'created_at',
+            'pn','nama_barang', 'merk', 'deskripsi', 'dimensi', 'qty', 'lokasi','sn', 'created_at',
         ]);
 
         $exportData = new Collection();
-        $exportData->push(['No', 'Nama Barang', 'Merk', 'Deskripsi', 'Dimensi', 'Qty', 'Satuan', 'Lokasi', 'Tanggal Dibuat']);
+        $exportData->push(['No','Produk No', 'Nama Barang', 'Merk', 'Deskripsi', 'Dimensi', 'Qty','Serial No', 'Lokasi', 'Tanggal Dibuat']);
 
         foreach ($data as $index => $item) {
             $exportData->push([
                 $index + 1,
+                $item->pn,
                 $item->nama_barang,
                 $item->merk,
                 $item->deskripsi,
                 $item->dimensi,
                 $item->qty,
-                $item->satuan,
                 $item->lokasi,
+                $item->sn,
                 $item->created_at ? $item->created_at->format('d-m-Y') : '',
             ]);
         }

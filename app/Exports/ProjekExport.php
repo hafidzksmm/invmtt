@@ -13,7 +13,7 @@ class ProjekExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        return Projek::select('nama_barang', 'jenis', 'tipe', 'merk', 'ukuran', 'jumlah', 'lokasi')->get();
+        return Projek::select('pn','nama_barang', 'jenis', 'tipe', 'merk', 'ukuran', 'jumlah', 'lokasi','sn')->get();
     }
 
     /**
@@ -22,12 +22,14 @@ class ProjekExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
+            'Produk No',
             'Nama Barang',
             'Jenis',
             'Tipe',
             'Merk',
             'Ukuran',
             'Jumlah',
+            'Serial No',
             'Lokasi',
         ];
     }

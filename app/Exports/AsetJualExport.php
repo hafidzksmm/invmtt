@@ -10,12 +10,13 @@ class AsetJualExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return AsetJual::select('nama_barang', 'jenis','merk','tipe', 'ukuran', 'dimensi', 'qty', 'satuan', 'lokasi')->get();
+        return AsetJual::select('pn','nama_barang', 'jenis','merk','tipe', 'ukuran', 'dimensi', 'qty', 'lokasi','sn',)->get();
     }
 
     public function headings(): array
     {
         return [
+            'Produk No',
             'Nama Barang',
             'Jenis',
             'Merk',
@@ -23,7 +24,7 @@ class AsetJualExport implements FromCollection, WithHeadings
             'Ukuran',
             'Dimensi',
             'Qty',
-            'Satuan',
+            'Serial No',
             'Lokasi',
         ];
     }
