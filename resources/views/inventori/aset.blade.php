@@ -44,122 +44,121 @@
                                  <div class="col-xl-8">
                                     
                                     <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
-                                        <!-- Tombol Filter -->
-<!-- Tombol Filter -->
-<button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#filterModal">
-    <i class="bi bi-funnel-fill"></i> Filter
-</button>
+    <!-- Tombol Filter -->
+    <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#filterModal">
+        <i class="bi bi-funnel-fill"></i> Filter
+    </button>
 
-<!-- Modal Filter -->
-<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content bg-dark text-white">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title" id="filterModalLabel">Filter Data Inventaris</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-
-            <form action="{{ route('aset.filter') }}" method="GET" id="filterForm">
-                @csrf
-                <div class="modal-body">
-
-                    <!-- Nama Barang -->
-                    <div class="mb-3">
-                        <label for="nama_barang" class="form-label">Nama Barang</label>
-                        <select id="nama_barang" name="nama_barang" class="form-select bg-dark text-white border-secondary">
-                            <option value="">-- Pilih Nama Barang --</option>
-                            @foreach ($asset_jual->unique('nama_barang') as $item)
-                                <option value="{{ $item->nama_barang }}">{{ $item->nama_barang }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Jenis -->
-                    <div class="mb-3 d-none" id="jenisGroup">
-                        <label for="jenis" class="form-label">Jenis</label>
-                        <select id="jenis" name="jenis" class="form-select bg-dark text-white border-secondary">
-                            <option value="">-- Pilih Jenis --</option>
-                        </select>
-                    </div>
-
-                    <!-- Merk -->
-                    <div class="mb-3 d-none" id="merkGroup">
-                        <label for="merk" class="form-label">Merk</label>
-                        <select id="merk" name="merk" class="form-select bg-dark text-white border-secondary">
-                            <option value="">-- Pilih Merk --</option>
-                        </select>
-                    </div>
-
-                    <!-- Tipe -->
-                    <div class="mb-3 d-none" id="tipeGroup">
-                        <label for="tipe" class="form-label">Tipe</label>
-                        <select id="tipe" name="tipe" class="form-select bg-dark text-white border-secondary">
-                            <option value="">-- Pilih Tipe --</option>
-                        </select>
-                    </div>
-
-                    <!-- Ukuran -->
-                    <div class="mb-3 d-none" id="ukuranGroup">
-                        <label for="ukuran" class="form-label">Ukuran</label>
-                        <select id="ukuran" name="ukuran" class="form-select bg-dark text-white border-secondary">
-                            <option value="">-- Pilih Ukuran --</option>
-                        </select>
-                    </div>
-
+    <!-- Modal Filter -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="filterModalLabel">Filter Data Inventaris</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
 
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Tutup
-                    </button>
-                    <button type="submit" class="btn btn-info text-white">
-                        <i class="bi bi-search"></i> Terapkan Filter
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<a href="{{ route('asetjual.export', request()->query()) }}" class="btn btn-success">
-    <i class="bi bi-file-earmark-excel"></i> Export Excel
-</a>
-
-                                
-                                    <!-- Tombol untuk membuka modal -->
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importModal">
-    <i class="bi bi-file-earmark-arrow-up"></i> Import Excel
-</button>
-
-<!-- Modal Import Excel -->
-<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Header Modal -->
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="importModalLabel">Import Data dari Excel</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- Body Modal -->
-            <div class="modal-body">
-                <form action="{{ route('asetjual.import') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('aset.filter') }}" method="GET" id="filterForm">
                     @csrf
-                    <div class="mb-3">
-                        <label for="file" class="form-label">Pilih File Excel</label>
-                        <input type="file" name="file" id="file" class="form-control" accept=".xlsx,.xls" required>
-                        <div class="form-text">Format yang didukung: .xlsx, .xls</div>
+                    <div class="modal-body">
+
+                        <!-- Nama Barang -->
+                        <div class="mb-3">
+                            <label for="nama_barang" class="form-label">Nama Barang</label>
+                            <select id="nama_barang" name="nama_barang" class="form-select bg-dark text-white border-secondary">
+                                <option value="">-- Pilih Nama Barang --</option>
+                                @foreach ($asset_jual->unique('nama_barang') as $item)
+                                    <option value="{{ $item->nama_barang }}">{{ $item->nama_barang }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Jenis -->
+                        <div class="mb-3 d-none" id="jenisGroup">
+                            <label for="jenis" class="form-label">Jenis</label>
+                            <select id="jenis" name="jenis" class="form-select bg-dark text-white border-secondary">
+                                <option value="">-- Pilih Jenis --</option>
+                            </select>
+                        </div>
+
+                        <!-- Merk -->
+                        <div class="mb-3 d-none" id="merkGroup">
+                            <label for="merk" class="form-label">Merk</label>
+                            <select id="merk" name="merk" class="form-select bg-dark text-white border-secondary">
+                                <option value="">-- Pilih Merk --</option>
+                            </select>
+                        </div>
+
+                        <!-- Tipe -->
+                        <div class="mb-3 d-none" id="tipeGroup">
+                            <label for="tipe" class="form-label">Tipe</label>
+                            <select id="tipe" name="tipe" class="form-select bg-dark text-white border-secondary">
+                                <option value="">-- Pilih Tipe --</option>
+                            </select>
+                        </div>
+
+                        <!-- Ukuran -->
+                        <div class="mb-3 d-none" id="ukuranGroup">
+                            <label for="ukuran" class="form-label">Ukuran</label>
+                            <select id="ukuran" name="ukuran" class="form-select bg-dark text-white border-secondary">
+                                <option value="">-- Pilih Ukuran --</option>
+                            </select>
+                        </div>
+
                     </div>
 
-                    <div class="text-end">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Upload</button>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i> Tutup
+                        </button>
+                        <button type="submit" class="btn btn-info text-white">
+                            <i class="bi bi-search"></i> Terapkan Filter
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+
+    <a href="{{ route('asetjual.export', request()->query()) }}" class="btn btn-success">
+        <i class="bi bi-file-earmark-excel"></i> Export Excel
+    </a>
+
+                                    
+                                        <!-- Tombol untuk membuka modal -->
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importModal">
+        <i class="bi bi-file-earmark-arrow-up"></i> Import Excel
+    </button>
+
+    <!-- Modal Import Excel -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Header Modal -->
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="importModalLabel">Import Data dari Excel</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Body Modal -->
+                <div class="modal-body">
+                    <form action="{{ route('asetjual.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Pilih File Excel</label>
+                            <input type="file" name="file" id="file" class="form-control" accept=".xlsx,.xls" required>
+                            <div class="form-text">Format yang didukung: .xlsx, .xls</div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-success">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                                         data-bs-target="#addInventarisModal">
@@ -184,62 +183,88 @@
 <!-- Body -->
 <form action="{{ route('aset-store') }}" method="POST">
     @csrf
+
     <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
         <div class="row g-3">
+
+            <!-- PN -->
             <div class="col-md-6">
-                <label for="pn" class="form-label fw-semibold">Produk No(PN)</label>
-                <input type="text" class="form-control border-secondary" id="pn" name="pn" required>
+                <label class="form-label fw-semibold">Produk No (PN)</label>
+                <textarea name="pn" class="form-control border-secondary" rows="4" required></textarea>
+                <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
             </div>
+
+            <!-- Nama Barang -->
             <div class="col-md-6">
                 <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
-                <input type="text" class="form-control border-secondary" id="nama_barang" name="nama_barang" required>
+                <input type="text" class="form-control border-secondary" id="nama_barang" 
+                       name="nama_barang" required>
             </div>
 
+            <!-- Jenis -->
             <div class="col-md-6">
                 <label for="jenis" class="form-label fw-semibold">Jenis</label>
-                <input type="text" class="form-control border-secondary" id="jenis" name="jenis" required>
-            </div>
-            <div class="col-md-6">
-                <label for="merk" class="form-label fw-semibold">merk</label>
-                <input type="text" class="form-control border-secondary" id="merk" name="merk" required>
-            </div>
-            <div class="col-md-6">
-                <label for="tipe" class="form-label fw-semibold">tipe</label>
-                <input type="text" class="form-control border-secondary" id="tipe" name="tipe" required>
+                <input type="text" class="form-control border-secondary" id="jenis" 
+                       name="jenis" required>
             </div>
 
+            <!-- Merk -->
+            <div class="col-md-6">
+                <label for="merk" class="form-label fw-semibold">Merk</label>
+                <input type="text" class="form-control border-secondary" id="merk" 
+                       name="merk" required>
+            </div>
+
+            <!-- Tipe -->
+            <div class="col-md-6">
+                <label for="tipe" class="form-label fw-semibold">Tipe</label>
+                <input type="text" class="form-control border-secondary" id="tipe" 
+                       name="tipe" required>
+            </div>
+
+            <!-- Ukuran -->
             <div class="col-md-6">
                 <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
-                <input type="text" class="form-control border-secondary" id="ukuran" name="ukuran" required>
+                <input type="text" class="form-control border-secondary" id="ukuran" 
+                       name="ukuran" required>
             </div>
 
+            <!-- Dimensi -->
             <div class="col-md-6">
                 <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
-                <input type="text" class="form-control border-secondary" id="dimensi" name="dimensi" required>
+                <input type="text" class="form-control border-secondary" id="dimensi" 
+                       name="dimensi" required>
             </div>
 
+            <!-- QTY -->
             <div class="col-md-4">
                 <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
-                <input type="number" class="form-control border-secondary" id="qty" name="qty" min="1" required>
+                <input type="number" class="form-control border-secondary" id="qty" 
+                       name="qty" min="1" required>
             </div>
 
+            <!-- SN -->
             <div class="col-md-4">
-                <label for="sn" class="form-label fw-semibold">Serial No(SN)</label>
-                <input type="text" class="form-control border-secondary" id="sn" name="sn" required>
+                <label class="form-label fw-semibold">Serial No (SN)</label>
+                <textarea name="sn" class="form-control border-secondary" rows="4" required></textarea>
+                <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
             </div>
 
+            <!-- Lokasi -->
             <div class="col-md-4">
                 <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                <input type="text" class="form-control border-secondary" id="lokasi" name="lokasi" required>
+                <input type="text" class="form-control border-secondary" id="lokasi" 
+                       name="lokasi" required>
             </div>
+
         </div>
     </div>
 
-    <!-- Footer -->
     <div class="modal-footer bg-light">
         <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
             <i class="bi bi-x-circle"></i> Batal
         </button>
+
         <button type="submit" class="btn btn-success text-white">
             <i class="bi bi-save"></i> Simpan
         </button>
@@ -249,8 +274,6 @@
         </div>
     </div>
 </div>
-
-
                             </div>
 
                             <div class="card-body px-0 py-0">
@@ -275,171 +298,191 @@
                                         </thead>
                                         <tbody>
                                             @forelse ($asset_jual as $index => $item)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td class="text-wrap">{{ $item->pn }}</td>
-                                                <td class="text-wrap">{{ $item->nama_barang }}</td>
-                                                <td class="text-wrap">{{ $item->jenis }}</td>
-                                                <td class="text-wrap">{{ $item->merk }}</td>
-                                                <td class="text-wrap">{{ $item->tipe }}</td>
-                                                <td class="text-wrap">{{ $item->ukuran }}</td>
-                                                <td class="text-wrap">{{ $item->dimensi }}</td>
-                                                <td>{{ $item->qty }}</td>
-                                                <td>{{ $item->sn }}</td>
-                                                <td class="text-wrap">{{ $item->lokasi }}</td>
-                                                <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                                                <td>
-                                                    <!-- Tombol Edit (buka modal) -->
-                                                    <button type="button" class="btn btn-sm btn-warning me-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#editModal{{ $item->id }}">
-                                                        <i class="bi bi-pencil-square"></i> Edit
-                                                    </button>
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td class="text-wrap">
+                                                        @php
+                                                            $pns = json_decode($item->pn ?? '[]', true);
+                                                        @endphp
 
-                                                    <!-- Form Hapus -->
-                                                    <form action="{{ route('aset.hapus', $item->id) }}" method="POST"
-                                                        style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                                            <i class="bi bi-trash"></i> Hapus
+                                                        @if (is_array($pns))
+                                                            <ul class="ps-3 mb-0">
+                                                                @foreach ($pns as $pn)
+                                                                    <li>{{ $pn }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @else
+                                                            {{ $item->pn }}
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-wrap">{{ $item->nama_barang }}</td>
+                                                    <td class="text-wrap">{{ $item->jenis }}</td>
+                                                    <td class="text-wrap">{{ $item->merk }}</td>
+                                                    <td class="text-wrap">{{ $item->tipe }}</td>
+                                                    <td class="text-wrap">{{ $item->ukuran }}</td>
+                                                    <td class="text-wrap">{{ $item->dimensi }}</td>
+                                                    <td>{{ $item->qty }}</td>
+                                                    <td class="text-wrap">
+                                                        @php
+                                                            $sns = json_decode($item->sn ?? '[]', true);
+                                                        @endphp
+
+                                                        @if (is_array($sns))
+                                                            <ul class="ps-3 mb-0">
+                                                                @foreach ($sns as $sn)
+                                                                    <li>{{ $sn }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @else
+                                                            {{ $item->sn }}
+                                                        @endif
+                                                    </td>
+
+                                                    <td class="text-wrap">{{ $item->lokasi }}</td>
+                                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
+
+                                                    <td>
+                                                        <!-- Tombol Edit -->
+                                                        <button type="button" class="btn btn-sm btn-warning me-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editModal{{ $item->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit
                                                         </button>
-                                                    </form>
 
-                                                    <!-- Modal Edit -->
-                                                    <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
-                                                        aria-labelledby="editModalLabel{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <form action="{{ route('aset.update', $item->id) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="editModalLabel{{ $item->id }}">Edit
-                                                                            Inventaris</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
+                                                        <!-- Form Hapus -->
+                                                        <form action="{{ route('aset.hapus', $item->id) }}" method="POST"
+                                                            style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                                                <i class="bi bi-trash"></i> Hapus
+                                                            </button>
+                                                        </form>
 
-                                                                    <div class="modal-body">
-                                                                        <div class="mb-3">
-                                                                            <label for="pn{{ $item->id }}"
-                                                                                class="form-label">Produk No(PN)</label>
-                                                                            <input type="text" name="pn"
-                                                                                class="form-control"
-                                                                                id="pn{{ $item->id }}"
-                                                                                value="{{ $item->pn }}"
-                                                                                required>
-                                                                        </div>
+                                                         <!-- Modal Edit -->
+<div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
+    aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
-                                                                    <div class="modal-body">
-                                                                        <div class="mb-3">
-                                                                            <label for="nama_barang{{ $item->id }}"
-                                                                                class="form-label">Nama Barang</label>
-                                                                            <input type="text" name="nama_barang"
-                                                                                class="form-control"
-                                                                                id="nama_barang{{ $item->id }}"
-                                                                                value="{{ $item->nama_barang }}"
-                                                                                required>
-                                                                        </div>
+            <form action="{{ route('aset.update', $item->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-                                                                        <div class="mb-3">
-                                                                            <label for="jenis{{ $item->id }}"
-                                                                                class="form-label">Jenis</label>
-                                                                            <input type="text" name="jenis"
-                                                                                class="form-control"
-                                                                                id="jenis{{ $item->id }}"
-                                                                                value="{{ $item->jenis }}" required>
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="merk{{ $item->id }}"
-                                                                                class="form-label">merk</label>
-                                                                            <input type="text" name="merk"
-                                                                                class="form-control"
-                                                                                id="merk{{ $item->id }}"
-                                                                                value="{{ $item->merk }}" required>
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="tipe{{ $item->id }}"
-                                                                                class="form-label">tipe</label>
-                                                                            <input type="text" name="tipe"
-                                                                                class="form-control"
-                                                                                id="tipe{{ $item->id }}"
-                                                                                value="{{ $item->tipe }}" required>
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="ukuran{{ $item->id }}"
-                                                                                class="form-label">ukuran</label>
-                                                                            <input type="text" name="ukuran"
-                                                                                class="form-control"
-                                                                                id="ukuran{{ $item->id }}"
-                                                                                value="{{ $item->ukuran }}" required>
-                                                                        </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Inventaris</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-                                                                      
+                <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
 
-                                                                        <div class="mb-3">
-                                                                            <label for="dimensi{{ $item->id }}"
-                                                                                class="form-label">Dimensi</label>
-                                                                            <input type="text" name="dimensi"
-                                                                                class="form-control"
-                                                                                id="dimensi{{ $item->id }}"
-                                                                                value="{{ $item->dimensi }}">
-                                                                        </div>
+                    @php
+                        $pns = json_decode($item->pn ?? '[]', true);
+                        $pn_string = is_array($pns) ? implode("\n", $pns) : $item->pn;
 
-                                                                        <div class="mb-3">
-                                                                            <label for="qty{{ $item->id }}"
-                                                                                class="form-label">Qty</label>
-                                                                            <input type="number" name="qty"
-                                                                                class="form-control"
-                                                                                id="qty{{ $item->id }}"
-                                                                                value="{{ $item->qty }}" required>
-                                                                        </div>
+                        $sns = json_decode($item->sn ?? '[]', true);
+                        $sn_string = is_array($sns) ? implode("\n", $sns) : $item->sn;
+                    @endphp
 
-                                                                        <div class="mb-3">
-                                                                            <label for="sn{{ $item->id }}"
-                                                                                class="form-label">Serial No(SN)</label>
-                                                                            <input type="text" name="sn"
-                                                                                class="form-control"
-                                                                                id="sn{{ $item->id }}"
-                                                                                value="{{ $item->sn }}" required>
-                                                                        </div>
+                    <div class="row g-3">
 
-                                                                        <div class="mb-3">
-                                                                            <label for="lokasi{{ $item->id }}"
-                                                                                class="form-label">Lokasi</label>
-                                                                            <input type="text" name="lokasi"
-                                                                                class="form-control"
-                                                                                id="lokasi{{ $item->id }}"
-                                                                                value="{{ $item->lokasi }}" required>
-                                                                        </div>
-                                                                    </div>
+                        <!-- PN -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Produk No (PN)</label>
+                            <textarea name="pn" class="form-control border-secondary" rows="4" required>{{ $pn_string }}</textarea>
+                            <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
+                        </div>
 
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Batal</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Simpan
-                                                                            Perubahan</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                        <!-- Nama Barang -->
+                        <div class="col-md-6">
+                            <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
+                            <input type="text" class="form-control border-secondary" id="nama_barang"
+                                name="nama_barang" value="{{ $item->nama_barang }}" required>
+                        </div>
 
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                        <!-- Jenis -->
+                        <div class="col-md-6">
+                            <label for="jenis" class="form-label fw-semibold">Jenis</label>
+                            <input type="text" class="form-control border-secondary" id="jenis"
+                                name="jenis" value="{{ $item->jenis }}" required>
+                        </div>
+
+                        <!-- Merk -->
+                        <div class="col-md-6">
+                            <label for="merk" class="form-label fw-semibold">Merk</label>
+                            <input type="text" class="form-control border-secondary" id="merk"
+                                name="merk" value="{{ $item->merk }}" required>
+                        </div>
+
+                        <!-- Tipe -->
+                        <div class="col-md-6">
+                            <label for="tipe" class="form-label fw-semibold">Tipe</label>
+                            <input type="text" class="form-control border-secondary" id="tipe"
+                                name="tipe" value="{{ $item->tipe }}" required>
+                        </div>
+
+                        <!-- Ukuran -->
+                        <div class="col-md-6">
+                            <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
+                            <input type="text" class="form-control border-secondary" id="ukuran"
+                                name="ukuran" value="{{ $item->ukuran }}" required>
+                        </div>
+
+                        <!-- Dimensi -->
+                        <div class="col-md-6">
+                            <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
+                            <input type="text" class="form-control border-secondary" id="dimensi"
+                                name="dimensi" value="{{ $item->dimensi }}" required>
+                        </div>
+
+                        <!-- QTY -->
+                        <div class="col-md-4">
+                            <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
+                            <input type="number" class="form-control border-secondary" id="qty"
+                                name="qty" min="1" value="{{ $item->qty }}" required>
+                        </div>
+
+                        <!-- SN -->
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Serial No (SN)</label>
+                            <textarea name="sn" class="form-control border-secondary" rows="4" required>{{ $sn_string }}</textarea>
+                            <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
+                        </div>
+
+                        <!-- Lokasi -->
+                        <div class="col-md-4">
+                            <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
+                            <input type="text" class="form-control border-secondary" id="lokasi"
+                                name="lokasi" value="{{ $item->lokasi }}" required>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-success text-white">
+                        <i class="bi bi-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+                                                    </td>
+                                                </tr>
                                             @empty
-                                            <tr>
-                                                <td colspan="10" class="text-center text-muted py-3">
-                                                    Tidak ada data inventaris.
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="10" class="text-center text-muted py-3">
+                                                        Tidak ada data inventaris.
+                                                    </td>
+                                                </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -513,6 +556,24 @@ $(document).ready(function() {
         populateDropdown('#ukuran', getUniqueValues('ukuran', filters), 'Ukuran', filters.ukuran);
     });
 });
+function addListItem(containerId, inputName) {
+    const container = document.getElementById(containerId);
+    const div = document.createElement("div");
+    div.classList.add("d-flex", "mb-2");
+
+    div.innerHTML = `
+        <input type="text" name="${inputName}[]" class="form-control me-2" required>
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">X</button>
+    `;
+    container.appendChild(div);
+}
+
+function combineList(inputName, textareaId) {
+    const items = document.getElementsByName(inputName + "[]");
+    let result = [];
+    items.forEach(i => result.push(i.value));
+    document.getElementById(textareaId).value = result.join("\n");
+}
 </script>
 
 

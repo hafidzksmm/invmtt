@@ -38,6 +38,13 @@ class proyekController extends Controller
             'sn'      => 'required|string|max:100',
         ]);
 
+        // Convert PN & SN menjadi array list (per baris)
+    $pnRaw = (string) $request->pn;
+    $snRaw = (string) $request->sn;
+
+    $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
+    $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
+
         projek::create($request->only([
             'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi','sn'
         ]));
@@ -61,6 +68,14 @@ class proyekController extends Controller
             'lokasi'      => 'required|string|max:255',
             'sn'      => 'required|string|max:100',
         ]);
+
+        // Convert PN & SN menjadi array list (per baris)
+    $pnRaw = (string) $request->pn;
+    $snRaw = (string) $request->sn;
+
+    $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
+    $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
+
 
         $inventaris = projek::findOrFail($id);
         $inventaris->update($request->only([

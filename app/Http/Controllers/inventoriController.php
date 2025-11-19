@@ -20,45 +20,76 @@ class inventoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pn' => 'required|string|max:100',
-            'nama_barang' => 'required|string|max:255',
-            'merk' => 'required|string|max:100',
-            'deskripsi' => 'required|string|max:255',
-            'dimensi' => 'required|string|max:100',
-            'qty' => 'required|integer|min:1',
-            // 'satuan' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-            'sn' => 'required|string|max:100',
+            'pn' => 'nullable|string',
+            'nama_barang' => 'nullable|string|max:255',
+            'merk' => 'nullable|string|max:100',
+            'deskripsi' => 'nullable|string|max:255',
+            'dimensi' => 'nullable|string|max:100',
+            'qty' => 'nullable|integer|min:1',
+            'lokasi' => 'nullable|string|max:255',
+            'sn' => 'nullable|string',
         ]);
 
-        ws::create($request->all());
+        // parse PN & SN (set ke array kosong bila textarea kosong)
+        $pnRaw = (string) $request->pn;
+        $snRaw = (string) $request->sn;
+
+        $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
+        $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
+
+        ws::create([
+            'pn' => json_encode(array_values($pnList)),
+            'nama_barang' => $request->nama_barang,
+            'merk' => $request->merk,
+            'deskripsi' => $request->deskripsi,
+            'dimensi' => $request->dimensi,
+            'qty' => $request->qty,
+            'lokasi' => $request->lokasi,
+            'sn' => json_encode(array_values($snList)),
+        ]);
+
         return redirect()->route('view-ws')->with('success', 'Data berhasil ditambahkan.');
     }
+// UPDATE
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'pn' => 'nullable|string',
+        'nama_barang' => 'nullable|string|max:255',
+        'merk' => 'nullable|string|max:100',
+        'deskripsi' => 'nullable|string|max:255',
+        'dimensi' => 'nullable|string|max:100',
+        'qty' => 'nullable|integer|min:1',
+        'lokasi' => 'nullable|string|max:255',
+        'sn' => 'nullable|string',
+    ]);
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'pn' => 'required|string|max:100',
-            'nama_barang' => 'required|string|max:255',
-            'merk' => 'required|string|max:100',
-            'deskripsi' => 'required|string|max:255',
-            'dimensi' => 'required|string|max:100',
-            'qty' => 'required|integer|min:1',
-            // 'satuan' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-            'sn' => 'required|string|max:100',
-        ]);
+    $inventaris = ws::findOrFail($id);
 
-        $inventaris = ws::findOrFail($id);
-        $inventaris->update($request->all());
+    $pnRaw = (string) $request->pn;
+    $snRaw = (string) $request->sn;
 
-        return redirect()->back()->with('success', 'Data inventaris berhasil diperbarui!');
-    }
+    $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
+    $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
 
+    $inventaris->update([
+        'pn' => json_encode(array_values($pnList)),
+        'nama_barang' => $request->nama_barang,
+        'merk' => $request->merk,
+        'deskripsi' => $request->deskripsi,
+        'dimensi' => $request->dimensi,
+        'qty' => $request->qty,
+        'lokasi' => $request->lokasi,
+        'sn' => json_encode(array_values($snList)),
+    ]);
+
+    return redirect()->back()->with('success', 'Data inventaris berhasil diperbarui!');
+}
     public function destroy($id)
     {
         $inventaris = ws::findOrFail($id);
         $inventaris->delete();
+
         return redirect()->back()->with('success', 'Data inventaris berhasil dihapus!');
     }
 
@@ -87,7 +118,7 @@ class inventoriController extends Controller
         }
 
         $data = $query->get([
-            'pn','nama_barang', 'merk', 'deskripsi', 'dimensi', 'qty', 'lokasi','sn', 'created_at',
+            'pn', 'nama_barang', 'merk', 'deskripsi', 'dimensi', 'qty', 'lokasi', 'sn', 'created_at',
         ]);
 
         $exportData = new Collection();
@@ -96,14 +127,14 @@ class inventoriController extends Controller
         foreach ($data as $index => $item) {
             $exportData->push([
                 $index + 1,
-                $item->pn,
+                implode(", ", json_decode($item->pn, true) ?? []),
                 $item->nama_barang,
                 $item->merk,
                 $item->deskripsi,
                 $item->dimensi,
                 $item->qty,
+                implode(", ", json_decode($item->sn, true) ?? []),
                 $item->lokasi,
-                $item->sn,
                 $item->created_at ? $item->created_at->format('d-m-Y') : '',
             ]);
         }

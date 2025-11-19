@@ -187,8 +187,9 @@
     <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
         <div class="row g-3">
             <div class="col-md-6">
-                <label for="pn" class="form-label fw-semibold">Produk No(PN)</label>
-                <input type="text" class="form-control border-secondary" id="pn" name="pn" required>
+                <label class="form-label fw-semibold">Produk No (PN)</label>
+                <textarea name="pn" class="form-control border-secondary" rows="4" required></textarea>
+                <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
             </div>
             <div class="col-md-6">
                 <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
@@ -216,8 +217,9 @@
                 <input type="number" class="form-control border-secondary" id="jumlah" name="jumlah" min="1" required>
             </div>
             <div class="col-md-4">
-                <label for="sn" class="form-label fw-semibold">Serial No(SN)</label>
-                <input type="text" class="form-control border-secondary" id="sn" name="sn" required>
+                <label class="form-label fw-semibold">Serial No (SN)</label>
+                <textarea name="sn" class="form-control border-secondary" rows="4" required></textarea>
+                <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
             </div>
             <div class="col-md-4">
                 <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
@@ -240,8 +242,6 @@
         </div>
     </div>
 </div>
-
-
                             </div>
 
                             <div class="card-body px-0 py-0">
@@ -267,14 +267,42 @@
                                             @forelse ($inventaryprojek as $index => $item)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $item->pn }}</td>
+                                                    <td class="text-wrap">
+                                                        @php
+                                                            $pns = json_decode($item->pn ?? '[]', true);
+                                                        @endphp
+
+                                                        @if (is_array($pns))
+                                                            <ul class="ps-3 mb-0">
+                                                                @foreach ($pns as $pn)
+                                                                    <li>{{ $pn }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @else
+                                                            {{ $item->pn }}
+                                                        @endif
+                                                    </td>
                                                 <td>{{ $item->nama_barang }}</td>
                                                 <td>{{ $item->jenis }}</td>
                                                 <td class="text-wrap">{{ $item->tipe }}</td>
                                                 <td>{{ $item->merk }}</td>
                                                 <td>{{ $item->ukuran }}</td>
                                                 <td>{{ $item->jumlah }}</td>
-                                                <td>{{ $item->sn }}</td>
+                                                    <td class="text-wrap">
+                                                        @php
+                                                            $sns = json_decode($item->sn ?? '[]', true);
+                                                        @endphp
+
+                                                        @if (is_array($sns))
+                                                            <ul class="ps-3 mb-0">
+                                                                @foreach ($sns as $sn)
+                                                                    <li>{{ $sn }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @else
+                                                            {{ $item->sn }}
+                                                        @endif
+                                                    </td>
                                                 <td>{{ $item->lokasi }}</td>
                                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                                 <td>
@@ -556,6 +584,25 @@ $(document).ready(function() {
         }
     });
 });
+function addListItem(containerId, inputName) {
+    const container = document.getElementById(containerId);
+    const div = document.createElement("div");
+    div.classList.add("d-flex", "mb-2");
+
+    div.innerHTML = `
+        <input type="text" name="${inputName}[]" class="form-control me-2" required>
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">X</button>
+    `;
+    container.appendChild(div);
+}
+
+function combineList(inputName, textareaId) {
+    const items = document.getElementsByName(inputName + "[]");
+    let result = [];
+    items.forEach(i => result.push(i.value));
+    document.getElementById(textareaId).value = result.join("\n");
+}
+
 </script>
 
 
