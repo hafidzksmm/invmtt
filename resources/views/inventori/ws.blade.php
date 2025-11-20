@@ -174,7 +174,7 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Produk No (PN)</label>
-                <textarea name="pn" class="form-control border-secondary" rows="4" required></textarea>
+                <textarea name="pn" class="form-control border-secondary" rows="4" ></textarea>
                 <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
             </div>
             <div class="col-md-6">
@@ -183,17 +183,17 @@
             </div>
             <div class="col-md-6">
                 <label for="merk" class="form-label fw-semibold">merk</label>
-                <input type="text" class="form-control border-secondary" id="merk" name="merk" required>
+                <input type="text" class="form-control border-secondary" id="merk" name="merk" >
             </div>
 
             <div class="col-md-6">
                 <label for="deskripsi" class="form-label fw-semibold">Deskripsi</label>
-                <input type="text" class="form-control border-secondary" id="deskripsi" name="deskripsi" required>
+                <input type="text" class="form-control border-secondary" id="deskripsi" name="deskripsi" >
             </div>
 
             <div class="col-md-6">
                 <label for="dimensi" class="form-label fw-semibold">dimensi</label>
-                <input type="text" class="form-control border-secondary" id="dimensi" name="dimensi" required>
+                <input type="text" class="form-control border-secondary" id="dimensi" name="dimensi" >
             </div>
 
             <div class="col-md-4">
@@ -203,7 +203,7 @@
 
             <div class="col-md-4">
                 <label class="form-label fw-semibold">Serial No (SN)</label>
-                <textarea name="sn" class="form-control border-secondary" rows="4" required></textarea>
+                <textarea name="sn" class="form-control border-secondary" rows="4" ></textarea>
                 <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
             </div>
 
@@ -355,28 +355,28 @@
                         <div class="col-md-6">
                             <label for="merk" class="form-label fw-semibold">Merk</label>
                             <input type="text" class="form-control border-secondary" id="merk"
-                                name="merk" value="{{ $item->merk }}" required>
+                                name="merk" value="{{ $item->merk }}" >
                         </div>
 
                         <!-- Deskripsi -->
                         <div class="col-md-6">
                             <label for="deskripsi" class="form-label fw-semibold">Deskripsi</label>
                             <input type="text" class="form-control border-secondary" id="deskripsi"
-                                name="deskripsi" value="{{ $item->deskripsi }}" required>
+                                name="deskripsi" value="{{ $item->deskripsi }}" >
                         </div>
 
                         <!-- dimensi -->
                         <div class="col-md-6">
                             <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
                             <input type="text" class="form-control border-secondary" id="dimensi"
-                                name="dimensi" value="{{ $item->dimensi }}" required>
+                                name="dimensi" value="{{ $item->dimensi }}" >
                         </div>
 
                         <!-- Dimensi -->
                         <div class="col-md-6">
                             <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
                             <input type="text" class="form-control border-secondary" id="dimensi"
-                                name="dimensi" value="{{ $item->dimensi }}" required>
+                                name="dimensi" value="{{ $item->dimensi }}" >
                         </div>
 
                         <!-- QTY -->

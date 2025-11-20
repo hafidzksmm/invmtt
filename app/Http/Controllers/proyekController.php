@@ -27,15 +27,9 @@ class proyekController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
-            'jenis'       => 'required|string|max:100',
-            'tipe'        => 'required|string|max:255',
-            'merk'        => 'required|string|max:255',
-            'ukuran'      => 'nullable|string|max:100',
-            'jumlah'      => 'required|integer|min:1',
-            'lokasi'      => 'required|string|max:255',
-            'sn'      => 'required|string|max:100',
+            'jumlah' => 'required|integer|min:1',
+            'lokasi' => 'required|string|max:255',
         ]);
 
         // Convert PN & SN menjadi array list (per baris)
@@ -58,15 +52,9 @@ class proyekController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'pn' => 'required|string|max:100',
             'nama_barang' => 'required|string|max:255',
-            'jenis'       => 'required|string|max:100',
-            'tipe'        => 'required|string',
-            'merk'        => 'required|string',
-            'ukuran'      => 'nullable|string|max:100',
-            'jumlah'      => 'required|integer|min:1',
-            'lokasi'      => 'required|string|max:255',
-            'sn'      => 'required|string|max:100',
+            'jumlah' => 'required|integer|min:1',
+            'lokasi' => 'required|string|max:255',
         ]);
 
         // Convert PN & SN menjadi array list (per baris)

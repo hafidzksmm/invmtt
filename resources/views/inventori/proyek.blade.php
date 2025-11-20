@@ -188,7 +188,7 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Produk No (PN)</label>
-                <textarea name="pn" class="form-control border-secondary" rows="4" required></textarea>
+                <textarea name="pn" class="form-control border-secondary" rows="4" ></textarea>
                 <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
             </div>
             <div class="col-md-6">
@@ -198,19 +198,19 @@
 
             <div class="col-md-6">
                 <label for="jenis" class="form-label fw-semibold">Jenis</label>
-                <input type="text" class="form-control border-secondary" id="jenis" name="jenis" required>
+                <input type="text" class="form-control border-secondary" id="jenis" name="jenis" >
             </div>
             <div class="col-md-6">
                 <label for="tipe" class="form-label fw-semibold">tipe</label>
-                <input type="text" class="form-control border-secondary" id="tipe" name="tipe" required>
+                <input type="text" class="form-control border-secondary" id="tipe" name="tipe" >
             </div>
             <div class="col-md-6">
                 <label for="merk" class="form-label fw-semibold">merk</label>
-                <input type="text" class="form-control border-secondary" id="merk" name="merk" required>
+                <input type="text" class="form-control border-secondary" id="merk" name="merk" >
             </div>
             <div class="col-md-6">
                 <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
-                <input type="text" class="form-control border-secondary" id="ukuran" name="ukuran" required>
+                <input type="text" class="form-control border-secondary" id="ukuran" name="ukuran" >
             </div>
             <div class="col-md-4">
                 <label for="jumlah" class="form-label fw-semibold">Jumlah </label>
@@ -218,7 +218,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label fw-semibold">Serial No (SN)</label>
-                <textarea name="sn" class="form-control border-secondary" rows="4" required></textarea>
+                <textarea name="sn" class="form-control border-secondary" rows="4" ></textarea>
                 <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
             </div>
             <div class="col-md-4">
@@ -351,7 +351,7 @@
                                                                                 class="form-control"
                                                                                 id="pn{{ $item->id }}"
                                                                                 value="{{ $item->pn }}"
-                                                                                required>
+                                                                                >
                                                                         </div>
 
                                                                     <div class="modal-body">
@@ -371,7 +371,7 @@
                                                                             <input type="text" name="jenis"
                                                                                 class="form-control"
                                                                                 id="jenis{{ $item->id }}"
-                                                                                value="{{ $item->jenis }}" required>
+                                                                                value="{{ $item->jenis }}" >
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label for="tipe{{ $item->id }}"
@@ -379,7 +379,7 @@
                                                                             <input type="text" name="tipe"
                                                                                 class="form-control"
                                                                                 id="tipe{{ $item->id }}"
-                                                                                value="{{ $item->tipe }}" required>
+                                                                                value="{{ $item->tipe }}" >
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label for="merk{{ $item->id }}"
@@ -387,7 +387,7 @@
                                                                             <input type="text" name="merk"
                                                                                 class="form-control"
                                                                                 id="merk{{ $item->id }}"
-                                                                                value="{{ $item->merk }}" required>
+                                                                                value="{{ $item->merk }}" >
                                                                         </div>
                                                                         
                                                                         <div class="mb-3">
@@ -396,7 +396,7 @@
                                                                             <input type="text" name="ukuran"
                                                                                 class="form-control"
                                                                                 id="ukuran{{ $item->id }}"
-                                                                                value="{{ $item->ukuran }}" required>
+                                                                                value="{{ $item->ukuran }}" >
                                                                         </div>
 
                                                                       
@@ -407,7 +407,7 @@
                                                                             <input type="text" name="jumlah"
                                                                                 class="form-control"
                                                                                 id="jumlah{{ $item->id }}"
-                                                                                value="{{ $item->jumlah }}">
+                                                                                value="{{ $item->jumlah }}" required>
                                                                         </div>
                                                                         
                                                                         <div class="mb-3">
@@ -416,7 +416,7 @@
                                                                             <input type="text" name="sn"
                                                                                 class="form-control"
                                                                                 id="sn{{ $item->id }}"
-                                                                                value="{{ $item->sn }}" required>
+                                                                                value="{{ $item->sn }}" >
                                                                         </div>
 
                                                                         <div class="mb-3">

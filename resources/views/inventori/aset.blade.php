@@ -190,7 +190,7 @@
             <!-- PN -->
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Produk No (PN)</label>
-                <textarea name="pn" class="form-control border-secondary" rows="4" required></textarea>
+                <textarea name="pn" class="form-control border-secondary" rows="4" ></textarea>
                 <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
             </div>
 
@@ -390,7 +390,7 @@
                         <!-- PN -->
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Produk No (PN)</label>
-                            <textarea name="pn" class="form-control border-secondary" rows="4" required>{{ $pn_string }}</textarea>
+                            <textarea name="pn" class="form-control border-secondary" rows="4" >{{ $pn_string }}</textarea>
                             <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
                         </div>
 
@@ -446,7 +446,7 @@
                         <!-- SN -->
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">Serial No (SN)</label>
-                            <textarea name="sn" class="form-control border-secondary" rows="4" required>{{ $sn_string }}</textarea>
+                            <textarea name="sn" class="form-control border-secondary" rows="4">{{ $sn_string }}</textarea>
                             <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
                         </div>
 

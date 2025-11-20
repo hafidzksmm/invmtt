@@ -23,15 +23,8 @@ class asetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pn' => 'required|string',
             'nama_barang' => 'required|string|max:255',
-            'jenis' => 'required|string|max:100',
-            'merk' => 'required|string|max:255',
-            'tipe' => 'required|string|max:255',
-            'ukuran' => 'nullable|string|max:100',
-            'dimensi' => 'nullable|string|max:100',
             'qty' => 'required|integer|min:1',
-            'sn' => 'required|string',
             'lokasi' => 'required|string|max:255',
         ]);
 
@@ -65,15 +58,8 @@ class asetController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'pn' => 'required|string',
             'nama_barang' => 'required|string|max:255',
-            'jenis' => 'required|string|max:100',
-            'merk' => 'required|string|max:255',
-            'tipe' => 'required|string|max:255',
-            'ukuran' => 'nullable|string|max:100',
-            'dimensi' => 'nullable|string|max:100',
             'qty' => 'required|integer|min:1',
-            'sn' => 'required|string',
             'lokasi' => 'required|string|max:255',
         ]);
 

@@ -20,14 +20,9 @@ class inventoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pn' => 'nullable|string',
-            'nama_barang' => 'nullable|string|max:255',
-            'merk' => 'nullable|string|max:100',
-            'deskripsi' => 'nullable|string|max:255',
-            'dimensi' => 'nullable|string|max:100',
-            'qty' => 'nullable|integer|min:1',
-            'lokasi' => 'nullable|string|max:255',
-            'sn' => 'nullable|string',
+            'nama_barang' => 'required|string|max:255',
+            'qty' => 'required|integer|min:1',
+            'lokasi' => 'required|string|max:255',
         ]);
 
         // parse PN & SN (set ke array kosong bila textarea kosong)
@@ -54,14 +49,9 @@ class inventoriController extends Controller
 public function update(Request $request, $id)
 {
     $request->validate([
-        'pn' => 'nullable|string',
-        'nama_barang' => 'nullable|string|max:255',
-        'merk' => 'nullable|string|max:100',
-        'deskripsi' => 'nullable|string|max:255',
-        'dimensi' => 'nullable|string|max:100',
-        'qty' => 'nullable|integer|min:1',
-        'lokasi' => 'nullable|string|max:255',
-        'sn' => 'nullable|string',
+            'nama_barang' => 'required|string|max:255',
+            'qty' => 'required|integer|min:1',
+            'lokasi' => 'required|string|max:255',
     ]);
 
     $inventaris = ws::findOrFail($id);
