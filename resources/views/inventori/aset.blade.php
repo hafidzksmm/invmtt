@@ -205,35 +205,35 @@
             <div class="col-md-6">
                 <label for="jenis" class="form-label fw-semibold">Jenis</label>
                 <input type="text" class="form-control border-secondary" id="jenis" 
-                       name="jenis" required>
+                       name="jenis" >
             </div>
 
             <!-- Merk -->
             <div class="col-md-6">
                 <label for="merk" class="form-label fw-semibold">Merk</label>
                 <input type="text" class="form-control border-secondary" id="merk" 
-                       name="merk" required>
+                       name="merk" >
             </div>
 
             <!-- Tipe -->
             <div class="col-md-6">
                 <label for="tipe" class="form-label fw-semibold">Tipe</label>
                 <input type="text" class="form-control border-secondary" id="tipe" 
-                       name="tipe" required>
+                       name="tipe" >
             </div>
 
             <!-- Ukuran -->
             <div class="col-md-6">
                 <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
                 <input type="text" class="form-control border-secondary" id="ukuran" 
-                       name="ukuran" required>
+                       name="ukuran" >
             </div>
 
             <!-- Dimensi -->
             <div class="col-md-6">
                 <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
                 <input type="text" class="form-control border-secondary" id="dimensi" 
-                       name="dimensi" required>
+                       name="dimensi" >
             </div>
 
             <!-- QTY -->
@@ -246,7 +246,7 @@
             <!-- SN -->
             <div class="col-md-4">
                 <label class="form-label fw-semibold">Serial No (SN)</label>
-                <textarea name="sn" class="form-control border-secondary" rows="4" required></textarea>
+                <textarea name="sn" class="form-control border-secondary" rows="4" ></textarea>
                 <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
             </div>
 
@@ -405,35 +405,35 @@
                         <div class="col-md-6">
                             <label for="jenis" class="form-label fw-semibold">Jenis</label>
                             <input type="text" class="form-control border-secondary" id="jenis"
-                                name="jenis" value="{{ $item->jenis }}" required>
+                                name="jenis" value="{{ $item->jenis }}" >
                         </div>
 
                         <!-- Merk -->
                         <div class="col-md-6">
                             <label for="merk" class="form-label fw-semibold">Merk</label>
                             <input type="text" class="form-control border-secondary" id="merk"
-                                name="merk" value="{{ $item->merk }}" required>
+                                name="merk" value="{{ $item->merk }}" >
                         </div>
 
                         <!-- Tipe -->
                         <div class="col-md-6">
                             <label for="tipe" class="form-label fw-semibold">Tipe</label>
                             <input type="text" class="form-control border-secondary" id="tipe"
-                                name="tipe" value="{{ $item->tipe }}" required>
+                                name="tipe" value="{{ $item->tipe }}" >
                         </div>
 
                         <!-- Ukuran -->
                         <div class="col-md-6">
                             <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
                             <input type="text" class="form-control border-secondary" id="ukuran"
-                                name="ukuran" value="{{ $item->ukuran }}" required>
+                                name="ukuran" value="{{ $item->ukuran }}" >
                         </div>
 
                         <!-- Dimensi -->
                         <div class="col-md-6">
                             <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
                             <input type="text" class="form-control border-secondary" id="dimensi"
-                                name="dimensi" value="{{ $item->dimensi }}" required>
+                                name="dimensi" value="{{ $item->dimensi }}" >
                         </div>
 
                         <!-- QTY -->
