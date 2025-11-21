@@ -49,7 +49,7 @@ class inventoriController extends Controller
 public function update(Request $request, $id)
 {
     $request->validate([
-            'nama_barang' => 'required|string|max:255',
+            'nama_barang' => 'required|string|max:255', 
             'qty' => 'required|integer|min:1',
             'lokasi' => 'required|string|max:255',
     ]);

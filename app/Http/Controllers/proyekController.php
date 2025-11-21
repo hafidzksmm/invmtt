@@ -25,53 +25,77 @@ class proyekController extends Controller
      * Simpan data baru
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'nama_barang' => 'required|string|max:255',
-            'jumlah' => 'required|integer|min:1',
-            'lokasi' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'nama_barang' => 'required|string|max:255',
+        'jumlah' => 'required|integer|min:1',
+        'lokasi' => 'required|string|max:255',
+    ]);
 
-        // Convert PN & SN menjadi array list (per baris)
-    $pnRaw = (string) $request->pn;
-    $snRaw = (string) $request->sn;
+    // Ambil raw PN & SN dari textarea
+    $pnRaw = trim((string) $request->pn);
+    $snRaw = trim((string) $request->sn);
 
-    $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
-    $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
+    // Ubah menjadi array per baris
+    $pnList = $pnRaw === ''
+        ? []
+        : array_values(array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw))));
 
-        projek::create($request->only([
-            'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi','sn'
-        ]));
+    $snList = $snRaw === ''
+        ? []
+        : array_values(array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw))));
 
-        return redirect()->route('view-projek')->with('success', 'Data berhasil ditambahkan.');
-    }
+    // Simpan ke database
+    projek::create([
+        'pn'         => json_encode($pnList),
+        'nama_barang'=> $request->nama_barang,
+        'jenis'      => $request->jenis,
+        'tipe'       => $request->tipe,
+        'merk'       => $request->merk,
+        'ukuran'     => $request->ukuran,
+        'jumlah'     => $request->jumlah,
+        'lokasi'     => $request->lokasi,
+        'sn'         => json_encode($snList),
+    ]);
+
+    return redirect()->route('view-projek')->with('success', 'Data berhasil ditambahkan.');
+}
 
     /**
      * Update data berdasarkan id
      */
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama_barang' => 'required|string|max:255',
-            'jumlah' => 'required|integer|min:1',
-            'lokasi' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'nama_barang' => 'required|string|max:255',
+        'jumlah' => 'required|integer|min:1',
+        'lokasi' => 'required|string|max:255',
+    ]);
 
-        // Convert PN & SN menjadi array list (per baris)
+    // Convert PN & SN menjadi array list (per baris)
     $pnRaw = (string) $request->pn;
     $snRaw = (string) $request->sn;
 
     $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
     $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
 
+    $inventaris = projek::findOrFail($id);
 
-        $inventaris = projek::findOrFail($id);
-        $inventaris->update($request->only([
-            'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi'.'sn'
-        ]));
+    $inventaris->update([
+        'pn'          => json_encode($pnList),
+        'sn'          => json_encode($snList),
+        'nama_barang' => $request->nama_barang,
+        'jenis'       => $request->jenis,
+        'tipe'        => $request->tipe,
+        'merk'        => $request->merk,
+        'ukuran'      => $request->ukuran,
+        'jumlah'      => $request->jumlah,
+        'lokasi'      => $request->lokasi,
+    ]);
 
-        return redirect()->back()->with('success', 'Data inventaris berhasil diperbarui!');
-    }
+    return redirect()->back()->with('success', 'Data inventaris berhasil diperbarui!');
+}
+
 
     /**
      * Hapus data

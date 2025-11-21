@@ -325,122 +325,113 @@
                                                     </form>
 
                                                     <!-- Modal Edit -->
-                                                    <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
-                                                        aria-labelledby="editModalLabel{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <form action="{{ route('projek.update', $item->id) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="editModalLabel{{ $item->id }}">Edit
-                                                                            Inventaris</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
+                                                     <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
+    aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
-                                                                    <div class="modal-body">
-                                                                        <div class="mb-3">
-                                                                            <label for="pn{{ $item->id }}"
-                                                                                class="form-label">Produk No(PN)</label>
-                                                                            <input type="text" name="pn"
-                                                                                class="form-control"
-                                                                                id="pn{{ $item->id }}"
-                                                                                value="{{ $item->pn }}"
-                                                                                >
-                                                                        </div>
+            <form action="{{ route('projek.update', $item->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-                                                                    <div class="modal-body">
-                                                                        <div class="mb-3">
-                                                                            <label for="nama_barang{{ $item->id }}"
-                                                                                class="form-label">Nama Barang</label>
-                                                                            <input type="text" name="nama_barang"
-                                                                                class="form-control"
-                                                                                id="nama_barang{{ $item->id }}"
-                                                                                value="{{ $item->nama_barang }}"
-                                                                                required>
-                                                                        </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Inventaris Aset Proyek</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-                                                                        <div class="mb-3">
-                                                                            <label for="jenis{{ $item->id }}"
-                                                                                class="form-label">Jenis</label>
-                                                                            <input type="text" name="jenis"
-                                                                                class="form-control"
-                                                                                id="jenis{{ $item->id }}"
-                                                                                value="{{ $item->jenis }}" >
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="tipe{{ $item->id }}"
-                                                                                class="form-label">tipe</label>
-                                                                            <input type="text" name="tipe"
-                                                                                class="form-control"
-                                                                                id="tipe{{ $item->id }}"
-                                                                                value="{{ $item->tipe }}" >
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="merk{{ $item->id }}"
-                                                                                class="form-label">merk</label>
-                                                                            <input type="text" name="merk"
-                                                                                class="form-control"
-                                                                                id="merk{{ $item->id }}"
-                                                                                value="{{ $item->merk }}" >
-                                                                        </div>
-                                                                        
-                                                                        <div class="mb-3">
-                                                                            <label for="ukuran{{ $item->id }}"
-                                                                                class="form-label">ukuran</label>
-                                                                            <input type="text" name="ukuran"
-                                                                                class="form-control"
-                                                                                id="ukuran{{ $item->id }}"
-                                                                                value="{{ $item->ukuran }}" >
-                                                                        </div>
+                <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
 
-                                                                      
+                    @php
+                        $pns = json_decode($item->pn ?? '[]', true);
+                        $pn_string = is_array($pns) ? implode("\n", $pns) : $item->pn;
 
-                                                                        <div class="mb-3">
-                                                                            <label for="jumlah{{ $item->id }}"
-                                                                                class="form-label">Jumlah</label>
-                                                                            <input type="text" name="jumlah"
-                                                                                class="form-control"
-                                                                                id="jumlah{{ $item->id }}"
-                                                                                value="{{ $item->jumlah }}" required>
-                                                                        </div>
-                                                                        
-                                                                        <div class="mb-3">
-                                                                            <label for="sn{{ $item->id }}"
-                                                                                class="form-label">Serial No(SN)</label>
-                                                                            <input type="text" name="sn"
-                                                                                class="form-control"
-                                                                                id="sn{{ $item->id }}"
-                                                                                value="{{ $item->sn }}" >
-                                                                        </div>
+                        $sns = json_decode($item->sn ?? '[]', true);
+                        $sn_string = is_array($sns) ? implode("\n", $sns) : $item->sn;
+                    @endphp
 
-                                                                        <div class="mb-3">
-                                                                            <label for="lokasi{{ $item->id }}"
-                                                                                class="form-label">Lokasi</label>
-                                                                            <input type="text" name="lokasi"
-                                                                                class="form-control"
-                                                                                id="lokasi{{ $item->id }}"
-                                                                                value="{{ $item->lokasi }}" required>
-                                                                        </div>
-                                                                    </div>
+                    <div class="row g-3">
 
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Batal</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Simpan
-                                                                            Perubahan</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                        <!-- PN -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Produk No (PN)</label>
+                            <textarea name="pn" class="form-control border-secondary" rows="4">{{ $pn_string }}</textarea>
+                            <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
+                        </div>
 
-                                                        </div>
-                                                    </div>
+                        <!-- Nama Barang -->
+                        <div class="col-md-6">
+                            <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
+                            <input type="text" class="form-control border-secondary" id="nama_barang"
+                                name="nama_barang" value="{{ $item->nama_barang }}" required>
+                        </div>
+
+                        <!-- Jenis -->
+                        <div class="col-md-6">
+                            <label for="jenis" class="form-label fw-semibold">Jenis</label>
+                            <input type="text" class="form-control border-secondary" id="jenis"
+                                name="jenis" value="{{ $item->jenis }}">
+                        </div>
+
+                        <!-- Tipe -->
+                        <div class="col-md-6">
+                            <label for="tipe" class="form-label fw-semibold">Tipe</label>
+                            <input type="text" class="form-control border-secondary" id="tipe"
+                                name="tipe" value="{{ $item->tipe }}">
+                        </div>
+
+                        <!-- Merk -->
+                        <div class="col-md-6">
+                            <label for="merk" class="form-label fw-semibold">Merk</label>
+                            <input type="text" class="form-control border-secondary" id="merk"
+                                name="merk" value="{{ $item->merk }}">
+                        </div>
+
+                        <!-- Ukuran -->
+                        <div class="col-md-6">
+                            <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
+                            <input type="text" class="form-control border-secondary" id="ukuran"
+                                name="ukuran" value="{{ $item->ukuran }}">
+                        </div>
+
+                        <!-- Jumlah -->
+                        <div class="col-md-6">
+                            <label for="jumlah" class="form-label fw-semibold">Jumlah</label>
+                            <input type="number" class="form-control border-secondary" id="jumlah"
+                                name="jumlah" value="{{ $item->jumlah }}">
+                        </div>
+
+                        <!-- Lokasi -->
+                        <div class="col-md-6">
+                            <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
+                            <input type="text" class="form-control border-secondary" id="lokasi"
+                                name="lokasi" value="{{ $item->lokasi }}">
+                        </div>
+
+                        <!-- SN -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Serial No (SN)</label>
+                            <textarea name="sn" class="form-control border-secondary" rows="4">{{ $sn_string }}</textarea>
+                            <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-success text-white">
+                        <i class="bi bi-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
                                                 </td>
                                             </tr>
                                             @empty
