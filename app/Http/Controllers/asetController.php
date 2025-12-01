@@ -192,4 +192,16 @@ class asetController extends Controller
 
         return view('inventori.aset', compact('asset_jual'));
     }
+    public function search(Request $request)
+{
+    $keyword = $request->keyword;
+
+    $asset_jual = AsetJual::where('pn', 'LIKE', "%$keyword%")
+        ->orWhere('nama_barang', 'LIKE', "%$keyword%")
+        ->orWhere('sn', 'LIKE', "%$keyword%")
+        ->get();
+
+    return view('inventori.aset', compact('asset_jual'));
+}
+
 }

@@ -30,14 +30,16 @@
                         <div class="card-header border-bottom pb-0">
                             <div class="d-sm-flex align-items-center">
                                 <div class="col-xl-4">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <input type="text" 
-                                            id="searchInput" 
-                                            class="form-control bg-white text-black border-secondary" 
-                                            placeholder="Cari data Inventory Asset Jual..." 
-                                            style="max-width: 300px;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input type="text" id="searchInput"
+                                            class="form-control bg-white text-black border-secondary"
+                                            placeholder="masukan pn, nama produk atau sn" style="max-width: 300px;">
+                                        <button id="btnSearch" class="btn btn-primary">
+                                            <i class="bi bi-search"></i> Search
+                                        </button>
                                     </div>
                                 </div>
+
                                 <!-- Tombol Tambah Data & Import Excel rata kanan -->
                                  
                                 <!-- Tombol Export -->
@@ -66,7 +68,7 @@
                         <div class="mb-3">
                             <label for="nama_barang" class="form-label">Nama Barang</label>
                             <select id="nama_barang" name="nama_barang" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Pilih Nama Barang --</option>
+                                <option value="">-- Semua Barang --</option>
                                 @foreach ($asset_jual->unique('nama_barang') as $item)
                                     <option value="{{ $item->nama_barang }}">{{ $item->nama_barang }}</option>
                                 @endforeach
@@ -77,7 +79,7 @@
                         <div class="mb-3 d-none" id="jenisGroup">
                             <label for="jenis" class="form-label">Jenis</label>
                             <select id="jenis" name="jenis" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Pilih Jenis --</option>
+                                <option value="">-- Semua Jenis --</option>
                             </select>
                         </div>
 
@@ -85,7 +87,7 @@
                         <div class="mb-3 d-none" id="merkGroup">
                             <label for="merk" class="form-label">Merk</label>
                             <select id="merk" name="merk" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Pilih Merk --</option>
+                                <option value="">-- Semua Merk --</option>
                             </select>
                         </div>
 
@@ -93,7 +95,7 @@
                         <div class="mb-3 d-none" id="tipeGroup">
                             <label for="tipe" class="form-label">Tipe</label>
                             <select id="tipe" name="tipe" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Pilih Tipe --</option>
+                                <option value="">-- Semua Tipe --</option>
                             </select>
                         </div>
 
@@ -101,7 +103,7 @@
                         <div class="mb-3 d-none" id="ukuranGroup">
                             <label for="ukuran" class="form-label">Ukuran</label>
                             <select id="ukuran" name="ukuran" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Pilih Ukuran --</option>
+                                <option value="">-- Semua Ukuran --</option>
                             </select>
                         </div>
 
@@ -361,118 +363,118 @@
                                                         </form>
 
                                                          <!-- Modal Edit -->
-<div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
-    aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+                                                        <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
+                                                            aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
 
-            <form action="{{ route('aset.update', $item->id) }}" method="POST">
-                @csrf
-                @method('PUT')
+                                                                    <form action="{{ route('aset.update', $item->id) }}" method="POST">
+                                                                        @csrf
+                                                                        @method('PUT')
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Inventaris</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Edit Inventaris</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                        </div>
 
-                <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
+                                                                        <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
 
-                    @php
-                        $pns = json_decode($item->pn ?? '[]', true);
-                        $pn_string = is_array($pns) ? implode("\n", $pns) : $item->pn;
+                                                                            @php
+                                                                                $pns = json_decode($item->pn ?? '[]', true);
+                                                                                $pn_string = is_array($pns) ? implode("\n", $pns) : $item->pn;
 
-                        $sns = json_decode($item->sn ?? '[]', true);
-                        $sn_string = is_array($sns) ? implode("\n", $sns) : $item->sn;
-                    @endphp
+                                                                                $sns = json_decode($item->sn ?? '[]', true);
+                                                                                $sn_string = is_array($sns) ? implode("\n", $sns) : $item->sn;
+                                                                            @endphp
 
-                    <div class="row g-3">
+                                                                            <div class="row g-3">
 
-                        <!-- PN -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Produk No (PN)</label>
-                            <textarea name="pn" class="form-control border-secondary" rows="4" >{{ $pn_string }}</textarea>
-                            <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
-                        </div>
+                                                                                <!-- PN -->
+                                                                                <div class="col-md-6">
+                                                                                    <label class="form-label fw-semibold">Produk No (PN)</label>
+                                                                                    <textarea name="pn" class="form-control border-secondary" rows="4" >{{ $pn_string }}</textarea>
+                                                                                    <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
+                                                                                </div>
 
-                        <!-- Nama Barang -->
-                        <div class="col-md-6">
-                            <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
-                            <input type="text" class="form-control border-secondary" id="nama_barang"
-                                name="nama_barang" value="{{ $item->nama_barang }}" required>
-                        </div>
+                                                                                <!-- Nama Barang -->
+                                                                                <div class="col-md-6">
+                                                                                    <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
+                                                                                    <input type="text" class="form-control border-secondary" id="nama_barang"
+                                                                                        name="nama_barang" value="{{ $item->nama_barang }}" required>
+                                                                                </div>
 
-                        <!-- Jenis -->
-                        <div class="col-md-6">
-                            <label for="jenis" class="form-label fw-semibold">Jenis</label>
-                            <input type="text" class="form-control border-secondary" id="jenis"
-                                name="jenis" value="{{ $item->jenis }}" >
-                        </div>
+                                                                                <!-- Jenis -->
+                                                                                <div class="col-md-6">
+                                                                                    <label for="jenis" class="form-label fw-semibold">Jenis</label>
+                                                                                    <input type="text" class="form-control border-secondary" id="jenis"
+                                                                                        name="jenis" value="{{ $item->jenis }}" >
+                                                                                </div>
 
-                        <!-- Merk -->
-                        <div class="col-md-6">
-                            <label for="merk" class="form-label fw-semibold">Merk</label>
-                            <input type="text" class="form-control border-secondary" id="merk"
-                                name="merk" value="{{ $item->merk }}" >
-                        </div>
+                                                                                <!-- Merk -->
+                                                                                <div class="col-md-6">
+                                                                                    <label for="merk" class="form-label fw-semibold">Merk</label>
+                                                                                    <input type="text" class="form-control border-secondary" id="merk"
+                                                                                        name="merk" value="{{ $item->merk }}" >
+                                                                                </div>
 
-                        <!-- Tipe -->
-                        <div class="col-md-6">
-                            <label for="tipe" class="form-label fw-semibold">Tipe</label>
-                            <input type="text" class="form-control border-secondary" id="tipe"
-                                name="tipe" value="{{ $item->tipe }}" >
-                        </div>
+                                                                                <!-- Tipe -->
+                                                                                <div class="col-md-6">
+                                                                                    <label for="tipe" class="form-label fw-semibold">Tipe</label>
+                                                                                    <input type="text" class="form-control border-secondary" id="tipe"
+                                                                                        name="tipe" value="{{ $item->tipe }}" >
+                                                                                </div>
 
-                        <!-- Ukuran -->
-                        <div class="col-md-6">
-                            <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
-                            <input type="text" class="form-control border-secondary" id="ukuran"
-                                name="ukuran" value="{{ $item->ukuran }}" >
-                        </div>
+                                                                                <!-- Ukuran -->
+                                                                                <div class="col-md-6">
+                                                                                    <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
+                                                                                    <input type="text" class="form-control border-secondary" id="ukuran"
+                                                                                        name="ukuran" value="{{ $item->ukuran }}" >
+                                                                                </div>
 
-                        <!-- Dimensi -->
-                        <div class="col-md-6">
-                            <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
-                            <input type="text" class="form-control border-secondary" id="dimensi"
-                                name="dimensi" value="{{ $item->dimensi }}" >
-                        </div>
+                                                                                <!-- Dimensi -->
+                                                                                <div class="col-md-6">
+                                                                                    <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
+                                                                                    <input type="text" class="form-control border-secondary" id="dimensi"
+                                                                                        name="dimensi" value="{{ $item->dimensi }}" >
+                                                                                </div>
 
-                        <!-- QTY -->
-                        <div class="col-md-4">
-                            <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
-                            <input type="number" class="form-control border-secondary" id="qty"
-                                name="qty" min="1" value="{{ $item->qty }}" required>
-                        </div>
+                                                                                <!-- QTY -->
+                                                                                <div class="col-md-4">
+                                                                                    <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
+                                                                                    <input type="number" class="form-control border-secondary" id="qty"
+                                                                                        name="qty" min="1" value="{{ $item->qty }}" required>
+                                                                                </div>
 
-                        <!-- SN -->
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Serial No (SN)</label>
-                            <textarea name="sn" class="form-control border-secondary" rows="4">{{ $sn_string }}</textarea>
-                            <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
-                        </div>
+                                                                                <!-- SN -->
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label fw-semibold">Serial No (SN)</label>
+                                                                                    <textarea name="sn" class="form-control border-secondary" rows="4">{{ $sn_string }}</textarea>
+                                                                                    <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
+                                                                                </div>
 
-                        <!-- Lokasi -->
-                        <div class="col-md-4">
-                            <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                            <input type="text" class="form-control border-secondary" id="lokasi"
-                                name="lokasi" value="{{ $item->lokasi }}" required>
-                        </div>
+                                                                                <!-- Lokasi -->
+                                                                                <div class="col-md-4">
+                                                                                    <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
+                                                                                    <input type="text" class="form-control border-secondary" id="lokasi"
+                                                                                        name="lokasi" value="{{ $item->lokasi }}" required>
+                                                                                </div>
 
-                    </div>
-                </div>
+                                                                            </div>
+                                                                        </div>
 
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Batal
-                    </button>
-                    <button type="submit" class="btn btn-success text-white">
-                        <i class="bi bi-save"></i> Simpan Perubahan
-                    </button>
-                </div>
+                                                                        <div class="modal-footer bg-light">
+                                                                            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                                                                                <i class="bi bi-x-circle"></i> Batal
+                                                                            </button>
+                                                                            <button type="submit" class="btn btn-success text-white">
+                                                                                <i class="bi bi-save"></i> Simpan Perubahan
+                                                                            </button>
+                                                                        </div>
 
-            </form>
-        </div>
-    </div>
-</div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
 
                                                     </td>
@@ -522,7 +524,7 @@ $(document).ready(function() {
 
     // Fungsi isi dropdown
     function populateDropdown(selector, data, label, selectedVal = '') {
-        $(selector).empty().append(`<option value="">-- Pilih ${label} --</option>`);
+        $(selector).empty().append(`<option value="">-- Semua ${label} --</option>`);
         data.forEach(value => {
             let selected = value === selectedVal ? 'selected' : '';
             $(selector).append(`<option value="${value}" ${selected}>${value}</option>`);
@@ -574,6 +576,37 @@ function combineList(inputName, textareaId) {
     items.forEach(i => result.push(i.value));
     document.getElementById(textareaId).value = result.join("\n");
 }
-</script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const tableRows = document.querySelectorAll("#tableData tr");
 
+    searchInput.addEventListener("keyup", function () {
+        const keyword = this.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(keyword) ? "" : "none";
+        });
+    });
+});
+</script>
+<script>
+$(document).ready(function () {
+
+    $("#btnSearch").on("click", function () {
+        let keyword = $("#searchInput").val();
+
+        // Redirect ke route pencarian
+        window.location.href = "/inventory-aset-jual/search?keyword=" + keyword;
+    });
+
+    // Tekan Enter = Search dari DB
+    $("#searchInput").on("keypress", function (e) {
+        if (e.which === 13) {
+            $("#btnSearch").click();
+        }
+    });
+
+});
+</script>
 

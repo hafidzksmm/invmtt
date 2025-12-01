@@ -80,6 +80,7 @@ Route::get('/inventori/filter', [inventoriController::class, 'filter'])->name('w
 Route::get('/inventori/get-detail', [inventoriController::class, 'getDetail'])->name('ws.getDetail');
 
 //aset jual
+Route::get('/inventory-aset-jual/search', [asetController::class, 'search'])->name('asetjual.search');
 route::get('/inventory-aset-jual',[asetController::class,'aset'])->name('view-aset');
 route::post('/inventory-aset-jual/add',[asetController::class,'store'])->name('aset-store');
 route::put('/inventory-aset-jual/{id}',[asetController::class,'update'])->name('aset.update');
