@@ -30,13 +30,12 @@
                         <div class="card-header border-bottom pb-0">
                             <div class="d-sm-flex align-items-center">
                                 <div class="col-xl-4">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <input type="text" id="searchInput"
-                                            class="form-control bg-white text-black border-secondary"
-                                            placeholder="masukan pn, nama produk atau sn" style="max-width: 300px;">
-                                        <button id="btnSearch" class="btn btn-primary">
-                                            <i class="bi bi-search"></i> Search
-                                        </button>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <input type="text" 
+                                            id="searchInput" 
+                                            class="form-control bg-white text-black border-secondary" 
+                                            placeholder="Cari data Inventory Inventory Project..." 
+                                            style="max-width: 300px;">
                                     </div>
                                 </div>
 
@@ -576,37 +575,26 @@ function combineList(inputName, textareaId) {
     items.forEach(i => result.push(i.value));
     document.getElementById(textareaId).value = result.join("\n");
 }
-document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.getElementById("searchInput");
-    const tableRows = document.querySelectorAll("#tableData tr");
-
-    searchInput.addEventListener("keyup", function () {
-        const keyword = this.value.toLowerCase();
-
-        tableRows.forEach(row => {
-            const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(keyword) ? "" : "none";
+    // Fitur Search
+    function searchTable() {
+        let value = $('#searchInput').val().toLowerCase();
+        $('#dataTable tbody tr').filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
-    });
-});
-</script>
-<script>
-$(document).ready(function () {
-
-    $("#btnSearch").on("click", function () {
-        let keyword = $("#searchInput").val();
-
-        // Redirect ke route pencarian
-        window.location.href = "/inventory-aset-jual/search?keyword=" + keyword;
-    });
-
-    // Tekan Enter = Search dari DB
-    $("#searchInput").on("keypress", function (e) {
-        if (e.which === 13) {
-            $("#btnSearch").click();
+    }
+     // Jalankan pencarian saat mengetik
+    $('#searchInput').on('keyup', function(e) {
+        if (e.key !== 'Enter') {
+            searchTable();
         }
     });
 
-});
+    // Jalankan pencarian saat tekan Enter
+    $('#searchInput').on('keypress', function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            searchTable();
+        }
+    });
 </script>
 
