@@ -1,4 +1,12 @@
 <x-app-layout>
+@php
+    $currentYear = now()->year;
+    $years = [
+        $currentYear ,
+        $currentYear - 1,
+        $currentYear - 2,
+    ];
+@endphp
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg overflow-hidden">
         <x-app.navbar />
 
@@ -77,36 +85,32 @@
             </div>
         </div>
 
-        <!-- ✅ KANAN -->
-        <div class="col-12 col-md-3 text-center">
-            <div class="row g-3 justify-content-center">
+<div class="kanan col-12 col-md-3 text-center ms-auto">
+    <h3 class="shine-text text-white fw-bold mb-3">DOCUMENTATION</h3>
 
-                <div class="col-6 icon-item" onclick="alert('Documentation Giat');">
-                    <img src="{{ asset('assets/img/jual.png') }}" class="rounded-circle shadow"
-                        style="width:60px; height:60px; object-fit:cover;">
-                    <div class="small fw-bold text-white mt-0">Project<br>Documentation</div>
-                </div>
-
-                <div class="col-6 icon-item" onclick="alert('Document MTT');">
-                    <img src="{{ asset('assets/img/ikons.png') }}" class="rounded-circle shadow"
-                        style="width:60px; height:60px; object-fit:cover;">
-                    <div class="small fw-bold text-white mt-0">Project Files</div>
-                </div>
-
-                <div class="col-6 icon-item" onclick="window.open('https://mttech.co.id', '_blank')">
-                    <img src="{{ asset('assets/img/pany.png') }}" class="rounded-circle shadow"
-                        style="width:60px; height:60px; object-fit:cover;">
-                    <div class="small fw-bold text-white mt-0">Company Profile</div>
-                </div>
-
-                <div class="col-6 icon-item" onclick="alert('Documentation Project');">
-                    <img src="{{ asset('assets/img/giats.png') }}" class="rounded-circle shadow"
-                        style="width:60px; height:60px; object-fit:cover;">
-                    <div class="small fw-bold text-white mt-0">Project Activity</div>
-                </div>
-
-            </div>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <div class="icon-item" onclick="openYearModal()">
+            <img src="{{ asset('assets/img/ikons.png') }}"
+                 class="rounded-circle icon-img shadow"
+                 style="width:80px; height:80px; object-fit:cover;">
+            <div class="label-text text-white small mt-0">Project Files</div>
         </div>
+
+        <div class="icon-item" onclick="alert('Documentation Project');">
+            <img src="{{ asset('assets/img/giats.png') }}"
+                 class="rounded-circle icon-img shadow"
+                 style="width:80px; height:80px; object-fit:cover;">
+            <div class="label-text text-white small mt-0">Project Activity</div>
+        </div>
+
+        <div class="icon-item" onclick="window.open('https://mttech.co.id', '_blank')">
+            <img src="{{ asset('assets/img/pany.png') }}"
+                 class="rounded-circle icon-img shadow"
+                 style="width:80px; height:80px; object-fit:cover;">
+            <div class="label-text text-white small mt-0">Company Profile</div>
+        </div>
+    </div>
+</div>
 
     </div>
 </div>
@@ -220,6 +224,13 @@
             chart.update();
         };
     });
+function openYearModal() {
+    document.getElementById('yearModal').style.display = 'flex';
+}
+
+function closeYearModal() {
+    document.getElementById('yearModal').style.display = 'none';
+}
 </script>
     <!-- 🎨 STYLING RESPONSIVE -->
     <style>
@@ -734,4 +745,52 @@
 
         
     </style>
+<!-- YEAR SELECT MODAL -->
+<div id="yearModal" style="display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;">
+
+    <div style="
+        background:#111;
+        padding:24px 30px;
+        border-radius:16px;
+        text-align:center;
+        min-width:260px;
+        box-shadow:0 0 30px rgba(255,255,255,0.25);
+    ">
+        <h5 class="text-white fw-bold mb-3">Pilih Tahun</h5>
+
+        @foreach ($years as $year)
+            <a href="{{ route('view-do', $year) }}"
+               style="
+                display:block;
+                margin:8px 0;
+                padding:10px;
+                border-radius:10px;
+                background:#DC143C;
+                color:white;
+                text-decoration:none;
+                font-weight:600;
+               ">
+                {{ $year }}
+            </a>
+        @endforeach
+
+        <button onclick="closeYearModal()"
+            style="
+                margin-top:14px;
+                background:none;
+                border:none;
+                color:#aaa;
+                font-size:14px;
+            ">
+            Batal
+        </button>
+    </div>
+</div>
+
 </x-app-layout>

@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\DoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,4 +100,23 @@ Route::post('/inventory-projekt/import', [proyekController::class, 'import'])->n
 Route::get('/inventory-projek/export', [proyekController::class, 'export'])->name('projeks.export');
 route::get('/inventoty-projek/filter', [proyekController::class, 'filter'])->name('projek.filter');
 Route::get('/inventory-projek/get-detail', [proyekController::class, 'getDetail'])->name('projek.getDetail');
+
+// ===============================
+// DO MANAGEMENT (YEAR BASED)
+// ===============================
+
+Route::get('/inventory-do/{year}', [DoController::class, 'index'])
+    ->name('view-do');
+
+Route::post('/inventory-do/{year}/add', [DoController::class, 'store'])
+    ->name('do.store');
+
+Route::put('/inventory-do/{id}', [DoController::class, 'update'])
+    ->name('do.update');
+
+Route::delete('/inventory-do/{id}', [DoController::class, 'destroy'])
+    ->name('do.destroy');
+
+Route::post('/inventory-do/{id}/upload', [DoController::class, 'uploadFile'])
+    ->name('inventory-do.upload');
 });
