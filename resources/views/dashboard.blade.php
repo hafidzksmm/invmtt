@@ -21,53 +21,52 @@
         <!-- HEADER -->
         <div class="dash-header">
             <div class="dash-brand">
-                <div class="dash-brand-mark">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="Logo">
-                </div>
-                <div>
-                    <h1 class="dash-title">Dashboard</h1>
+                <!-- 👋 GREETING USER -->
+                <div class="dash-greeting">
+                    <div class="greeting-avatar">
+                        {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+                    </div>
+                    <div class="greeting-text">
+                        <span class="greeting-hello">Hallo, {{ auth()->user()->name ?? 'User' }}</span>
+                        {{-- Ganti "role" di bawah ini sesuai nama kolom di tabel users kamu (mis. level, jabatan, dll) --}}
+                        <span class="greeting-role">{{ ucfirst(auth()->user()->role ?? 'User') }}</span>
+                    </div>
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn-logout">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    Log out
-                </button>
-            </form>
+            <div class="dash-actions">
+                @if (auth()->user()->role === 'superadmin')
+                    <a href="{{ route('users.register') }}" class="btn-register-user">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                        Register User
+                    </a>
+                @endif
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn-logout">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Log out
+                    </button>
+                </form>
+            </div>
         </div>
 
         <!-- CENTER: CHART + LOGO -->
         <div class="panel center-panel">
-            <div class="chart-wrap">
-                <canvas id="inventoryChart"></canvas>
-                <div class="chart-center" aria-hidden="true">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="chart-logo">
+            <div class="chart-wrap" style="display:flex; justify-content:center; align-items:center; min-height:350px;">
+                <div class="chart-center">
+                    <img src="{{ asset('assets/img/logo.png') }}"
+                        alt="Logo"
+                        style="width:220px; height:220px; object-fit:contain;">
                 </div>
-            </div>
-
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-left"><span class="dot" style="background:#E11D2E"></span>Inventory Project</div>
-                    <span class="legend-value">{{ $countProjek }}</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-left"><span class="dot" style="background:#F1637A"></span>Inventory Workshop</div>
-                    <span class="legend-value">{{ $countInventaris }}</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-left"><span class="dot" style="background:#FBD3D9"></span>Asset Jual</div>
-                    <span class="legend-value">{{ $countAssetjual }}</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-left"><span class="dot" style="background:#A8D5FF"></span>Documentation</div>
-                    <span class="legend-value">{{ $countDocumentation }}</span>
-                </div>
-            </div>
-
+        </div>
             <!-- ICON ROW — HORIZONTAL, TANPA JUDUL SECTION -->
-            <div class="icon-row">
+            <div class="icon-row"  style="
+        background: url('{{ asset('assets/img/bgdashboard.jpg') }}') center center / cover no-repeat;
+        padding: 30px;
+        border-radius: 20px;
+     ">
 
                 <div class="icon-col" onclick="window.location.href='{{ route('view-ws') }}'">
                     <div class="icon-tile tile-workshop" style="background-color: #dc3545;">
@@ -109,7 +108,7 @@
                     <span class="icon-label">Training Certification</span>
                 </div>
 
-                <div class="icon-col" onclick="window.open('https://mttech.co.id', '_blank')">
+                <div class="icon-col" onclick="window.open('http://project.mttech.co.id:8080/', '_blank')">
                     <div class="icon-tile tile-company" style="background-color: #dc3545;">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     </div>
@@ -140,14 +139,17 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById('inventoryChart').getContext('2d');
+    const ctx = document.getElementById('inventoryChart');
+    if (!ctx) return;
+
+    const chartCtx = ctx.getContext('2d');
 
     const labels = ['Inventory Project', 'Inventory Workshop', 'Asset Jual', 'Documentation'];
     const dataValues = [{{ $countProjek }}, {{ $countInventaris }}, {{ $countAssetjual }}, {{ $countDocumentation }}];
     const colors = ['#E11D2E', '#F1637A', '#FBD3D9', '#A8D5FF'];
     const labelTextColors = ['#FFFFFF', '#FFFFFF', '#7A1420', '#1A5299'];
 
-    const chart = new Chart(ctx, {
+    const chart = new Chart(chartCtx, {
         type: 'doughnut',
         data: {
             labels: labels,
@@ -270,6 +272,42 @@ function closeYearModal() {
         gap:16px;
     }
     .dash-brand{ display:flex; align-items:center; gap:14px; }
+
+    /* 👋 GREETING USER — POJOK KIRI ATAS */
+    .dash-greeting{
+        display:flex;
+        align-items:center;
+        gap:12px;
+    }
+    .greeting-avatar{
+        width:42px; height:42px;
+        border-radius:50%;
+        background:var(--red);
+        color:#fff;
+        display:flex; align-items:center; justify-content:center;
+        font-family:'Space Grotesk', sans-serif;
+        font-weight:700;
+        font-size:16px;
+        flex-shrink:0;
+        box-shadow:0 4px 10px rgba(225,29,46,0.25);
+    }
+    .greeting-text{
+        display:flex;
+        flex-direction:column;
+        line-height:1.25;
+    }
+    .greeting-hello{
+        font-family:'Space Grotesk', sans-serif;
+        font-weight:700;
+        font-size:15px;
+        color:var(--text);
+    }
+    .greeting-role{
+        font-size:12px;
+        color:var(--muted);
+        text-transform:capitalize;
+    }
+
     .dash-brand-mark{
         width:46px; height:46px;
         border-radius:12px;
@@ -288,6 +326,8 @@ function closeYearModal() {
     }
     .dash-subtitle{ font-size:12.5px; color:var(--muted); }
 
+    .dash-actions{ display:flex; align-items:center; gap:12px; }
+
     .btn-logout{
         display:flex; align-items:center; gap:8px;
         background:var(--surface);
@@ -303,6 +343,24 @@ function closeYearModal() {
     }
     .btn-logout:hover{ background:var(--red-light); border-color:var(--red); color:var(--red-dark); }
     .btn-logout svg{ width:14px; height:14px; stroke:var(--red); }
+
+    .btn-register-user{
+        display:flex; align-items:center; gap:8px;
+        background:var(--red);
+        color:#fff;
+        border:none;
+        padding:10px 18px;
+        border-radius:999px;
+        font-size:13px;
+        font-weight:700;
+        font-family:'Space Grotesk', sans-serif;
+        text-decoration:none;
+        cursor:pointer;
+        box-shadow:0 6px 16px rgba(225,29,46,0.25);
+        transition:.15s ease;
+    }
+    .btn-register-user:hover{ background:var(--red-dark); color:#fff; }
+    .btn-register-user svg{ width:14px; height:14px; stroke:#fff; }
 
     /* STATS */
     .stats-row{
@@ -443,6 +501,7 @@ function closeYearModal() {
         .icon-row{ gap:18px; }
         .icon-tile{ width:64px; height:64px; }
         .dash-title{ font-size:20px; }
+        .greeting-hello{ font-size:13.5px; }
     }
 </style>
 
