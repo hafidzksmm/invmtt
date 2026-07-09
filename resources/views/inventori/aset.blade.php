@@ -13,10 +13,9 @@
                             <p class="mb-4 font-weight-semibold">
                                 PT. Media Touch Technology
                             </p>
-                            <a href="{{ route('dashboard') }}" 
-                            class="btn text-white fw-semibold shadow-sm px-4 py-2"
-                            style="background: linear-gradient(90deg, #ff512f, #f09819); border: none;">
-                            <i class="fas fa-arrow-left me-2"></i> Back
+                            <a href="{{ route('dashboard') }}" class="btn text-white fw-semibold shadow-sm px-4 py-2"
+                                style="background: linear-gradient(90deg, #ff512f, #f09819); border: none;">
+                                <i class="fas fa-arrow-left me-2"></i> Back
                             </a>
                             <img src="../assets/img/ikon3.png" alt="3d-cube"
                                 class="position-absolute top-0 end-1 w-25 max-width-200 mt-n6 d-sm-block d-none" />
@@ -31,250 +30,295 @@
                             <div class="d-sm-flex align-items-center">
                                 <div class="col-xl-4">
                                     <div class="d-flex align-items-center mb-3">
-                                        <input type="text" 
-                                            id="searchInput" 
-                                            class="form-control bg-white text-black border-secondary" 
-                                            placeholder="Cari data Inventory Inventory Project..." 
+                                        <input type="text" id="searchInput"
+                                            class="form-control bg-white text-black border-secondary"
+                                            placeholder="Cari data Inventory Inventory Project..."
                                             style="max-width: 300px;">
                                     </div>
                                 </div>
 
                                 <!-- Tombol Tambah Data & Import Excel rata kanan -->
-                                 
+
                                 <!-- Tombol Export -->
-                                 <div class="col-xl-8">
-                                    
+                                <div class="col-xl-8">
+
                                     <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
-    <!-- Tombol Filter -->
-    <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#filterModal">
-        <i class="bi bi-funnel-fill"></i> Filter
-    </button>
+                                        <!-- Tombol Filter -->
+                                        <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal"
+                                            data-bs-target="#filterModal">
+                                            <i class="bi bi-funnel-fill"></i> Filter
+                                        </button>
 
-    <!-- Modal Filter -->
-    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content bg-dark text-white">
-                <div class="modal-header border-secondary">
-                    <h5 class="modal-title" id="filterModalLabel">Filter Data Inventaris</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
+                                        <!-- Modal Filter -->
+                                        <div class="modal fade" id="filterModal" tabindex="-1"
+                                            aria-labelledby="filterModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content bg-dark text-white">
+                                                    <div class="modal-header border-secondary">
+                                                        <h5 class="modal-title" id="filterModalLabel">Filter Data
+                                                            Inventaris</h5>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
 
-                <form action="{{ route('aset.filter') }}" method="GET" id="filterForm">
-                    @csrf
-                    <div class="modal-body">
+                                                    <form action="{{ route('aset.filter') }}" method="GET"
+                                                        id="filterForm">
+                                                        @csrf
+                                                        <div class="modal-body">
 
-                        <!-- Nama Barang -->
-                        <div class="mb-3">
-                            <label for="nama_barang" class="form-label">Nama Barang</label>
-                            <select id="nama_barang" name="nama_barang" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Semua Barang --</option>
-                                @foreach ($asset_jual->unique('nama_barang') as $item)
-                                    <option value="{{ $item->nama_barang }}">{{ $item->nama_barang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                                                            <!-- Nama Barang -->
+                                                            <div class="mb-3">
+                                                                <label for="nama_barang" class="form-label">Nama
+                                                                    Barang</label>
+                                                                <select id="nama_barang" name="nama_barang"
+                                                                    class="form-select bg-dark text-white border-secondary">
+                                                                    <option value="">-- Semua Barang --</option>
+                                                                    @foreach ($asset_jual->unique('nama_barang') as $item)
+                                                                        <option value="{{ $item->nama_barang }}">
+                                                                            {{ $item->nama_barang }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
 
-                        <!-- Jenis -->
-                        <div class="mb-3 d-none" id="jenisGroup">
-                            <label for="jenis" class="form-label">Jenis</label>
-                            <select id="jenis" name="jenis" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Semua Jenis --</option>
-                            </select>
-                        </div>
+                                                            <!-- Jenis -->
+                                                            <div class="mb-3 d-none" id="jenisGroup">
+                                                                <label for="jenis" class="form-label">Jenis</label>
+                                                                <select id="jenis" name="jenis"
+                                                                    class="form-select bg-dark text-white border-secondary">
+                                                                    <option value="">-- Semua Jenis --</option>
+                                                                </select>
+                                                            </div>
 
-                        <!-- Merk -->
-                        <div class="mb-3 d-none" id="merkGroup">
-                            <label for="merk" class="form-label">Merk</label>
-                            <select id="merk" name="merk" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Semua Merk --</option>
-                            </select>
-                        </div>
+                                                            <!-- Merk -->
+                                                            <div class="mb-3 d-none" id="merkGroup">
+                                                                <label for="merk" class="form-label">Merk</label>
+                                                                <select id="merk" name="merk"
+                                                                    class="form-select bg-dark text-white border-secondary">
+                                                                    <option value="">-- Semua Merk --</option>
+                                                                </select>
+                                                            </div>
 
-                        <!-- Tipe -->
-                        <div class="mb-3 d-none" id="tipeGroup">
-                            <label for="tipe" class="form-label">Tipe</label>
-                            <select id="tipe" name="tipe" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Semua Tipe --</option>
-                            </select>
-                        </div>
+                                                            <!-- Tipe -->
+                                                            <div class="mb-3 d-none" id="tipeGroup">
+                                                                <label for="tipe" class="form-label">Tipe</label>
+                                                                <select id="tipe" name="tipe"
+                                                                    class="form-select bg-dark text-white border-secondary">
+                                                                    <option value="">-- Semua Tipe --</option>
+                                                                </select>
+                                                            </div>
 
-                        <!-- Ukuran -->
-                        <div class="mb-3 d-none" id="ukuranGroup">
-                            <label for="ukuran" class="form-label">Ukuran</label>
-                            <select id="ukuran" name="ukuran" class="form-select bg-dark text-white border-secondary">
-                                <option value="">-- Semua Ukuran --</option>
-                            </select>
-                        </div>
+                                                            <!-- Ukuran -->
+                                                            <div class="mb-3 d-none" id="ukuranGroup">
+                                                                <label for="ukuran" class="form-label">Ukuran</label>
+                                                                <select id="ukuran" name="ukuran"
+                                                                    class="form-select bg-dark text-white border-secondary">
+                                                                    <option value="">-- Semua Ukuran --</option>
+                                                                </select>
+                                                            </div>
 
-                    </div>
+                                                        </div>
 
-                    <div class="modal-footer border-secondary">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle"></i> Tutup
-                        </button>
-                        <button type="submit" class="btn btn-info text-white">
-                            <i class="bi bi-search"></i> Terapkan Filter
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                                                        <div class="modal-footer border-secondary">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bi bi-x-circle"></i> Tutup
+                                                            </button>
+                                                            <button type="submit" class="btn btn-info text-white">
+                                                                <i class="bi bi-search"></i> Terapkan Filter
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
 
-    <a href="{{ route('asetjual.export', request()->query()) }}" class="btn btn-success">
-        <i class="bi bi-file-earmark-excel"></i> Export Excel
-    </a>
+                                        <a href="{{ route('asetjual.export', request()->query()) }}"
+                                            class="btn btn-success">
+                                            <i class="bi bi-file-earmark-excel"></i> Export Excel
+                                        </a>
 
-                                    
-                                        <!-- Tombol untuk membuka modal -->
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importModal">
-        <i class="bi bi-file-earmark-arrow-up"></i> Import Excel
-    </button>
+                                        <!-- ✅ ONLY ADMIN CAN IMPORT & ADD DATA -->
+                                        @if(isAdmin())
+                                            <!-- Tombol untuk membuka modal -->
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#importModal">
+                                                <i class="bi bi-file-earmark-arrow-up"></i> Import Excel
+                                            </button>
 
-    <!-- Modal Import Excel -->
-    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Header Modal -->
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="importModalLabel">Import Data dari Excel</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+                                            <!-- Modal Import Excel -->
+                                            <div class="modal fade" id="importModal" tabindex="-1"
+                                                aria-labelledby="importModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Header Modal -->
+                                                        <div class="modal-header bg-success text-white">
+                                                            <h5 class="modal-title" id="importModalLabel">Import Data dari
+                                                                Excel</h5>
+                                                            <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
 
-                <!-- Body Modal -->
-                <div class="modal-body">
-                    <form action="{{ route('asetjual.import') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="file" class="form-label">Pilih File Excel</label>
-                            <input type="file" name="file" id="file" class="form-control" accept=".xlsx,.xls" required>
-                            <div class="form-text">Format yang didukung: .xlsx, .xls</div>
-                        </div>
+                                                        <!-- Body Modal -->
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('asetjual.import') }}" method="POST"
+                                                                enctype="multipart/form-data">
+                                                                @csrf
+                                                                <div class="mb-3">
+                                                                    <label for="file" class="form-label">Pilih File
+                                                                        Excel</label>
+                                                                    <input type="file" name="file" id="file"
+                                                                        class="form-control" accept=".xlsx,.xls" required>
+                                                                    <div class="form-text">Format yang didukung: .xlsx, .xls
+                                                                    </div>
+                                                                </div>
 
-                        <div class="text-end">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-success">Upload</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                                <div class="text-end">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Batal</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-success">Upload</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#addInventarisModal">
-                                        <i class="bi bi-plus-lg"></i> Tambah Data
-                                    </button>
+                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                                data-bs-target="#addInventarisModal">
+                                                <i class="bi bi-plus-lg"></i> Tambah Data
+                                            </button>
+                                        @else
+                                            <span class="badge bg-warning text-dark">Hanya Admin dapat menambah data</span>
+                                        @endif
+                                    </div>
                                 </div>
+
+                                <!-- Modal Tambah Data -->
+                                <div class="modal fade" id="addInventarisModal" tabindex="-1"
+                                    aria-labelledby="addInventarisModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                        <div class="modal-content"
+                                            style="background-color: #1e1e2d; color: #f8f9fa; border-radius: 12px; border: none;">
+
+                                            <!-- Header -->
+                                            <div class="modal-header bg-success">
+                                                <h5 class="modal-title fw-bold" id="addInventarisModalLabel">
+                                                    <i class="bi bi-box-seam me-2 text-info"></i>Tambah Data Inventaris
+                                                </h5>
+                                                <button type="button" class="btn-close btn-close-white"
+                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <!-- Body -->
+                                            <form action="{{ route('aset-store') }}" method="POST">
+                                                @csrf
+
+                                                <div class="modal-body px-4"
+                                                    style="background-color: #f8f9fb; color: #212529;">
+                                                    <div class="row g-3">
+
+                                                        <!-- PN -->
+                                                        <div class="col-md-6">
+                                                            <label class="form-label fw-semibold">Produk No (PN)</label>
+                                                            <textarea name="pn" class="form-control border-secondary"
+                                                                rows="4"></textarea>
+                                                            <small class="text-muted">Pisahkan PN dengan enter (1 baris
+                                                                = 1 PN)</small>
+                                                        </div>
+
+                                                        <!-- Nama Barang -->
+                                                        <div class="col-md-6">
+                                                            <label for="nama_barang" class="form-label fw-semibold">Nama
+                                                                Barang</label>
+                                                            <input type="text" class="form-control border-secondary"
+                                                                id="nama_barang" name="nama_barang" required>
+                                                        </div>
+
+                                                        <!-- Jenis -->
+                                                        <div class="col-md-6">
+                                                            <label for="jenis"
+                                                                class="form-label fw-semibold">Jenis</label>
+                                                            <input type="text" class="form-control border-secondary"
+                                                                id="jenis" name="jenis">
+                                                        </div>
+
+                                                        <!-- Merk -->
+                                                        <div class="col-md-6">
+                                                            <label for="merk"
+                                                                class="form-label fw-semibold">Merk</label>
+                                                            <input type="text" class="form-control border-secondary"
+                                                                id="merk" name="merk">
+                                                        </div>
+
+                                                        <!-- Tipe -->
+                                                        <div class="col-md-6">
+                                                            <label for="tipe"
+                                                                class="form-label fw-semibold">Tipe</label>
+                                                            <input type="text" class="form-control border-secondary"
+                                                                id="tipe" name="tipe">
+                                                        </div>
+
+                                                        <!-- Ukuran -->
+                                                        <div class="col-md-6">
+                                                            <label for="ukuran"
+                                                                class="form-label fw-semibold">Ukuran</label>
+                                                            <input type="text" class="form-control border-secondary"
+                                                                id="ukuran" name="ukuran">
+                                                        </div>
+
+                                                        <!-- Dimensi -->
+                                                        <div class="col-md-6">
+                                                            <label for="dimensi"
+                                                                class="form-label fw-semibold">Dimensi</label>
+                                                            <input type="text" class="form-control border-secondary"
+                                                                id="dimensi" name="dimensi">
+                                                        </div>
+
+                                                        <!-- QTY -->
+                                                        <div class="col-md-4">
+                                                            <label for="qty" class="form-label fw-semibold">Quantity
+                                                                (QTY)</label>
+                                                            <input type="number" class="form-control border-secondary"
+                                                                id="qty" name="qty" min="1" required>
+                                                        </div>
+
+                                                        <!-- SN -->
+                                                        <div class="col-md-4">
+                                                            <label class="form-label fw-semibold">Serial No (SN)</label>
+                                                            <textarea name="sn" class="form-control border-secondary"
+                                                                rows="4"></textarea>
+                                                            <small class="text-muted">Pisahkan SN dengan enter (1 baris
+                                                                = 1 SN)</small>
+                                                        </div>
+
+                                                        <!-- Lokasi -->
+                                                        <div class="col-md-4">
+                                                            <label for="lokasi"
+                                                                class="form-label fw-semibold">Lokasi</label>
+                                                            <input type="text" class="form-control border-secondary"
+                                                                id="lokasi" name="lokasi" required>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer bg-light">
+                                                    <button type="button" class="btn btn-outline-light"
+                                                        data-bs-dismiss="modal">
+                                                        <i class="bi bi-x-circle"></i> Batal
+                                                    </button>
+
+                                                    <button type="submit" class="btn btn-success text-white">
+                                                        <i class="bi bi-save"></i> Simpan
+                                                    </button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
                                 </div>
-
-<!-- Modal Tambah Data -->
-<div class="modal fade" id="addInventarisModal" tabindex="-1" aria-labelledby="addInventarisModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content" style="background-color: #1e1e2d; color: #f8f9fa; border-radius: 12px; border: none;">
-            
-            <!-- Header -->
-            <div class="modal-header bg-success" >
-                <h5 class="modal-title fw-bold" id="addInventarisModalLabel">
-                    <i class="bi bi-box-seam me-2 text-info"></i>Tambah Data Inventaris
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-<!-- Body -->
-<form action="{{ route('aset-store') }}" method="POST">
-    @csrf
-
-    <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
-        <div class="row g-3">
-
-            <!-- PN -->
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Produk No (PN)</label>
-                <textarea name="pn" class="form-control border-secondary" rows="4" ></textarea>
-                <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
-            </div>
-
-            <!-- Nama Barang -->
-            <div class="col-md-6">
-                <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
-                <input type="text" class="form-control border-secondary" id="nama_barang" 
-                       name="nama_barang" required>
-            </div>
-
-            <!-- Jenis -->
-            <div class="col-md-6">
-                <label for="jenis" class="form-label fw-semibold">Jenis</label>
-                <input type="text" class="form-control border-secondary" id="jenis" 
-                       name="jenis" >
-            </div>
-
-            <!-- Merk -->
-            <div class="col-md-6">
-                <label for="merk" class="form-label fw-semibold">Merk</label>
-                <input type="text" class="form-control border-secondary" id="merk" 
-                       name="merk" >
-            </div>
-
-            <!-- Tipe -->
-            <div class="col-md-6">
-                <label for="tipe" class="form-label fw-semibold">Tipe</label>
-                <input type="text" class="form-control border-secondary" id="tipe" 
-                       name="tipe" >
-            </div>
-
-            <!-- Ukuran -->
-            <div class="col-md-6">
-                <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
-                <input type="text" class="form-control border-secondary" id="ukuran" 
-                       name="ukuran" >
-            </div>
-
-            <!-- Dimensi -->
-            <div class="col-md-6">
-                <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
-                <input type="text" class="form-control border-secondary" id="dimensi" 
-                       name="dimensi" >
-            </div>
-
-            <!-- QTY -->
-            <div class="col-md-4">
-                <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
-                <input type="number" class="form-control border-secondary" id="qty" 
-                       name="qty" min="1" required>
-            </div>
-
-            <!-- SN -->
-            <div class="col-md-4">
-                <label class="form-label fw-semibold">Serial No (SN)</label>
-                <textarea name="sn" class="form-control border-secondary" rows="4" ></textarea>
-                <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
-            </div>
-
-            <!-- Lokasi -->
-            <div class="col-md-4">
-                <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                <input type="text" class="form-control border-secondary" id="lokasi" 
-                       name="lokasi" required>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="modal-footer bg-light">
-        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
-            <i class="bi bi-x-circle"></i> Batal
-        </button>
-
-        <button type="submit" class="btn btn-success text-white">
-            <i class="bi bi-save"></i> Simpan
-        </button>
-    </div>
-</form>
-
-        </div>
-    </div>
-</div>
                             </div>
 
                             <div class="card-body px-0 py-0">
@@ -282,19 +326,40 @@
                                     <table id="dataTable" class="table table-hover align-items-center text-center mb-0">
                                         <thead class="bg-gray-100">
                                             <tr>
-                                                <th>No</th>
-                                                <th>Produk No</th>
-                                                <th>Nama Barang</th>
-                                                <th>Jenis</th>
-                                                <th>Merk</th>
-                                                <th>Tipe</th>
-                                                <th>Ukuran</th>
-                                                <th>Dimensi</th>
-                                                <th>Qty</th>
-                                                <th>Serial No</th>
-                                                <th>Lokasi</th>
-                                                <th>Dibuat Pada</th>
-                                                <th>Aksi</th>
+                                                <th style="cursor: default;">No</th>
+                                                <th style="cursor: pointer; user-select: none;" class="sortable-header"
+                                                    data-column="pn">
+                                                    Produk No <span class="sort-indicator"></span>
+                                                </th>
+                                                <th style="cursor: pointer; user-select: none;" class="sortable-header"
+                                                    data-column="nama_barang">
+                                                    Nama Barang <span class="sort-indicator"></span>
+                                                </th>
+                                                <th style="cursor: pointer; user-select: none;" class="sortable-header"
+                                                    data-column="jenis">
+                                                    Jenis <span class="sort-indicator"></span>
+                                                </th>
+                                                <th style="cursor: pointer; user-select: none;" class="sortable-header"
+                                                    data-column="merk">
+                                                    Merk <span class="sort-indicator"></span>
+                                                </th>
+                                                <th style="cursor: pointer; user-select: none;" class="sortable-header"
+                                                    data-column="tipe">
+                                                    Tipe <span class="sort-indicator"></span>
+                                                </th>
+                                                <th style="cursor: pointer; user-select: none;" class="sortable-header"
+                                                    data-column="ukuran">
+                                                    Ukuran <span class="sort-indicator"></span>
+                                                </th>
+                                                <th style="cursor: default;">Dimensi</th>
+                                                <th style="cursor: default;">Qty</th>
+                                                <th style="cursor: default;">Serial No</th>
+                                                <th style="cursor: pointer; user-select: none;" class="sortable-header"
+                                                    data-column="lokasi">
+                                                    Lokasi <span class="sort-indicator"></span>
+                                                </th>
+                                                <th style="cursor: default;">Dibuat Pada</th>
+                                                <th style="cursor: default;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -343,40 +408,49 @@
                                                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
 
                                                     <td>
-                                                        <!-- Tombol Edit -->
-                                                        <button type="button" class="btn btn-sm btn-warning me-2"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#editModal{{ $item->id }}">
-                                                            <i class="bi bi-pencil-square"></i> Edit
-                                                        </button>
-
-                                                        <!-- Form Hapus -->
-                                                        <form action="{{ route('aset.hapus', $item->id) }}" method="POST"
-                                                            style="display:inline-block;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                                onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                                                <i class="bi bi-trash"></i> Hapus
+                                                        <!-- ✅ ONLY ADMIN CAN EDIT & DELETE -->
+                                                        @if(isAdmin())
+                                                            <!-- Tombol Edit -->
+                                                            <button type="button" class="btn btn-sm btn-warning me-2"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editModal{{ $item->id }}">
+                                                                <i class="bi bi-pencil-square"></i> Edit
                                                             </button>
-                                                        </form>
 
-                                                         <!-- Modal Edit -->
+                                                            <!-- Form Hapus -->
+                                                            <form action="{{ route('aset.hapus', $item->id) }}" method="POST"
+                                                                style="display:inline-block;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                                    onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                                                    <i class="bi bi-trash"></i> Hapus
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <span class="text-muted text-sm">Tidak ada akses</span>
+                                                        @endif
+
+                                                        <!-- Modal Edit -->
                                                         <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
-                                                            aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+                                                            aria-labelledby="editModalLabel{{ $item->id }}"
+                                                            aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
                                                                 <div class="modal-content">
 
-                                                                    <form action="{{ route('aset.update', $item->id) }}" method="POST">
+                                                                    <form action="{{ route('aset.update', $item->id) }}"
+                                                                        method="POST">
                                                                         @csrf
                                                                         @method('PUT')
 
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title">Edit Inventaris</h5>
-                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"></button>
                                                                         </div>
 
-                                                                        <div class="modal-body px-4" style="background-color: #f8f9fb; color: #212529;">
+                                                                        <div class="modal-body px-4"
+                                                                            style="background-color: #f8f9fb; color: #212529;">
 
                                                                             @php
                                                                                 $pns = json_decode($item->pn ?? '[]', true);
@@ -390,82 +464,125 @@
 
                                                                                 <!-- PN -->
                                                                                 <div class="col-md-6">
-                                                                                    <label class="form-label fw-semibold">Produk No (PN)</label>
-                                                                                    <textarea name="pn" class="form-control border-secondary" rows="4" >{{ $pn_string }}</textarea>
-                                                                                    <small class="text-muted">Pisahkan PN dengan enter (1 baris = 1 PN)</small>
+                                                                                    <label
+                                                                                        class="form-label fw-semibold">Produk
+                                                                                        No (PN)</label>
+                                                                                    <textarea name="pn"
+                                                                                        class="form-control border-secondary"
+                                                                                        rows="4">{{ $pn_string }}</textarea>
+                                                                                    <small class="text-muted">Pisahkan PN
+                                                                                        dengan enter (1 baris = 1
+                                                                                        PN)</small>
                                                                                 </div>
 
                                                                                 <!-- Nama Barang -->
                                                                                 <div class="col-md-6">
-                                                                                    <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
-                                                                                    <input type="text" class="form-control border-secondary" id="nama_barang"
-                                                                                        name="nama_barang" value="{{ $item->nama_barang }}" required>
+                                                                                    <label for="nama_barang"
+                                                                                        class="form-label fw-semibold">Nama
+                                                                                        Barang</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="nama_barang" name="nama_barang"
+                                                                                        value="{{ $item->nama_barang }}"
+                                                                                        required>
                                                                                 </div>
 
                                                                                 <!-- Jenis -->
                                                                                 <div class="col-md-6">
-                                                                                    <label for="jenis" class="form-label fw-semibold">Jenis</label>
-                                                                                    <input type="text" class="form-control border-secondary" id="jenis"
-                                                                                        name="jenis" value="{{ $item->jenis }}" >
+                                                                                    <label for="jenis"
+                                                                                        class="form-label fw-semibold">Jenis</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="jenis" name="jenis"
+                                                                                        value="{{ $item->jenis }}">
                                                                                 </div>
 
                                                                                 <!-- Merk -->
                                                                                 <div class="col-md-6">
-                                                                                    <label for="merk" class="form-label fw-semibold">Merk</label>
-                                                                                    <input type="text" class="form-control border-secondary" id="merk"
-                                                                                        name="merk" value="{{ $item->merk }}" >
+                                                                                    <label for="merk"
+                                                                                        class="form-label fw-semibold">Merk</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="merk" name="merk"
+                                                                                        value="{{ $item->merk }}">
                                                                                 </div>
 
                                                                                 <!-- Tipe -->
                                                                                 <div class="col-md-6">
-                                                                                    <label for="tipe" class="form-label fw-semibold">Tipe</label>
-                                                                                    <input type="text" class="form-control border-secondary" id="tipe"
-                                                                                        name="tipe" value="{{ $item->tipe }}" >
+                                                                                    <label for="tipe"
+                                                                                        class="form-label fw-semibold">Tipe</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="tipe" name="tipe"
+                                                                                        value="{{ $item->tipe }}">
                                                                                 </div>
 
                                                                                 <!-- Ukuran -->
                                                                                 <div class="col-md-6">
-                                                                                    <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
-                                                                                    <input type="text" class="form-control border-secondary" id="ukuran"
-                                                                                        name="ukuran" value="{{ $item->ukuran }}" >
+                                                                                    <label for="ukuran"
+                                                                                        class="form-label fw-semibold">Ukuran</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="ukuran" name="ukuran"
+                                                                                        value="{{ $item->ukuran }}">
                                                                                 </div>
 
                                                                                 <!-- Dimensi -->
                                                                                 <div class="col-md-6">
-                                                                                    <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
-                                                                                    <input type="text" class="form-control border-secondary" id="dimensi"
-                                                                                        name="dimensi" value="{{ $item->dimensi }}" >
+                                                                                    <label for="dimensi"
+                                                                                        class="form-label fw-semibold">Dimensi</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="dimensi" name="dimensi"
+                                                                                        value="{{ $item->dimensi }}">
                                                                                 </div>
 
                                                                                 <!-- QTY -->
                                                                                 <div class="col-md-4">
-                                                                                    <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
-                                                                                    <input type="number" class="form-control border-secondary" id="qty"
-                                                                                        name="qty" min="1" value="{{ $item->qty }}" required>
+                                                                                    <label for="qty"
+                                                                                        class="form-label fw-semibold">Quantity
+                                                                                        (QTY)</label>
+                                                                                    <input type="number"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="qty" name="qty" min="1"
+                                                                                        value="{{ $item->qty }}" required>
                                                                                 </div>
 
                                                                                 <!-- SN -->
                                                                                 <div class="col-md-4">
-                                                                                    <label class="form-label fw-semibold">Serial No (SN)</label>
-                                                                                    <textarea name="sn" class="form-control border-secondary" rows="4">{{ $sn_string }}</textarea>
-                                                                                    <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
+                                                                                    <label
+                                                                                        class="form-label fw-semibold">Serial
+                                                                                        No (SN)</label>
+                                                                                    <textarea name="sn"
+                                                                                        class="form-control border-secondary"
+                                                                                        rows="4">{{ $sn_string }}</textarea>
+                                                                                    <small class="text-muted">Pisahkan SN
+                                                                                        dengan enter (1 baris = 1
+                                                                                        SN)</small>
                                                                                 </div>
 
                                                                                 <!-- Lokasi -->
                                                                                 <div class="col-md-4">
-                                                                                    <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                                                                                    <input type="text" class="form-control border-secondary" id="lokasi"
-                                                                                        name="lokasi" value="{{ $item->lokasi }}" required>
+                                                                                    <label for="lokasi"
+                                                                                        class="form-label fw-semibold">Lokasi</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control border-secondary"
+                                                                                        id="lokasi" name="lokasi"
+                                                                                        value="{{ $item->lokasi }}"
+                                                                                        required>
                                                                                 </div>
 
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="modal-footer bg-light">
-                                                                            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-light"
+                                                                                data-bs-dismiss="modal">
                                                                                 <i class="bi bi-x-circle"></i> Batal
                                                                             </button>
-                                                                            <button type="submit" class="btn btn-success text-white">
+                                                                            <button type="submit"
+                                                                                class="btn btn-success text-white">
                                                                                 <i class="bi bi-save"></i> Simpan Perubahan
                                                                             </button>
                                                                         </div>
@@ -489,112 +606,274 @@
                                     </table>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
-            
-            
+
+
             <x-app.footer />
-            
+
         </div>
     </main>
-    
+
 
 </x-app-layout>
+@push('styles')
+    <style>
+        .sortable-header {
+            transition: all 0.2s ease;
+            position: relative;
+            padding: 10px !important;
+        }
+
+        .sortable-header:hover {
+            background-color: #e8e9eb !important;
+            font-weight: 600;
+        }
+
+        .sort-indicator {
+            font-size: 0.9em;
+            margin-left: 5px;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        /* Warna highlight ketika header di-sort */
+        .sortable-header[data-column]:has(.sort-indicator:not(:empty)) {
+            background-color: #d4d5d8 !important;
+            font-weight: 600;
+        }
+    </style>
+@endpush
 @push('scripts')
 <!-- jQuery (pastikan sudah include di layout utama) -->
 <script>
-$(document).ready(function() {
-    let asetData = @json($asset_jual);
+    $(document).ready(function () {
+        let asetData = @json($asset_jual);
+        let isUserAdmin = {{ isAdmin() ? 'true' : 'false' }}; // Check if user is admin
+        let currentSortColumn = null;
+        let currentSortOrder = 'asc'; // 'asc' = A-Z, 'desc' = Z-A
 
-    // Fungsi bantu ambil nilai unik dari kolom tertentu dengan filter aktif
-    function getUniqueValues(field, filters = {}) {
-        let filtered = asetData.filter(item => {
-            return (!filters.nama_barang || item.nama_barang === filters.nama_barang) &&
-                   (!filters.jenis || item.jenis === filters.jenis) &&
-                   (!filters.merk || item.merk === filters.merk) &&
-                   (!filters.tipe || item.tipe === filters.tipe) &&
-                   (!filters.ukuran || item.ukuran === filters.ukuran);
+        // Fungsi bantu ambil nilai unik dari kolom tertentu dengan filter aktif
+        function getUniqueValues(field, filters = {}) {
+            let filtered = asetData.filter(item => {
+                return (!filters.nama_barang || item.nama_barang === filters.nama_barang) &&
+                    (!filters.jenis || item.jenis === filters.jenis) &&
+                    (!filters.merk || item.merk === filters.merk) &&
+                    (!filters.tipe || item.tipe === filters.tipe) &&
+                    (!filters.ukuran || item.ukuran === filters.ukuran);
+            });
+            return [...new Set(filtered.map(item => item[field]).filter(Boolean))];
+        }
+
+        // Fungsi isi dropdown
+        function populateDropdown(selector, data, label, selectedVal = '') {
+            $(selector).empty().append(`<option value="">-- Semua ${label} --</option>`);
+            data.forEach(value => {
+                let selected = value === selectedVal ? 'selected' : '';
+                $(selector).append(`<option value="${value}" ${selected}>${value}</option>`);
+            });
+        }
+
+        // Inisialisasi semua dropdown di awal (tampilkan semua data unik)
+        populateDropdown('#nama_barang', getUniqueValues('nama_barang'), 'Nama Barang');
+        populateDropdown('#jenis', getUniqueValues('jenis'), 'Jenis');
+        populateDropdown('#merk', getUniqueValues('merk'), 'Merk');
+        populateDropdown('#tipe', getUniqueValues('tipe'), 'Tipe');
+        populateDropdown('#ukuran', getUniqueValues('ukuran'), 'Ukuran');
+
+        // Pastikan semua dropdown tampil
+        $('#jenisGroup, #merkGroup, #tipeGroup, #ukuranGroup').removeClass('d-none');
+
+        // Saat ada perubahan di salah satu dropdown, update dropdown lainnya agar saling sinkron
+        $('#nama_barang, #jenis, #merk, #tipe, #ukuran').on('change', function () {
+            let filters = {
+                nama_barang: $('#nama_barang').val(),
+                jenis: $('#jenis').val(),
+                merk: $('#merk').val(),
+                tipe: $('#tipe').val(),
+                ukuran: $('#ukuran').val()
+            };
+
+            populateDropdown('#nama_barang', getUniqueValues('nama_barang', filters), 'Nama Barang', filters.nama_barang);
+            populateDropdown('#jenis', getUniqueValues('jenis', filters), 'Jenis', filters.jenis);
+            populateDropdown('#merk', getUniqueValues('merk', filters), 'Merk', filters.merk);
+            populateDropdown('#tipe', getUniqueValues('tipe', filters), 'Tipe', filters.tipe);
+            populateDropdown('#ukuran', getUniqueValues('ukuran', filters), 'Ukuran', filters.ukuran);
         });
-        return [...new Set(filtered.map(item => item[field]).filter(Boolean))];
-    }
 
-    // Fungsi isi dropdown
-    function populateDropdown(selector, data, label, selectedVal = '') {
-        $(selector).empty().append(`<option value="">-- Semua ${label} --</option>`);
-        data.forEach(value => {
-            let selected = value === selectedVal ? 'selected' : '';
-            $(selector).append(`<option value="${value}" ${selected}>${value}</option>`);
+        // FITUR SORTING ===================================================
+        // Fungsi untuk mendapatkan nilai yang akan diurutkan
+        function getValueForSort(item, column) {
+            let value = item[column];
+
+            // Khusus untuk kolom PN dan SN yang berisi JSON array
+            if (column === 'pn' || column === 'sn') {
+                try {
+                    let decoded = JSON.parse(value || '[]');
+                    if (Array.isArray(decoded) && decoded.length > 0) {
+                        return decoded[0]; // Ambil nilai pertama
+                    }
+                } catch (e) {
+                    return value || '';
+                }
+            }
+
+            return value || '';
+        }
+
+        // Fungsi untuk sort data
+        function sortTableData(column) {
+            // Jika kolom yang diklik adalah kolom yang sama, toggle asc/desc
+            if (currentSortColumn === column) {
+                currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortColumn = column;
+                currentSortOrder = 'asc';
+            }
+
+            // Clear semua indicator
+            $('.sort-indicator').html('');
+
+            // Tambah indicator pada kolom yang sedang di-sort
+            $(`.sortable-header[data-column="${column}"] .sort-indicator`).html(
+                currentSortOrder === 'asc' ? ' ↑' : ' ↓'
+            );
+
+            // Sort data
+            let sortedData = [...asetData].sort((a, b) => {
+                let valueA = getValueForSort(a, column).toString().toLowerCase();
+                let valueB = getValueForSort(b, column).toString().toLowerCase();
+
+                if (currentSortOrder === 'asc') {
+                    return valueA.localeCompare(valueB, 'id-ID', { numeric: true });
+                } else {
+                    return valueB.localeCompare(valueA, 'id-ID', { numeric: true });
+                }
+            });
+
+            // Update tabel dengan data yang sudah disort
+            renderTable(sortedData);
+        }
+
+        // Fungsi untuk render tabel
+        function renderTable(dataToRender = asetData) {
+            let tbody = $('#dataTable tbody');
+            tbody.empty();
+
+            if (dataToRender.length === 0) {
+                tbody.html(`
+                <tr>
+                    <td colspan="13" class="text-center text-muted py-3">
+                        Tidak ada data inventaris.
+                    </td>
+                </tr>
+            `);
+                return;
+            }
+
+            dataToRender.forEach((item, index) => {
+                // Parse PN dan SN
+                let pns = [];
+                let sns = [];
+                try {
+                    pns = JSON.parse(item.pn || '[]');
+                    sns = JSON.parse(item.sn || '[]');
+                } catch (e) {
+                    pns = item.pn ? [item.pn] : [];
+                    sns = item.sn ? [item.sn] : [];
+                }
+
+                let pnHtml = Array.isArray(pns) && pns.length > 0
+                    ? `<ul class="ps-3 mb-0">${pns.map(pn => `<li>${pn}</li>`).join('')}</ul>`
+                    : '';
+
+                let snHtml = Array.isArray(sns) && sns.length > 0
+                    ? `<ul class="ps-3 mb-0">${sns.map(sn => `<li>${sn}</li>`).join('')}</ul>`
+                    : '';
+
+                let row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td class="text-wrap">${pnHtml}</td>
+                    <td class="text-wrap">${item.nama_barang || ''}</td>
+                    <td class="text-wrap">${item.jenis || ''}</td>
+                    <td class="text-wrap">${item.merk || ''}</td>
+                    <td class="text-wrap">${item.tipe || ''}</td>
+                    <td class="text-wrap">${item.ukuran || ''}</td>
+                    <td class="text-wrap">${item.dimensi || ''}</td>
+                    <td>${item.qty || ''}</td>
+                    <td class="text-wrap">${snHtml}</td>
+                    <td class="text-wrap">${item.lokasi || ''}</td>
+                    <td>${new Date(item.created_at).toLocaleDateString('id-ID')}</td>
+                    <td>
+                        ${isUserAdmin ? `
+                            <button type="button" class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal${item.id}">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </button>
+                            <form action="{{ route('aset.hapus', ':id') }}".replace(':id', item.id) method="POST" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </form>
+                        ` : `<span class="text-muted text-sm">Tidak ada akses</span>`}
+                    </td>
+                </tr>
+            `;
+                tbody.append(row);
+            });
+        }
+
+        // Event listener untuk sortable headers
+        $('.sortable-header').on('click', function () {
+            let column = $(this).data('column');
+            sortTableData(column);
         });
-    }
 
-    // Inisialisasi semua dropdown di awal (tampilkan semua data unik)
-    populateDropdown('#nama_barang', getUniqueValues('nama_barang'), 'Nama Barang');
-    populateDropdown('#jenis', getUniqueValues('jenis'), 'Jenis');
-    populateDropdown('#merk', getUniqueValues('merk'), 'Merk');
-    populateDropdown('#tipe', getUniqueValues('tipe'), 'Tipe');
-    populateDropdown('#ukuran', getUniqueValues('ukuran'), 'Ukuran');
+        // Fitur Search
+        function searchTable() {
+            let value = $('#searchInput').val().toLowerCase();
+            $('#dataTable tbody tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        }
 
-    // Pastikan semua dropdown tampil
-    $('#jenisGroup, #merkGroup, #tipeGroup, #ukuranGroup').removeClass('d-none');
+        // Jalankan pencarian saat mengetik
+        $('#searchInput').on('keyup', function (e) {
+            if (e.key !== 'Enter') {
+                searchTable();
+            }
+        });
 
-    // Saat ada perubahan di salah satu dropdown, update dropdown lainnya agar saling sinkron
-    $('#nama_barang, #jenis, #merk, #tipe, #ukuran').on('change', function() {
-        let filters = {
-            nama_barang: $('#nama_barang').val(),
-            jenis: $('#jenis').val(),
-            merk: $('#merk').val(),
-            tipe: $('#tipe').val(),
-            ukuran: $('#ukuran').val()
-        };
-
-        populateDropdown('#nama_barang', getUniqueValues('nama_barang', filters), 'Nama Barang', filters.nama_barang);
-        populateDropdown('#jenis', getUniqueValues('jenis', filters), 'Jenis', filters.jenis);
-        populateDropdown('#merk', getUniqueValues('merk', filters), 'Merk', filters.merk);
-        populateDropdown('#tipe', getUniqueValues('tipe', filters), 'Tipe', filters.tipe);
-        populateDropdown('#ukuran', getUniqueValues('ukuran', filters), 'Ukuran', filters.ukuran);
+        // Jalankan pencarian saat tekan Enter
+        $('#searchInput').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                searchTable();
+            }
+        });
     });
-});
-function addListItem(containerId, inputName) {
-    const container = document.getElementById(containerId);
-    const div = document.createElement("div");
-    div.classList.add("d-flex", "mb-2");
 
-    div.innerHTML = `
+    function addListItem(containerId, inputName) {
+        const container = document.getElementById(containerId);
+        const div = document.createElement("div");
+        div.classList.add("d-flex", "mb-2");
+
+        div.innerHTML = `
         <input type="text" name="${inputName}[]" class="form-control me-2" required>
         <button type="button" class="btn btn-danger btn-sm" onclick="this.parentNode.remove()">X</button>
     `;
-    container.appendChild(div);
-}
-
-function combineList(inputName, textareaId) {
-    const items = document.getElementsByName(inputName + "[]");
-    let result = [];
-    items.forEach(i => result.push(i.value));
-    document.getElementById(textareaId).value = result.join("\n");
-}
-    // Fitur Search
-    function searchTable() {
-        let value = $('#searchInput').val().toLowerCase();
-        $('#dataTable tbody tr').filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
+        container.appendChild(div);
     }
-     // Jalankan pencarian saat mengetik
-    $('#searchInput').on('keyup', function(e) {
-        if (e.key !== 'Enter') {
-            searchTable();
-        }
-    });
 
-    // Jalankan pencarian saat tekan Enter
-    $('#searchInput').on('keypress', function(e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            searchTable();
-        }
-    });
+    function combineList(inputName, textareaId) {
+        const items = document.getElementsByName(inputName + "[]");
+        let result = [];
+        items.forEach(i => result.push(i.value));
+        document.getElementById(textareaId).value = result.join("\n");
+    }
 </script>
-

@@ -12,7 +12,13 @@ class DoModel extends Model
         'project',
         'vendor',
         'year',
+        'tanggal_do',
+        'nomor_do',
+        'tanggal_bast',
+        'position'
     ];
+
+
 
     public function files()
     {

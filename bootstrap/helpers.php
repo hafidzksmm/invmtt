@@ -21,7 +21,10 @@ function in_array_r($needle, $haystack, $strict = false)
 function getCategoriesArray($parent, $child = null)
 {
     $categories = array(
-        'dashboard', 'tables', 'wallet', 'RTL',
+        'dashboard',
+        'tables',
+        'wallet',
+        'RTL',
 
         'laravel-examples' => array(
             'user-profile',
@@ -33,4 +36,30 @@ function getCategoriesArray($parent, $child = null)
         return $categories[$parent][$child];
     else
         return $categories[$parent];
+}
+
+// ===== ROLE-BASED HELPERS =====
+
+/**
+ * Check if user is admin
+ */
+function isAdmin()
+{
+    return auth()->check() && auth()->user()->role === 'admin';
+}
+
+/**
+ * Check if user is regular user
+ */
+function isUser()
+{
+    return auth()->check() && auth()->user()->role === 'user';
+}
+
+/**
+ * Get current user role
+ */
+function getUserRole()
+{
+    return auth()->check() ? auth()->user()->role : null;
 }
