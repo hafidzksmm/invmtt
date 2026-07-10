@@ -54,11 +54,11 @@
 
         <!-- CENTER: CHART + LOGO -->
         <div class="panel center-panel">
-            <div class="chart-wrap" style="display:flex; justify-content:center; align-items:center; min-height:350px;">
+            <div class="chart-wrap" style="display:flex; justify-content:center; align-items:center; min-height:320px;">
                 <div class="chart-center">
                     <img src="{{ asset('assets/img/logo.png') }}"
                         alt="Logo"
-                        style="width:220px; height:220px; object-fit:contain;">
+                        style="width:200px; height:200px; object-fit:contain;">
                 </div>
         </div>
             <!-- ICON ROW — HORIZONTAL, TANPA JUDUL SECTION -->
@@ -105,14 +105,14 @@
                     <div class="icon-tile tile-activity" style="background-color: #dc3545;">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
                     </div>
-                    <span class="icon-label">Training Certification</span>
+                    <span class="icon-label">Training <br>Certification</span>
                 </div>
 
                 <div class="icon-col" onclick="window.open('http://project.mttech.co.id:8080/', '_blank')">
                     <div class="icon-tile tile-company" style="background-color: #dc3545;">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     </div>
-                    <span class="icon-label">Monitoring Project</span>
+                    <span class="icon-label">Monitoring <br>Project</span>
                 </div>
 
             </div>
@@ -255,9 +255,9 @@ function closeYearModal() {
     .main-content{ background:var(--bg) !important; }
 
     .dash-wrap{
-        max-width:1280px;
+        max-width:1420px;
         margin:0 auto;
-        padding:28px 24px 60px;
+        padding:34px 32px 70px;
         font-family:'Inter', sans-serif;
         color:var(--text);
     }
@@ -267,7 +267,7 @@ function closeYearModal() {
         display:flex;
         align-items:center;
         justify-content:space-between;
-        margin-bottom:26px;
+        margin-bottom:32px;
         flex-wrap:wrap;
         gap:16px;
     }
@@ -277,33 +277,33 @@ function closeYearModal() {
     .dash-greeting{
         display:flex;
         align-items:center;
-        gap:12px;
+        gap:14px;
     }
     .greeting-avatar{
-        width:42px; height:42px;
+        width:52px; height:52px;
         border-radius:50%;
         background:var(--red);
         color:#fff;
         display:flex; align-items:center; justify-content:center;
         font-family:'Space Grotesk', sans-serif;
         font-weight:700;
-        font-size:16px;
+        font-size:19px;
         flex-shrink:0;
         box-shadow:0 4px 10px rgba(225,29,46,0.25);
     }
     .greeting-text{
         display:flex;
         flex-direction:column;
-        line-height:1.25;
+        line-height:1.3;
     }
     .greeting-hello{
         font-family:'Space Grotesk', sans-serif;
         font-weight:700;
-        font-size:15px;
+        font-size:18px;
         color:var(--text);
     }
     .greeting-role{
-        font-size:12px;
+        font-size:13.5px;
         color:var(--muted);
         text-transform:capitalize;
     }
@@ -326,15 +326,15 @@ function closeYearModal() {
     }
     .dash-subtitle{ font-size:12.5px; color:var(--muted); }
 
-    .dash-actions{ display:flex; align-items:center; gap:12px; }
+    .dash-actions{ display:flex; align-items:center; gap:14px; }
 
     .btn-logout{
         display:flex; align-items:center; gap:8px;
         background:var(--surface);
         border:1px solid var(--border);
-        padding:10px 18px;
+        padding:12px 22px;
         border-radius:999px;
-        font-size:13px;
+        font-size:14px;
         font-weight:600;
         color:var(--text);
         cursor:pointer;
@@ -342,16 +342,16 @@ function closeYearModal() {
         transition:.15s ease;
     }
     .btn-logout:hover{ background:var(--red-light); border-color:var(--red); color:var(--red-dark); }
-    .btn-logout svg{ width:14px; height:14px; stroke:var(--red); }
+    .btn-logout svg{ width:16px; height:16px; stroke:var(--red); }
 
     .btn-register-user{
         display:flex; align-items:center; gap:8px;
         background:var(--red);
         color:#fff;
         border:none;
-        padding:10px 18px;
+        padding:12px 22px;
         border-radius:999px;
-        font-size:13px;
+        font-size:14px;
         font-weight:700;
         font-family:'Space Grotesk', sans-serif;
         text-decoration:none;
@@ -360,7 +360,7 @@ function closeYearModal() {
         transition:.15s ease;
     }
     .btn-register-user:hover{ background:var(--red-dark); color:#fff; }
-    .btn-register-user svg{ width:14px; height:14px; stroke:#fff; }
+    .btn-register-user svg{ width:16px; height:16px; stroke:#fff; }
 
     /* STATS */
     .stats-row{
@@ -391,11 +391,11 @@ function closeYearModal() {
     .panel{
         background:var(--surface);
         border:1px solid var(--border);
-        border-radius:18px;
+        border-radius:22px;
         box-shadow:var(--shadow);
     }
-    .center-panel{ display:flex; flex-direction:column; align-items:center; padding:36px 24px 30px; }
-    .chart-wrap{ position:relative; width:250px; height:250px; margin-bottom:22px; }
+    .center-panel{ display:flex; flex-direction:column; align-items:center; padding:48px 30px 40px; }
+    .chart-wrap{ position:relative; width:220px; height:220px; margin-bottom:28px; }
     .chart-center{
         position:absolute; inset:0;
         display:flex; align-items:center; justify-content:center;
@@ -414,17 +414,17 @@ function closeYearModal() {
         display:flex;
         flex-wrap:wrap;
         justify-content:center;
-        gap:28px;
+        gap:34px;
         padding-top:26px;
         border-top:1px solid var(--border);
     }
     .icon-col{
-        display:flex; flex-direction:column; align-items:center; gap:10px;
+        display:flex; flex-direction:column; align-items:center; gap:14px;
         cursor:pointer;
     }
     .icon-tile{
-        width:76px; height:76px;
-        border-radius:18px;
+        width:84px; height:84px;
+        border-radius:20px;
         display:flex; align-items:center; justify-content:center;
         background-size:cover;
         background-position:center;
@@ -437,16 +437,16 @@ function closeYearModal() {
     .icon-tile::before{
         content:"";
         position:absolute; inset:0;
-        border-radius:18px;
+        border-radius:22px;
         background:linear-gradient(180deg, rgba(17,18,20,0.15), rgba(17,18,20,0.45));
     }
     .icon-tile svg{
         position:relative; z-index:1;
-        width:28px; height:28px;
+        width:32px; height:32px;
         stroke:#FFFFFF;
     }
     .icon-col:hover .icon-tile{ transform:translateY(-3px) scale(1.04); box-shadow:0 10px 20px rgba(0,0,0,0.12); }
-    .icon-label{ font-size:12.5px; font-weight:600; color:var(--text); text-align:center; }
+    .icon-label{ font-size:14.5px; font-weight:600; color:var(--text); text-align:center; }
 
     /* ======================================================
        TEMPLATE GAMBAR BACKGROUND ICON
@@ -495,13 +495,17 @@ function closeYearModal() {
     /* RESPONSIVE */
     @media (max-width: 1100px){
         .stats-row{ grid-template-columns:repeat(3,1fr); }
+        .icon-tile{ width:92px; height:92px; }
+        .chart-wrap{ width:280px; height:280px; }
     }
     @media (max-width: 640px){
         .stats-row{ grid-template-columns:repeat(2,1fr); }
-        .icon-row{ gap:18px; }
-        .icon-tile{ width:64px; height:64px; }
+        .icon-row{ gap:22px; }
+        .icon-tile{ width:72px; height:72px; }
+        .icon-tile svg{ width:30px; height:30px; }
         .dash-title{ font-size:20px; }
-        .greeting-hello{ font-size:13.5px; }
+        .greeting-hello{ font-size:15px; }
+        .chart-wrap{ width:220px; height:220px; }
     }
 </style>
 

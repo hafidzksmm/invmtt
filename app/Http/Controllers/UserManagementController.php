@@ -57,23 +57,30 @@ class UserManagementController extends Controller
     }
 
     /**
-     * Update username & (opsional) password milik user.
+     * Update username, role, & (opsional) password milik user.
      */
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
             'username' => 'required|string|min:3|max:255|unique:users,username,' . $user->id,
             'password' => ['nullable', 'confirmed', Password::min(7)],
+            'role'     => 'sometimes|required|in:admin,superadmin,user',
         ], [
             'username.required'  => 'Username wajib diisi.',
             'username.unique'    => 'Username sudah digunakan, silakan pilih username lain.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'role.required'      => 'Role wajib dipilih.',
+            'role.in'            => 'Role tidak valid.',
         ]);
 
         $user->username = $validated['username'];
 
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
+        }
+
+        if (array_key_exists('role', $validated)) {
+            $user->role = $validated['role'];
         }
 
         $user->save();
@@ -83,10 +90,19 @@ class UserManagementController extends Controller
 
     /**
      * Hapus user.
+     * Superadmin: bebas hapus siapa saja tanpa kecuali (termasuk diri sendiri
+     * & superadmin terakhir). Role lain tetap mengikuti restriksi lama.
      */
     public function destroy(Request $request, User $user)
     {
-        if ($request->user() && $request->user()->id === $user->id) {
+        $actor = $request->user();
+
+        if ($actor && $actor->role === 'superadmin') {
+            $user->delete();
+            return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+        }
+
+        if ($actor && $actor->id === $user->id) {
             return redirect()->route('users.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
