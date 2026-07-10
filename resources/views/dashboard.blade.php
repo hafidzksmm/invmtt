@@ -49,7 +49,18 @@
                         Log out
                     </button>
                 </form>
-            </div>
+<a href="{{ route('activity-log') }}" class="btn-logout" style="text-decoration:none;">
+    <svg viewBox="0 0 24 24"
+         fill="none"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <path d="M3 3v5h5"/>
+        <path d="M3.05 13A9 9 0 1 0 6 5.3"/>
+        <polyline points="12 7 12 12 16 14"/>
+    </svg>
+    Activity Log
+</a>            </div>
         </div>
 
         <!-- CENTER: CHART + LOGO -->
@@ -101,7 +112,7 @@
                     <span class="icon-label">Project Files</span>
                 </div>
 
-                <div class="icon-col" onclick="alert('Documentation Project');">
+                <div class="icon-col" onclick="openUnderConstructionModal()">
                     <div class="icon-tile tile-activity" style="background-color: #dc3545;">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
                     </div>
@@ -132,6 +143,24 @@
             @endforeach
         </div>
         <button onclick="closeYearModal()" class="year-cancel">Batal</button>
+    </div>
+</div>
+
+<!-- 🚧 UNDER CONSTRUCTION MODAL -->
+<div id="underConstructionModal" class="year-modal">
+    <div class="year-modal-box">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--red-light);display:flex;align-items:center;justify-content:center;margin:0 auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B0121F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;">
+                <path d="M12 9v4"/>
+                <path d="M12 17h.01"/>
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            </svg>
+        </div>
+        <h5 class="year-modal-title">This page is under construction</h5>
+        <p style="font-size:13.5px;color:var(--muted);margin:-6px 0 0;">Fitur Training Certification sedang dalam pengembangan.</p>
+        <button onclick="closeUnderConstructionModal()" class="year-cancel" style="background:var(--red);color:#fff;padding:10px 22px;border-radius:999px;font-weight:600;">
+            Tutup
+        </button>
     </div>
 </div>
 
@@ -233,6 +262,14 @@ function openYearModal() {
 
 function closeYearModal() {
     document.getElementById('yearModal').style.display = 'none';
+}
+
+function openUnderConstructionModal() {
+    document.getElementById('underConstructionModal').style.display = 'flex';
+}
+
+function closeUnderConstructionModal() {
+    document.getElementById('underConstructionModal').style.display = 'none';
 }
 </script>
 

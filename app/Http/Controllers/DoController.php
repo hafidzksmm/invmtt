@@ -86,11 +86,16 @@ public function uploadFile(Request $request, $id)
 
     $folderMap = [
         'pdf_do'           => 'do/pdf',
+        'pdf_do_disti'     => 'do-disti/pdf',
         'foto_do'          => 'do/foto',
         'pdf_bast'         => 'bast/pdf',
         'foto_bast'        => 'bast/foto',
         'pdf_tanda_terima' => 'tanda-terima/pdf',
     ];
+
+    if (!array_key_exists($request->type, $folderMap)) {
+        return back()->with('error', 'Tipe file tidak dikenali');
+    }
 
     $singleTypes = ['pdf_do', 'pdf_bast'];
 

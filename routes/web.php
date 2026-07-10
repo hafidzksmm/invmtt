@@ -82,7 +82,10 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
     });
-
+    Route::get('/activity-log', [App\Http\Controllers\ActivityLogController::class, 'index'])
+    ->name('activity-log')
+    ->middleware('auth');
+    
     route::get('/inventori', [inventoriController::class, 'ws'])->name('view-ws');
     route::post('/inventori/add', [inventoriController::class, 'store'])->middleware('role:admin,superadmin')->name('ws-store');
     route::put('/inventori/{id}', [inventoriController::class, 'update'])->middleware('role:admin,superadmin')->name('ws.update');

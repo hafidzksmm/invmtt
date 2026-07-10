@@ -216,23 +216,14 @@
                                         <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
                                         <input type="text" class="form-control" id="dimensi" name="dimensi">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
                                         <input type="number" class="form-control" id="qty" name="qty" min="1" required>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label class="form-label fw-semibold">Serial No (SN)</label>
                                         <textarea name="sn" class="form-control" rows="4"></textarea>
                                         <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                                        <div class="d-flex gap-2">
-                                            <input type="text" class="form-control" id="lokasi" name="lokasi" required>
-                                            <button type="submit" class="btn-pill btn-pill-red flex-shrink-0" title="Simpan">
-                                                <i class="bi bi-save"></i> Simpan
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -240,6 +231,9 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn-pill btn-pill-outline" data-bs-dismiss="modal">
                                     <i class="bi bi-x-circle"></i> Batal
+                                </button>
+                                <button type="submit" class="btn-pill btn-pill-red">
+                                    <i class="bi bi-save"></i> Simpan
                                 </button>
                             </div>
                         </form>
@@ -263,7 +257,6 @@
                             <th style="cursor: default;">Dimensi</th>
                             <th style="cursor: default;">Qty</th>
                             <th style="cursor: default;">Serial No</th>
-                            <th class="sortable-header" data-column="lokasi">Lokasi <span class="sort-indicator"></span></th>
                             <th style="cursor: default;">Dibuat Pada</th>
                             <th style="cursor: default;">Aksi</th>
                         </tr>
@@ -303,7 +296,6 @@
                                         {{ $item->sn }}
                                     @endif
                                 </td>
-                                <td class="text-wrap">{{ $item->lokasi }}</td>
                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     {{-- ✅ EDIT & HAPUS - ADMIN & SUPERADMIN --}}
@@ -376,23 +368,14 @@
                                                                 <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
                                                                 <input type="text" class="form-control" id="dimensi" name="dimensi" value="{{ $item->dimensi }}">
                                                             </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-6">
                                                                 <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
                                                                 <input type="number" class="form-control" id="qty" name="qty" min="1" value="{{ $item->qty }}" required>
                                                             </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-6">
                                                                 <label class="form-label fw-semibold">Serial No (SN)</label>
                                                                 <textarea name="sn" class="form-control" rows="4">{{ $sn_string }}</textarea>
                                                                 <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                                                                <div class="d-flex gap-2">
-                                                                    <input type="text" class="form-control" id="lokasi" name="lokasi" value="{{ $item->lokasi }}" required>
-                                                                    <button type="submit" class="btn-pill btn-pill-red flex-shrink-0" title="Simpan Perubahan">
-                                                                        <i class="bi bi-save"></i> Simpan
-                                                                    </button>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -400,6 +383,9 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn-pill btn-pill-outline" data-bs-dismiss="modal">
                                                             <i class="bi bi-x-circle"></i> Batal
+                                                        </button>
+                                                        <button type="submit" class="btn-pill btn-pill-red">
+                                                            <i class="bi bi-save"></i> Simpan
                                                         </button>
                                                     </div>
                                                 </form>
@@ -411,7 +397,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="13" class="text-center text-muted py-3">Tidak ada data inventaris.</td>
+                                <td colspan="12" class="text-center text-muted py-3">Tidak ada data inventaris.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -735,7 +721,7 @@
             if (dataToRender.length === 0) {
                 tbody.html(`
                 <tr>
-                    <td colspan="13" class="text-center text-muted py-3">
+                    <td colspan="12" class="text-center text-muted py-3">
                         Tidak ada data inventaris.
                     </td>
                 </tr>
@@ -774,7 +760,6 @@
                     <td class="text-wrap">${item.dimensi || ''}</td>
                     <td>${item.qty || ''}</td>
                     <td class="text-wrap">${snHtml}</td>
-                    <td class="text-wrap">${item.lokasi || ''}</td>
                     <td>${new Date(item.created_at).toLocaleDateString('id-ID')}</td>
                     <td>
                         ${isUserAdmin ? `

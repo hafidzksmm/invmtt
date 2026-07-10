@@ -11,29 +11,61 @@ class ProjectFileController extends Controller
 {
     public function store(Request $request, $id)
     {
-        dd('MASUK CONTROLLER', $id, $request->all(), $request->hasFile('file'));
         $request->validate([
-            'type' => 'required|in:pdf_do,foto_do,pdf_bast,foto_bast',
-            'file' => 'required|file|max:10240',
+            'type'   => 'required|in:pdf_do,pdf_do_disti,foto_do,pdf_bast,foto_bast,pdf_tanda_terima',
+            'file'   => 'required',
+            'file.*' => 'file|max:10240', // max 10MB per file
         ]);
 
         $do = DoModel::findOrFail($id);
 
         $folders = [
-            'pdf_do'    => 'do/pdf',
-            'foto_do'   => 'do/foto',
-            'pdf_bast'  => 'bast/pdf',
-            'foto_bast' => 'bast/foto',
+            'pdf_do'           => 'do/pdf',
+            'pdf_do_disti'     => 'do-disti/pdf',
+            'foto_do'          => 'do/foto',
+            'pdf_bast'         => 'bast/pdf',
+            'foto_bast'        => 'bast/foto',
+            'pdf_tanda_terima' => 'tanda-terima/pdf',
         ];
 
-        $path = $request->file('file')
-            ->store($folders[$request->type], 'public');
+        // Tipe yang hanya boleh punya 1 file (single) → file lama dihapus dulu
+        $singleTypes = ['pdf_do', 'pdf_bast'];
 
-        ProjectFile::create([
-            'do_id'     => $do->id,
-            'type'      => $request->type,
-            'file_path' => $path,
-        ]);
+        if (in_array($request->type, $singleTypes)) {
+
+            $oldFiles = ProjectFile::where('do_id', $do->id)
+                ->where('type', $request->type)
+                ->get();
+
+            foreach ($oldFiles as $old) {
+                Storage::disk('public')->delete($old->file_path);
+                $old->delete();
+            }
+        }
+
+        // Normalisasi input file jadi array, supaya mendukung
+        // input single (name="file") maupun multiple (name="file[]")
+        $files = $request->file('file');
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+
+        foreach ($files as $file) {
+
+            $originalName = str_replace(' ', '_', $file->getClientOriginalName());
+
+            $path = $file->storeAs(
+                $folders[$request->type],
+                $originalName,
+                'public'
+            );
+
+            ProjectFile::create([
+                'do_id'     => $do->id,
+                'type'      => $request->type,
+                'file_path' => $path,
+            ]);
+        }
 
         return back()->with('success', 'File berhasil diupload');
     }
@@ -48,7 +80,10 @@ class ProjectFileController extends Controller
     {
         $file = ProjectFile::findOrFail($id);
 
-        Storage::disk('public')->delete($file->file_path);
+        if (Storage::disk('public')->exists($file->file_path)) {
+            Storage::disk('public')->delete($file->file_path);
+        }
+
         $file->delete();
 
         return back()->with('success', 'File berhasil dihapus');

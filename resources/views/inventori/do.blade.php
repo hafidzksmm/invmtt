@@ -92,8 +92,9 @@
 
                                     </tr>
                                     <tr>
+                                        <th>DO <br>Disti</th>
                                         <th>Tanda <br>Terima</th>
-                                        <th>DO</th>
+                                        <th>DO <br>Client</th>
                                         <th>Foto <br>Delivery</th>
 
                                         <th>Tanggal <br>BAST</th>
@@ -130,6 +131,25 @@
                                         </td>
                                         <td>{{ $item->nomor_do ?? '-' }}</td>
 
+                                        {{-- DO DISTI (multiple file, sama seperti Tanda Terima) --}}
+                                        <td>
+                                        @php $doDisti = $item->files->where('type','pdf_do_disti'); @endphp
+
+                                        @if($doDisti->count())
+
+                                            <span class="text-success fw-bold"
+                                                style="cursor:pointer;font-size:18px;"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#pdfDoDisti{{ $item->id }}">
+                                                ✅ {{ $doDisti->count() }}
+                                            </span>
+
+
+                                        @else
+                                            ➖
+                                        @endif
+                                        </td>
+
                                         {{-- TANDA TERIMA --}}
                                         <td>
                                         @php $tt = $item->files->where('type','pdf_tanda_terima'); @endphp
@@ -148,7 +168,7 @@
                                             ➖
                                         @endif
                                         </td>
-                                        {{-- PDF DO --}}
+                                        {{-- PDF DO CLIENT --}}
                                         <td>
                                             @if($pdf = $item->files->where('type','pdf_do')->first())
 
@@ -251,7 +271,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="9" class="text-muted py-4">
+                                        <td colspan="10" class="text-muted py-4">
                                             Belum ada data
                                         </td>
                                     </tr>
@@ -347,8 +367,9 @@
                         class="form-select mb-3 file-type"
                         >
                     <option value="">-- Pilih File --</option>
+                    <option value="pdf_do_disti">DO Disti</option>
                     <option value="pdf_tanda_terima">Tanda Terima</option>
-                    <option value="pdf_do">DO</option>
+                    <option value="pdf_do">DO Client</option>
                     <option value="foto_do">Foto Delivery</option>
                     <option value="pdf_bast">BAST</option>
                     <option value="foto_bast">Foto Instalasi</option>
@@ -545,6 +566,65 @@
     </div>
 </div>
 
+{{-- ================= MODAL PDF DO DISTI (multiple file) ================= --}}
+@foreach($inventarydo as $item)
+<div class="modal fade" id="pdfDoDisti{{ $item->id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">PDF DO Disti</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                @php
+                    $pdfDoDisti = $item->files->where('type', 'pdf_do_disti');
+                @endphp
+
+                @if($pdfDoDisti->count() > 0)
+
+                    <ul class="list-group">
+                        @foreach($pdfDoDisti as $index => $pdf)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                                <div>
+                                    <strong>📄 PDF DO Disti {{ $index + 1 }}</strong>
+
+
+                                <div class="d-flex gap-2">
+                                    <button type="button"
+                                        class="btn btn-sm btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#pdfModal"
+                                        onclick="previewPDF('{{ asset('storage/'.$pdf->file_path) }}')">
+                                        Preview
+                                    </button>
+
+                                    <a href="{{ asset('storage/'.$pdf->file_path) }}"
+                                       download
+                                       class="btn btn-sm btn-success">
+                                       Download
+                                    </a>
+                                </div>
+
+                            </li>
+                        @endforeach
+                    </ul>
+
+                @else
+                    <p class="text-center text-muted mb-0">
+                        Tidak ada PDF DO Disti
+                    </p>
+                @endif
+
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
 {{-- ================= MODAL PDF TANDA TERIMA ================= --}}
 @foreach($inventarydo as $item)
 <div class="modal fade" id="pdfTandaTerima{{ $item->id }}" tabindex="-1">
@@ -624,7 +704,7 @@ document.querySelectorAll('.file-type').forEach(select => {
         if (firstInput) firstInput.value = '';
 
         // ================= LOGIC TYPE =================
-if (this.value === 'pdf_tanda_terima') {
+if (this.value === 'pdf_tanda_terima' || this.value === 'pdf_do_disti') {
 
 
     if (addBtn) addBtn.style.display = 'block';
@@ -636,7 +716,7 @@ if (this.value === 'pdf_tanda_terima') {
 
 } else {
 
-    // PDF DO & PDF BAST → single only
+    // PDF DO Client & PDF BAST → single only
 
     if (addBtn) addBtn.style.display = 'none';
 }

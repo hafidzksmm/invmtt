@@ -25,7 +25,6 @@ class asetController extends Controller
         $request->validate([
             'nama_barang' => 'required|string|max:255',
             'qty' => 'required|integer|min:1',
-            'lokasi' => 'required|string|max:255',
         ]);
 
         // Convert PN & SN menjadi array list (per baris)
@@ -46,7 +45,7 @@ class asetController extends Controller
             'dimensi' => $request->dimensi,
             'qty' => $request->qty,
             'sn' => json_encode($snList),
-            'lokasi' => $request->lokasi,
+            'lokasi' => $request->lokasi ?? '',
         ]);
 
         return redirect()->route('view-aset')->with('success', 'Data berhasil ditambahkan.');
@@ -58,9 +57,8 @@ class asetController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_barang' => 'required|string|max:255', 
+            'nama_barang' => 'required|string|max:255',
             'qty' => 'required|integer|min:1',
-            'lokasi' => 'required|string|max:255',
         ]);
 
         // Convert PN & SN menjadi array list (per baris)
@@ -83,7 +81,7 @@ class asetController extends Controller
             'dimensi' => $request->dimensi,
             'qty' => $request->qty,
             'sn' => json_encode($snList),
-            'lokasi' => $request->lokasi,
+            'lokasi' => $request->lokasi ?? $inventaris->lokasi,
         ]);
 
         return redirect()->back()->with('success', 'Data inventaris berhasil diperbarui!');
@@ -192,16 +190,16 @@ class asetController extends Controller
 
         return view('inventori.aset', compact('asset_jual'));
     }
+
     public function search(Request $request)
-{
-    $keyword = $request->keyword;
+    {
+        $keyword = $request->keyword;
 
-    $asset_jual = AsetJual::where('pn', 'LIKE', "%$keyword%")
-        ->orWhere('nama_barang', 'LIKE', "%$keyword%")
-        ->orWhere('sn', 'LIKE', "%$keyword%")
-        ->get();
+        $asset_jual = AsetJual::where('pn', 'LIKE', "%$keyword%")
+            ->orWhere('nama_barang', 'LIKE', "%$keyword%")
+            ->orWhere('sn', 'LIKE', "%$keyword%")
+            ->get();
 
-    return view('inventori.aset', compact('asset_jual'));
-}
-
+        return view('inventori.aset', compact('asset_jual'));
+    }
 }
