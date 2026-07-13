@@ -21,15 +21,31 @@
         <!-- HEADER -->
         <div class="dash-header">
             <div class="dash-brand">
-                <!-- 👋 GREETING USER -->
-                <div class="dash-greeting">
-                    <div class="greeting-avatar">
-                        {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
-                    </div>
-                    <div class="greeting-text">
-                        <span class="greeting-hello">Hallo, {{ auth()->user()->name ?? 'User' }}</span>
-                        {{-- Ganti "role" di bawah ini sesuai nama kolom di tabel users kamu (mis. level, jabatan, dll) --}}
-                        <span class="greeting-role">{{ ucfirst(auth()->user()->role ?? 'User') }}</span>
+                <!-- 👋 GREETING USER + DROPDOWN -->
+                <div class="dash-greeting" id="greetingDropdownWrap">
+                    <button type="button" class="greeting-trigger" id="greetingTrigger" onclick="toggleGreetingDropdown(event)">
+                        <div class="greeting-avatar">
+                            {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+                        </div>
+                        <div class="greeting-text">
+                            <span class="greeting-hello">Hallo, {{ auth()->user()->name ?? 'User' }}</span>
+                            {{-- Ganti "role" di bawah ini sesuai nama kolom di tabel users kamu (mis. level, jabatan, dll) --}}
+                            <span class="greeting-role">{{ ucfirst(auth()->user()->role ?? 'User') }}</span>
+                        </div>
+                        <svg class="greeting-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+
+                    <!-- DROPDOWN MENU -->
+                    <div class="greeting-dropdown" id="greetingDropdown">
+                        <button type="button" class="dropdown-item" onclick="openChangePasswordModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            <span>Ubah Password</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -38,7 +54,7 @@
                 @if (auth()->user()->role === 'superadmin')
                     <a href="{{ route('users.register') }}" class="btn-register-user">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-                        Register User
+                        <span>Register User</span>
                     </a>
                 @endif
 
@@ -46,38 +62,33 @@
                     @csrf
                     <button type="submit" class="btn-logout">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                        Log out
+                        <span>Log out</span>
                     </button>
                 </form>
-<a href="{{ route('activity-log') }}" class="btn-logout" style="text-decoration:none;">
-    <svg viewBox="0 0 24 24"
-         fill="none"
-         stroke-width="2"
-         stroke-linecap="round"
-         stroke-linejoin="round">
-        <path d="M3 3v5h5"/>
-        <path d="M3.05 13A9 9 0 1 0 6 5.3"/>
-        <polyline points="12 7 12 12 16 14"/>
-    </svg>
-    Activity Log
-</a>            </div>
+
+                <a href="{{ route('activity-log') }}" class="btn-logout" style="text-decoration:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v5h5"/>
+                        <path d="M3.05 13A9 9 0 1 0 6 5.3"/>
+                        <polyline points="12 7 12 12 16 14"/>
+                    </svg>
+                    <span>Activity Log</span>
+                </a>
+            </div>
         </div>
 
         <!-- CENTER: CHART + LOGO -->
         <div class="panel center-panel">
-            <div class="chart-wrap" style="display:flex; justify-content:center; align-items:center; min-height:320px;">
+            <div class="chart-wrap">
                 <div class="chart-center">
                     <img src="{{ asset('assets/img/logo.png') }}"
                         alt="Logo"
-                        style="width:200px; height:200px; object-fit:contain;">
+                        class="dash-logo">
                 </div>
-        </div>
+            </div>
+
             <!-- ICON ROW — HORIZONTAL, TANPA JUDUL SECTION -->
-            <div class="icon-row"  style="
-        background: url('{{ asset('assets/img/bgdashboard.jpg') }}') center center / cover no-repeat;
-        padding: 30px;
-        border-radius: 20px;
-     ">
+            <div class="icon-row">
 
                 <div class="icon-col" onclick="window.location.href='{{ route('view-ws') }}'">
                     <div class="icon-tile tile-workshop" style="background-color: #dc3545;">
@@ -161,6 +172,51 @@
         <button onclick="closeUnderConstructionModal()" class="year-cancel" style="background:var(--red);color:#fff;padding:10px 22px;border-radius:999px;font-weight:600;">
             Tutup
         </button>
+    </div>
+</div>
+
+<!-- 🔑 CHANGE PASSWORD MODAL -->
+<div id="changePasswordModal" class="year-modal">
+    <div class="year-modal-box" style="text-align:left; min-width:320px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+            <h5 class="year-modal-title" style="margin:0;">Ubah Password</h5>
+            <button type="button" onclick="closeChangePasswordModal()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;line-height:1;padding:0;">&times;</button>
+        </div>
+
+        <form method="POST" action="{{ route('password.change') }}" style="width:100%; display:flex; flex-direction:column; gap:14px;">
+            @csrf
+            @method('PUT')
+
+            <div>
+                <label for="current_password" class="cp-label">Password Saat Ini</label>
+                <input type="password" id="current_password" name="current_password" class="cp-input" required autocomplete="current-password">
+            </div>
+
+            <div>
+                <label for="new_password" class="cp-label">Password Baru</label>
+                <input type="password" id="new_password" name="new_password" class="cp-input" required minlength="8" autocomplete="new-password">
+            </div>
+
+            <div>
+                <label for="new_password_confirmation" class="cp-label">Konfirmasi Password Baru</label>
+                <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="cp-input" required minlength="8" autocomplete="new-password">
+            </div>
+
+            @if ($errors->any())
+                <div style="background:var(--red-light); color:var(--red-dark); padding:10px 14px; border-radius:10px; font-size:12.5px;">
+                    <ul style="margin:0; padding-left:16px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:4px;">
+                <button type="button" onclick="closeChangePasswordModal()" class="btn-pill-outline-modal">Batal</button>
+                <button type="submit" class="btn-pill-red-modal">Simpan</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -271,6 +327,35 @@ function openUnderConstructionModal() {
 function closeUnderConstructionModal() {
     document.getElementById('underConstructionModal').style.display = 'none';
 }
+
+// 🔽 GREETING DROPDOWN
+function toggleGreetingDropdown(event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById('greetingDropdown');
+    const wrap = document.getElementById('greetingDropdownWrap');
+    dropdown.classList.toggle('show');
+    wrap.classList.toggle('open');
+}
+
+document.addEventListener('click', function (event) {
+    const wrap = document.getElementById('greetingDropdownWrap');
+    const dropdown = document.getElementById('greetingDropdown');
+    if (wrap && !wrap.contains(event.target)) {
+        dropdown.classList.remove('show');
+        wrap.classList.remove('open');
+    }
+});
+
+// 🔑 CHANGE PASSWORD MODAL
+function openChangePasswordModal() {
+    document.getElementById('greetingDropdown').classList.remove('show');
+    document.getElementById('greetingDropdownWrap').classList.remove('open');
+    document.getElementById('changePasswordModal').style.display = 'flex';
+}
+
+function closeChangePasswordModal() {
+    document.getElementById('changePasswordModal').style.display = 'none';
+}
 </script>
 
 <!-- 🎨 STYLING — MINIMALIS PUTIH-MERAH -->
@@ -310,12 +395,25 @@ function closeUnderConstructionModal() {
     }
     .dash-brand{ display:flex; align-items:center; gap:14px; }
 
-    /* 👋 GREETING USER — POJOK KIRI ATAS */
+    /* 👋 GREETING USER — POJOK KIRI ATAS + DROPDOWN */
     .dash-greeting{
+        position:relative;
+        display:inline-block;
+    }
+    .greeting-trigger{
         display:flex;
         align-items:center;
         gap:14px;
+        background:none;
+        border:none;
+        padding:6px 10px 6px 6px;
+        border-radius:16px;
+        cursor:pointer;
+        transition:.15s ease;
     }
+    .greeting-trigger:hover{ background:var(--red-light); }
+    .dash-greeting.open .greeting-trigger{ background:var(--red-light); }
+
     .greeting-avatar{
         width:52px; height:52px;
         border-radius:50%;
@@ -332,6 +430,7 @@ function closeUnderConstructionModal() {
         display:flex;
         flex-direction:column;
         line-height:1.3;
+        text-align:left;
     }
     .greeting-hello{
         font-family:'Space Grotesk', sans-serif;
@@ -344,6 +443,54 @@ function closeUnderConstructionModal() {
         color:var(--muted);
         text-transform:capitalize;
     }
+    .greeting-chevron{
+        width:16px; height:16px;
+        stroke:var(--muted);
+        flex-shrink:0;
+        transition:transform .18s ease;
+    }
+    .dash-greeting.open .greeting-chevron{ transform:rotate(180deg); stroke:var(--red-dark); }
+
+    /* DROPDOWN MENU */
+    .greeting-dropdown{
+        position:absolute;
+        top:calc(100% + 8px);
+        left:0;
+        min-width:200px;
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:14px;
+        box-shadow:0 12px 30px rgba(16,16,16,0.12);
+        padding:6px;
+        opacity:0;
+        visibility:hidden;
+        transform:translateY(-6px);
+        transition:.15s ease;
+        z-index:1000;
+    }
+    .greeting-dropdown.show{
+        opacity:1;
+        visibility:visible;
+        transform:translateY(0);
+    }
+    .dropdown-item{
+        width:100%;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        background:none;
+        border:none;
+        padding:10px 12px;
+        border-radius:10px;
+        font-size:13.5px;
+        font-weight:600;
+        color:var(--text);
+        cursor:pointer;
+        text-align:left;
+        transition:.12s ease;
+    }
+    .dropdown-item:hover{ background:var(--red-light); color:var(--red-dark); }
+    .dropdown-item svg{ width:16px; height:16px; stroke:var(--red); flex-shrink:0; }
 
     .dash-brand-mark{
         width:46px; height:46px;
@@ -363,41 +510,49 @@ function closeUnderConstructionModal() {
     }
     .dash-subtitle{ font-size:12.5px; color:var(--muted); }
 
-    .dash-actions{ display:flex; align-items:center; gap:14px; }
+    /* dash-actions: default desktop, tapi dibuat scroll-friendly di mobile */
+    .dash-actions{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        flex-wrap:wrap;
+    }
 
     .btn-logout{
         display:flex; align-items:center; gap:8px;
         background:var(--surface);
         border:1px solid var(--border);
-        padding:12px 22px;
+        padding:12px 20px;
         border-radius:999px;
-        font-size:14px;
+        font-size:13.5px;
         font-weight:600;
         color:var(--text);
         cursor:pointer;
         box-shadow:var(--shadow);
         transition:.15s ease;
+        white-space:nowrap;
     }
     .btn-logout:hover{ background:var(--red-light); border-color:var(--red); color:var(--red-dark); }
-    .btn-logout svg{ width:16px; height:16px; stroke:var(--red); }
+    .btn-logout svg{ width:16px; height:16px; stroke:var(--red); flex-shrink:0; }
 
     .btn-register-user{
         display:flex; align-items:center; gap:8px;
         background:var(--red);
         color:#fff;
         border:none;
-        padding:12px 22px;
+        padding:12px 20px;
         border-radius:999px;
-        font-size:14px;
+        font-size:13.5px;
         font-weight:700;
         font-family:'Space Grotesk', sans-serif;
         text-decoration:none;
         cursor:pointer;
         box-shadow:0 6px 16px rgba(225,29,46,0.25);
         transition:.15s ease;
+        white-space:nowrap;
     }
     .btn-register-user:hover{ background:var(--red-dark); color:#fff; }
-    .btn-register-user svg{ width:16px; height:16px; stroke:#fff; }
+    .btn-register-user svg{ width:16px; height:16px; stroke:#fff; flex-shrink:0; }
 
     /* STATS */
     .stats-row{
@@ -432,13 +587,32 @@ function closeUnderConstructionModal() {
         box-shadow:var(--shadow);
     }
     .center-panel{ display:flex; flex-direction:column; align-items:center; padding:48px 30px 40px; }
-    .chart-wrap{ position:relative; width:220px; height:220px; margin-bottom:28px; }
+
+    /* Chart / Logo wrap — responsif, tidak lagi pakai inline style fix 320px */
+    .chart-wrap{
+        position:relative;
+        width:100%;
+        max-width:220px;
+        aspect-ratio:1/1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin:0 auto 24px;
+    }
     .chart-center{
         position:absolute; inset:0;
         display:flex; align-items:center; justify-content:center;
         pointer-events:none;
     }
-    .chart-logo{ width:56px; height:56px; object-fit:contain; }
+
+    /* Logo dibuat responsif: mengikuti ukuran container, dibatasi max-width */
+    .dash-logo{
+        width:100%;
+        max-width:180px;
+        height:auto;
+        object-fit:contain;
+    }
+
     .legend{ display:flex; flex-direction:column; gap:10px; width:100%; max-width:250px; margin-bottom:34px; }
     .legend-item{ display:flex; align-items:center; justify-content:space-between; font-size:12.5px; }
     .legend-left{ display:flex; align-items:center; gap:9px; }
@@ -452,8 +626,11 @@ function closeUnderConstructionModal() {
         flex-wrap:wrap;
         justify-content:center;
         gap:34px;
-        padding-top:26px;
+        padding:30px;
         border-top:1px solid var(--border);
+        background: url('{{ asset('assets/img/bgdashboard.jpg') }}') center center / cover no-repeat;
+        border-radius:20px;
+        box-sizing:border-box;
     }
     .icon-col{
         display:flex; flex-direction:column; align-items:center; gap:14px;
@@ -497,11 +674,12 @@ function closeUnderConstructionModal() {
     .tile-activity{ background-image:url('{{ asset('assets/img/tiles/activity.jpg') }}'); }
     .tile-company{ background-image:url('{{ asset('assets/img/tiles/company.jpg') }}'); }
 
-    /* YEAR MODAL */
+    /* YEAR MODAL / GENERIC MODAL */
     .year-modal{
         display:none; position:fixed; inset:0;
         background:rgba(23,24,26,0.45);
         z-index:9999; align-items:center; justify-content:center;
+        padding:16px;
     }
     .year-modal-box{
         background:var(--surface);
@@ -509,6 +687,7 @@ function closeUnderConstructionModal() {
         border-radius:20px;
         text-align:center;
         min-width:300px;
+        max-width:100%;
         box-shadow:0 20px 50px rgba(0,0,0,0.15);
         display:flex; flex-direction:column; align-items:center; gap:16px;
         border:1px solid var(--border);
@@ -529,20 +708,133 @@ function closeUnderConstructionModal() {
         color:var(--muted); font-size:13px; cursor:pointer;
     }
 
-    /* RESPONSIVE */
+    /* CHANGE PASSWORD FORM ELEMENTS */
+    .cp-label{
+        display:block;
+        font-size:12.5px;
+        font-weight:600;
+        color:var(--text);
+        margin-bottom:6px;
+    }
+    .cp-input{
+        width:100%;
+        border:1px solid var(--border);
+        border-radius:10px;
+        padding:10px 14px;
+        font-size:13.5px;
+        background:var(--bg);
+        color:var(--text);
+        outline:none;
+        transition:.15s ease;
+        box-sizing:border-box;
+    }
+    .cp-input:focus{ border-color:var(--red); background:var(--surface); box-shadow:0 0 0 0.15rem rgba(225,29,46,0.15); }
+
+    .btn-pill-outline-modal{
+        padding:10px 20px;
+        border-radius:999px;
+        font-size:13px;
+        font-weight:600;
+        background:var(--surface);
+        color:var(--text);
+        border:1px solid var(--border);
+        cursor:pointer;
+        transition:.15s ease;
+    }
+    .btn-pill-outline-modal:hover{ background:var(--red-light); border-color:var(--red); color:var(--red-dark); }
+
+    .btn-pill-red-modal{
+        padding:10px 22px;
+        border-radius:999px;
+        font-size:13px;
+        font-weight:700;
+        background:var(--red);
+        color:#fff;
+        border:none;
+        cursor:pointer;
+        box-shadow:0 6px 16px rgba(225,29,46,0.25);
+        transition:.15s ease;
+    }
+    .btn-pill-red-modal:hover{ background:var(--red-dark); }
+
+    /* ============================================================
+       RESPONSIVE — TABLET
+       ============================================================ */
     @media (max-width: 1100px){
         .stats-row{ grid-template-columns:repeat(3,1fr); }
         .icon-tile{ width:92px; height:92px; }
-        .chart-wrap{ width:280px; height:280px; }
+        .chart-wrap{ max-width:260px; }
+        .dash-logo{ max-width:200px; }
     }
+
+    /* ============================================================
+       RESPONSIVE — MOBILE (≤ 640px)
+       ============================================================ */
     @media (max-width: 640px){
+        .dash-wrap{ padding:20px 16px 50px; }
+
         .stats-row{ grid-template-columns:repeat(2,1fr); }
-        .icon-row{ gap:22px; }
-        .icon-tile{ width:72px; height:72px; }
-        .icon-tile svg{ width:30px; height:30px; }
+
+        /* Header jadi lebih rapat & rapi di mobile */
+        .dash-header{ gap:12px; margin-bottom:20px; }
         .dash-title{ font-size:20px; }
         .greeting-hello{ font-size:15px; }
-        .chart-wrap{ width:220px; height:220px; }
+        .greeting-avatar{ width:44px; height:44px; font-size:16px; }
+        .greeting-trigger{ padding:4px 8px 4px 4px; gap:10px; }
+        .greeting-dropdown{ min-width:180px; }
+
+        /* Actions jadi grid rata, tidak wrap acak-acakan */
+        .dash-actions{
+            width:100%;
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(90px, 1fr));
+            gap:8px;
+        }
+        .btn-logout, .btn-register-user{
+            flex-direction:column;
+            justify-content:center;
+            gap:4px;
+            padding:10px 8px;
+            font-size:11.5px;
+            text-align:center;
+            white-space:normal;
+        }
+        .btn-logout svg, .btn-register-user svg{ width:18px; height:18px; }
+        .dash-actions form{ width:100%; }
+        .dash-actions form .btn-logout{ width:100%; }
+
+        /* Panel & chart lebih ringkas */
+        .center-panel{ padding:28px 16px 28px; }
+
+        /* Logo: ukurannya proporsional & jauh lebih kecil di mobile */
+        .chart-wrap{
+            max-width:150px;
+            margin-bottom:18px;
+        }
+        .dash-logo{ max-width:130px; }
+
+        /* Icon row lebih rapat & tile lebih kecil supaya muat & tidak "makan tempat" */
+        .icon-row{
+            gap:16px;
+            padding:20px 14px;
+            border-radius:16px;
+        }
+        .icon-tile{ width:64px; height:64px; border-radius:16px; }
+        .icon-tile svg{ width:26px; height:26px; }
+        .icon-label{ font-size:12px; }
+        .icon-col{ gap:8px; width:calc(33.333% - 11px); }
+    }
+
+    /* ============================================================
+       RESPONSIVE — MOBILE KECIL (≤ 380px)
+       ============================================================ */
+    @media (max-width: 380px){
+        .chart-wrap{ max-width:120px; }
+        .dash-logo{ max-width:100px; }
+        .icon-tile{ width:56px; height:56px; }
+        .icon-tile svg{ width:22px; height:22px; }
+        .icon-col{ width:calc(33.333% - 8px); }
+        .icon-row{ gap:12px; }
     }
 </style>
 

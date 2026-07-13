@@ -83,6 +83,10 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
     });
+    Route::put('/password/change', [UserManagementController::class, 'changePassword'])
+    ->name('password.change');
+
+    
     Route::get('/activity-log', [App\Http\Controllers\ActivityLogController::class, 'index'])
     ->name('activity-log')
     ->middleware('auth');

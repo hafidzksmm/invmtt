@@ -114,4 +114,45 @@ class UserManagementController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
-}
+
+    /**
+     * ✅ BARU: Ubah password milik akun yang sedang login sendiri
+     * (dipakai oleh dropdown avatar di dashboard).
+     */
+/**
+     * ✅ Ubah password milik akun yang sedang login sendiri
+     * (dipakai oleh dropdown avatar di dashboard).
+     * Setelah berhasil, user otomatis di-logout & dilempar ke halaman login
+     * demi keamanan (memastikan sesi lama tidak lagi valid).
+     */
+    public function changePassword(Request $request)
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'current_password' => ['required', 'string'],
+            'new_password'     => ['required', 'confirmed', Password::min(7)],
+        ], [
+            'current_password.required' => 'Password saat ini wajib diisi.',
+            'new_password.required'     => 'Password baru wajib diisi.',
+            'new_password.confirmed'    => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        // Pastikan password lama benar
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return back()
+                ->withErrors(['current_password' => 'Password saat ini yang Anda masukkan salah.'])
+                ->withInput();
+        }
+
+        $user->password = Hash::make($validated['new_password']);
+        $user->save();
+
+        // 🔐 Logout paksa demi keamanan setelah password berhasil diubah
+        auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('sign-in')->with('success', 'Password berhasil diubah. Silakan login kembali dengan password baru Anda.');
+    }
+    }

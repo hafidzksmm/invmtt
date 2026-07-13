@@ -1,4 +1,9 @@
 <x-guest-layout>
+    @if (session('success'))
+    <div style="background:#D1FADF; color:#12742A; padding:12px 16px; border-radius:10px; font-size:13.5px; margin-bottom:16px; text-align:center;">
+        {{ session('success') }}
+    </div>
+    @endif
     <div class="container position-sticky z-index-sticky top-0">
         <div class="row">
             <div class="col-12">
