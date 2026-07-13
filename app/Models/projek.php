@@ -24,7 +24,6 @@ class projek extends Model
         'ukuran',
         'jumlah',
         'lokasi',
-        'sn',
     ];
 
     public $timestamps = true;

@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\DoController;
+use App\Http\Controllers\TrainingCertificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -150,5 +151,45 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/inventory-do/file/{id}', [DoController::class, 'deleteFile'])
         ->middleware('role:superadmin')
         ->name('inventory-do.file.delete');
+
+    // ===============================
+    // TRAINING CERTIFICATION
+    // ===============================
+
+    Route::get('/training-certification', [TrainingCertificationController::class, 'index'])
+        ->name('view-training-certification');
+
+    // Provider (vendor) CRUD
+    Route::post('/training-certification/provider/add', [TrainingCertificationController::class, 'storeProvider'])
+        ->middleware('role:admin,superadmin')
+        ->name('training-provider.store');
+
+    Route::post('/training-certification/provider/{id}', [TrainingCertificationController::class, 'updateProvider'])
+        ->middleware('role:admin,superadmin')
+        ->name('training-provider.update');
+
+    Route::delete('/training-certification/provider/{id}', [TrainingCertificationController::class, 'destroyProvider'])
+        ->middleware('role:superadmin')
+        ->name('training-provider.destroy');
+
+    Route::post('/training-certification/provider/reorder', [TrainingCertificationController::class, 'reorderProvider'])
+        ->middleware('role:admin,superadmin')
+        ->name('training-provider.reorder');
+
+    // Sertifikat per vendor (dipanggil via AJAX untuk isi popup)
+    Route::get('/training-certification/provider/{id}/certificates', [TrainingCertificationController::class, 'getCertificates'])
+        ->name('training-provider.certificates');
+
+    Route::post('/training-certification/provider/{id}/certificates/add', [TrainingCertificationController::class, 'storeCertificate'])
+        ->middleware('role:admin,superadmin')
+        ->name('training-certificate.store');
+
+    Route::post('/training-certification/certificate/{id}', [TrainingCertificationController::class, 'updateCertificate'])
+        ->middleware('role:admin,superadmin')
+        ->name('training-certificate.update');
+
+    Route::delete('/training-certification/certificate/{id}', [TrainingCertificationController::class, 'destroyCertificate'])
+        ->middleware('role:superadmin')
+        ->name('training-certificate.destroy');
 
 });

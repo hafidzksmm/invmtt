@@ -213,10 +213,6 @@
                                         <input type="text" class="form-control" id="ukuran" name="ukuran">
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
-                                        <input type="text" class="form-control" id="dimensi" name="dimensi">
-                                    </div>
-                                    <div class="col-md-6">
                                         <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
                                         <input type="number" class="form-control" id="qty" name="qty" min="1" required>
                                     </div>
@@ -254,7 +250,6 @@
                             <th class="sortable-header" data-column="merk">Merk <span class="sort-indicator"></span></th>
                             <th class="sortable-header" data-column="tipe">Tipe <span class="sort-indicator"></span></th>
                             <th class="sortable-header" data-column="ukuran">Ukuran <span class="sort-indicator"></span></th>
-                            <th style="cursor: default;">Dimensi</th>
                             <th style="cursor: default;">Qty</th>
                             <th style="cursor: default;">Serial No</th>
                             <th style="cursor: default;">Dibuat Pada</th>
@@ -282,7 +277,6 @@
                                 <td class="text-wrap">{{ $item->merk }}</td>
                                 <td class="text-wrap">{{ $item->tipe }}</td>
                                 <td class="text-wrap">{{ $item->ukuran }}</td>
-                                <td class="text-wrap">{{ $item->dimensi }}</td>
                                 <td>{{ $item->qty }}</td>
                                 <td class="text-wrap">
                                     @php $sns = json_decode($item->sn ?? '[]', true); @endphp
@@ -365,10 +359,6 @@
                                                                 <input type="text" class="form-control" id="ukuran" name="ukuran" value="{{ $item->ukuran }}">
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <label for="dimensi" class="form-label fw-semibold">Dimensi</label>
-                                                                <input type="text" class="form-control" id="dimensi" name="dimensi" value="{{ $item->dimensi }}">
-                                                            </div>
-                                                            <div class="col-md-6">
                                                                 <label for="qty" class="form-label fw-semibold">Quantity (QTY)</label>
                                                                 <input type="number" class="form-control" id="qty" name="qty" min="1" value="{{ $item->qty }}" required>
                                                             </div>
@@ -397,7 +387,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="12" class="text-center text-muted py-3">Tidak ada data inventaris.</td>
+                                <td colspan="11" class="text-center text-muted py-3">Tidak ada data inventaris.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -721,7 +711,7 @@
             if (dataToRender.length === 0) {
                 tbody.html(`
                 <tr>
-                    <td colspan="12" class="text-center text-muted py-3">
+                    <td colspan="11" class="text-center text-muted py-3">
                         Tidak ada data inventaris.
                     </td>
                 </tr>
@@ -757,7 +747,6 @@
                     <td class="text-wrap">${item.merk || ''}</td>
                     <td class="text-wrap">${item.tipe || ''}</td>
                     <td class="text-wrap">${item.ukuran || ''}</td>
-                    <td class="text-wrap">${item.dimensi || ''}</td>
                     <td>${item.qty || ''}</td>
                     <td class="text-wrap">${snHtml}</td>
                     <td>${new Date(item.created_at).toLocaleDateString('id-ID')}</td>

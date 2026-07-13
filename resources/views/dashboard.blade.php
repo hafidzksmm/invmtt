@@ -112,7 +112,7 @@
                     <span class="icon-label">Project Files</span>
                 </div>
 
-                <div class="icon-col" onclick="openUnderConstructionModal()">
+                <div class="icon-col" onclick="window.location.href='{{ route('view-training-certification') }}'">
                     <div class="icon-tile tile-activity" style="background-color: #dc3545;">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
                     </div>

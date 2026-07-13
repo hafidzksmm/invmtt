@@ -110,17 +110,17 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-3 d-none" id="tipeGroup">
-                                    <label for="tipe" class="form-label">Tipe</label>
-                                    <select id="tipe" name="tipe" class="form-select">
-                                        <option value="">-- Pilih Tipe --</option>
-                                    </select>
-                                </div>
-
                                 <div class="mb-3 d-none" id="merkGroup">
                                     <label for="merk" class="form-label">Merk</label>
                                     <select id="merk" name="merk" class="form-select">
                                         <option value="">-- Pilih Merk --</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3 d-none" id="tipeGroup">
+                                    <label for="tipe" class="form-label">Tipe</label>
+                                    <select id="tipe" name="tipe" class="form-select">
+                                        <option value="">-- Pilih Tipe --</option>
                                     </select>
                                 </div>
 
@@ -198,40 +198,29 @@
                                         <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
                                         <input type="text" class="form-control" id="nama_barang" name="nama_barang" required>
                                     </div>
-
                                     <div class="col-md-6">
                                         <label for="jenis" class="form-label fw-semibold">Jenis</label>
                                         <input type="text" class="form-control" id="jenis" name="jenis">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="tipe" class="form-label fw-semibold">Tipe</label>
-                                        <input type="text" class="form-control" id="tipe" name="tipe">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="merk" class="form-label fw-semibold">Merk</label>
                                         <input type="text" class="form-control" id="merk" name="merk">
                                     </div>
                                     <div class="col-md-6">
+                                        <label for="tipe" class="form-label fw-semibold">Tipe</label>
+                                        <input type="text" class="form-control" id="tipe" name="tipe">
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
                                         <input type="text" class="form-control" id="ukuran" name="ukuran">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="jumlah" class="form-label fw-semibold">Jumlah</label>
                                         <input type="number" class="form-control" id="jumlah" name="jumlah" min="1" required>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-semibold">Serial No (SN)</label>
-                                        <textarea name="sn" class="form-control" rows="4"></textarea>
-                                        <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                                        <div class="d-flex gap-2">
-                                            <input type="text" class="form-control" id="lokasi" name="lokasi" required>
-                                            <button type="submit" class="btn-pill btn-pill-red flex-shrink-0" title="Simpan">
-                                                <i class="bi bi-save"></i> Simpan
-                                            </button>
-                                        </div>
+                                        <input type="text" class="form-control" id="lokasi" name="lokasi" required>
                                     </div>
                                 </div>
                             </div>
@@ -239,6 +228,9 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn-pill btn-pill-outline" data-bs-dismiss="modal">
                                     <i class="bi bi-x-circle"></i> Batal
+                                </button>
+                                <button type="submit" class="btn-pill btn-pill-red">
+                                    <i class="bi bi-save"></i> Simpan
                                 </button>
                             </div>
                         </form>
@@ -256,11 +248,10 @@
                             <th class="sortable-header" data-column="pn">Produk No <span class="sort-indicator"></span></th>
                             <th class="sortable-header" data-column="nama_barang">Nama Barang <span class="sort-indicator"></span></th>
                             <th class="sortable-header" data-column="jenis">Jenis <span class="sort-indicator"></span></th>
-                            <th class="sortable-header" data-column="tipe">Tipe <span class="sort-indicator"></span></th>
                             <th class="sortable-header" data-column="merk">Merk <span class="sort-indicator"></span></th>
+                            <th class="sortable-header" data-column="tipe">Tipe <span class="sort-indicator"></span></th>
                             <th class="sortable-header" data-column="ukuran">Ukuran <span class="sort-indicator"></span></th>
                             <th style="cursor: default;">Jumlah</th>
-                            <th style="cursor: default;">Serial No</th>
                             <th class="sortable-header" data-column="lokasi">Lokasi <span class="sort-indicator"></span></th>
                             <th style="cursor: default;">Dibuat Pada</th>
                             <th style="cursor: default;">Aksi</th>
@@ -282,25 +273,13 @@
                                         {{ $item->pn }}
                                     @endif
                                 </td>
-                                <td>{{ $item->nama_barang }}</td>
-                                <td>{{ $item->jenis }}</td>
+                                <td class="text-wrap">{{ $item->nama_barang }}</td>
+                                <td class="text-wrap">{{ $item->jenis }}</td>
+                                <td class="text-wrap">{{ $item->merk }}</td>
                                 <td class="text-wrap">{{ $item->tipe }}</td>
-                                <td>{{ $item->merk }}</td>
-                                <td>{{ $item->ukuran }}</td>
+                                <td class="text-wrap">{{ $item->ukuran }}</td>
                                 <td>{{ $item->jumlah }}</td>
-                                <td class="text-wrap">
-                                    @php $sns = json_decode($item->sn ?? '[]', true); @endphp
-                                    @if (is_array($sns))
-                                        <ul class="ps-3 mb-0">
-                                            @foreach ($sns as $sn)
-                                                <li>{{ $sn }}</li>
-                                            @endforeach
-                                        </ul>
-                                    @else
-                                        {{ $item->sn }}
-                                    @endif
-                                </td>
-                                <td>{{ $item->lokasi }}</td>
+                                <td class="text-wrap">{{ $item->lokasi }}</td>
                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     {{-- ✅ EDIT & HAPUS - ADMIN & SUPERADMIN --}}
@@ -339,8 +318,6 @@
                                                         @php
                                                             $pns = json_decode($item->pn ?? '[]', true);
                                                             $pn_string = is_array($pns) ? implode("\n", $pns) : $item->pn;
-                                                            $sns = json_decode($item->sn ?? '[]', true);
-                                                            $sn_string = is_array($sns) ? implode("\n", $sns) : $item->sn;
                                                         @endphp
 
                                                         <div class="row g-3">
@@ -358,12 +335,12 @@
                                                                 <input type="text" class="form-control" id="jenis" name="jenis" value="{{ $item->jenis }}">
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <label for="tipe" class="form-label fw-semibold">Tipe</label>
-                                                                <input type="text" class="form-control" id="tipe" name="tipe" value="{{ $item->tipe }}">
-                                                            </div>
-                                                            <div class="col-md-6">
                                                                 <label for="merk" class="form-label fw-semibold">Merk</label>
                                                                 <input type="text" class="form-control" id="merk" name="merk" value="{{ $item->merk }}">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="tipe" class="form-label fw-semibold">Tipe</label>
+                                                                <input type="text" class="form-control" id="tipe" name="tipe" value="{{ $item->tipe }}">
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label for="ukuran" class="form-label fw-semibold">Ukuran</label>
@@ -375,17 +352,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label for="lokasi" class="form-label fw-semibold">Lokasi</label>
-                                                                <div class="d-flex gap-2">
-                                                                    <input type="text" class="form-control" id="lokasi" name="lokasi" value="{{ $item->lokasi }}">
-                                                                    <button type="submit" class="btn-pill btn-pill-red flex-shrink-0" title="Simpan Perubahan">
-                                                                        <i class="bi bi-save"></i> Simpan
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label class="form-label fw-semibold">Serial No (SN)</label>
-                                                                <textarea name="sn" class="form-control" rows="4">{{ $sn_string }}</textarea>
-                                                                <small class="text-muted">Pisahkan SN dengan enter (1 baris = 1 SN)</small>
+                                                                <input type="text" class="form-control" id="lokasi" name="lokasi" value="{{ $item->lokasi }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -393,6 +360,9 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn-pill btn-pill-outline" data-bs-dismiss="modal">
                                                             <i class="bi bi-x-circle"></i> Batal
+                                                        </button>
+                                                        <button type="submit" class="btn-pill btn-pill-red">
+                                                            <i class="bi bi-save"></i> Simpan
                                                         </button>
                                                     </div>
                                                 </form>
@@ -404,7 +374,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="12" class="text-center text-muted py-3">Tidak ada data inventaris.</td>
+                                <td colspan="11" class="text-center text-muted py-3">Tidak ada data inventaris.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -632,98 +602,58 @@
 <script>
     $(document).ready(function () {
         let projekData = @json($inventaryprojek);
+        let isUserAdmin = {{ $canManage ? 'true' : 'false' }};
         let currentSortColumn = null;
         let currentSortOrder = 'asc';
 
-        // Saat pilih Nama Barang
-        $('#nama_barang').on('change', function () {
-            let selectedBarang = $(this).val();
-            if (selectedBarang) {
-                let filtered = projekData.filter(item => item.nama_barang === selectedBarang);
+        function getUniqueValues(field, filters = {}) {
+            let filtered = projekData.filter(item => {
+                return (!filters.nama_barang || item.nama_barang === filters.nama_barang) &&
+                    (!filters.jenis || item.jenis === filters.jenis) &&
+                    (!filters.merk || item.merk === filters.merk) &&
+                    (!filters.tipe || item.tipe === filters.tipe) &&
+                    (!filters.ukuran || item.ukuran === filters.ukuran);
+            });
+            return [...new Set(filtered.map(item => item[field]).filter(Boolean))];
+        }
 
-                let uniqueJenis = [...new Set(filtered.map(item => item.jenis).filter(Boolean))];
-                $('#jenis').empty().append('<option value="">-- Pilih Jenis --</option>');
-                uniqueJenis.forEach(j => $('#jenis').append(`<option value="${j}">${j}</option>`));
+        function populateDropdown(selector, data, label, selectedVal = '') {
+            $(selector).empty().append(`<option value="">-- Pilih ${label} --</option>`);
+            data.forEach(value => {
+                let selected = value === selectedVal ? 'selected' : '';
+                $(selector).append(`<option value="${value}" ${selected}>${value}</option>`);
+            });
+        }
 
-                $('#jenisGroup').removeClass('d-none');
-                $('#tipeGroup, #merkGroup, #ukuranGroup').removeClass('d-none');
-            } else {
-                $('#jenisGroup, #tipeGroup, #merkGroup, #ukuranGroup').removeClass('d-none');
-            }
-        });
+        populateDropdown('#nama_barang', getUniqueValues('nama_barang'), 'Nama Barang');
+        populateDropdown('#jenis', getUniqueValues('jenis'), 'Jenis');
+        populateDropdown('#merk', getUniqueValues('merk'), 'Merk');
+        populateDropdown('#tipe', getUniqueValues('tipe'), 'Tipe');
+        populateDropdown('#ukuran', getUniqueValues('ukuran'), 'Ukuran');
 
-        // Saat pilih Jenis
-        $('#jenis').on('change', function () {
-            let barang = $('#nama_barang').val();
-            let jenis = $(this).val();
-            if (jenis) {
-                let filtered = projekData.filter(item =>
-                    item.nama_barang === barang && item.jenis === jenis
-                );
+        $('#jenisGroup, #merkGroup, #tipeGroup, #ukuranGroup').removeClass('d-none');
 
-                let uniqueTipe = [...new Set(filtered.map(item => item.tipe).filter(Boolean))];
-                $('#tipe').empty().append('<option value="">-- Pilih Tipe --</option>');
-                uniqueTipe.forEach(t => $('#tipe').append(`<option value="${t}">${t}</option>`));
+        $('#nama_barang, #jenis, #merk, #tipe, #ukuran').on('change', function () {
+            let filters = {
+                nama_barang: $('#nama_barang').val(),
+                jenis: $('#jenis').val(),
+                merk: $('#merk').val(),
+                tipe: $('#tipe').val(),
+                ukuran: $('#ukuran').val()
+            };
 
-                $('#tipeGroup').removeClass('d-none');
-                $('#merkGroup, #ukuranGroup').removeClass('d-none');
-            } else {
-                $('#tipeGroup, #merkGroup, #ukuranGroup').removeClass('d-none');
-            }
-        });
-
-        // Saat pilih Tipe
-        $('#tipe').on('change', function () {
-            let barang = $('#nama_barang').val();
-            let jenis = $('#jenis').val();
-            let tipe = $(this).val();
-            if (tipe) {
-                let filtered = projekData.filter(item =>
-                    item.nama_barang === barang &&
-                    item.jenis === jenis &&
-                    item.tipe === tipe
-                );
-
-                let uniqueMerk = [...new Set(filtered.map(item => item.merk).filter(Boolean))];
-                $('#merk').empty().append('<option value="">-- Pilih Merk --</option>');
-                uniqueMerk.forEach(m => $('#merk').append(`<option value="${m}">${m}</option>`));
-
-                $('#merkGroup').removeClass('d-none');
-                $('#ukuranGroup').removeClass('d-none');
-            } else {
-                $('#merkGroup, #ukuranGroup').removeClass('d-none');
-            }
-        });
-
-        // Saat pilih Merk
-        $('#merk').on('change', function () {
-            let barang = $('#nama_barang').val();
-            let jenis = $('#jenis').val();
-            let tipe = $('#tipe').val();
-            let merk = $(this).val();
-            if (merk) {
-                let filtered = projekData.filter(item =>
-                    item.nama_barang === barang &&
-                    item.jenis === jenis &&
-                    item.tipe === tipe &&
-                    item.merk === merk
-                );
-
-                let uniqueUkuran = [...new Set(filtered.map(item => item.ukuran).filter(Boolean))];
-                $('#ukuran').empty().append('<option value="">-- Pilih Ukuran --</option>');
-                uniqueUkuran.forEach(u => $('#ukuran').append(`<option value="${u}">${u}</option>`));
-
-                $('#ukuranGroup').removeClass('d-none');
-            } else {
-                $('#ukuranGroup').removeClass('d-none');
-            }
+            populateDropdown('#nama_barang', getUniqueValues('nama_barang', filters), 'Nama Barang', filters.nama_barang);
+            populateDropdown('#jenis', getUniqueValues('jenis', filters), 'Jenis', filters.jenis);
+            populateDropdown('#merk', getUniqueValues('merk', filters), 'Merk', filters.merk);
+            populateDropdown('#tipe', getUniqueValues('tipe', filters), 'Tipe', filters.tipe);
+            populateDropdown('#ukuran', getUniqueValues('ukuran', filters), 'Ukuran', filters.ukuran);
         });
 
         // FITUR SORTING ===================================================
         function getValueForSort(item, column) {
             let value = item[column];
 
-            if (column === 'pn' || column === 'sn') {
+            if (column === 'pn') {
                 try {
                     let decoded = JSON.parse(value || '[]');
                     if (Array.isArray(decoded) && decoded.length > 0) {
@@ -761,26 +691,65 @@
                 }
             });
 
+            renderTable(sortedData);
+        }
+
+        function renderTable(dataToRender = projekData) {
             let tbody = $('#dataTable tbody');
-            let rows = tbody.find('tr').toArray();
+            tbody.empty();
 
-            let rowMap = {};
-            rows.forEach((row, idx) => {
-                let itemId = sortedData[idx].id;
-                if (!rowMap[itemId]) {
-                    rowMap[itemId] = row;
+            if (dataToRender.length === 0) {
+                tbody.html(`
+                <tr>
+                    <td colspan="11" class="text-center text-muted py-3">
+                        Tidak ada data inventaris.
+                    </td>
+                </tr>
+            `);
+                return;
+            }
+
+            dataToRender.forEach((item, index) => {
+                let pns = [];
+                try {
+                    pns = JSON.parse(item.pn || '[]');
+                } catch (e) {
+                    pns = item.pn ? [item.pn] : [];
                 }
-            });
 
-            sortedData.forEach((item) => {
-                let matchingRow = rows.find(row => {
-                    let editButton = $(row).find('button[data-bs-target*="editModal"]').attr('data-bs-target');
-                    return editButton && editButton.includes('editModal' + item.id);
-                });
+                let pnHtml = Array.isArray(pns) && pns.length > 0
+                    ? `<ul class="ps-3 mb-0">${pns.map(pn => `<li>${pn}</li>`).join('')}</ul>`
+                    : '';
 
-                if (matchingRow) {
-                    tbody.append(matchingRow);
-                }
+                let row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td class="text-wrap">${pnHtml}</td>
+                    <td class="text-wrap">${item.nama_barang || ''}</td>
+                    <td class="text-wrap">${item.jenis || ''}</td>
+                    <td class="text-wrap">${item.merk || ''}</td>
+                    <td class="text-wrap">${item.tipe || ''}</td>
+                    <td class="text-wrap">${item.ukuran || ''}</td>
+                    <td>${item.jumlah || ''}</td>
+                    <td class="text-wrap">${item.lokasi || ''}</td>
+                    <td>${new Date(item.created_at).toLocaleDateString('id-ID')}</td>
+                    <td>
+                        ${isUserAdmin ? `
+                            <button type="button" class="btn-pill btn-pill-outline btn-sm-pill" data-bs-toggle="modal" data-bs-target="#editModal${item.id}">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </button>
+                            <form action="{{ route('projek.hapus', ':id') }}".replace(':id', item.id) method="POST" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-pill btn-pill-red btn-sm-pill" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </form>
+                        ` : `<span class="text-muted text-sm">Tidak ada akses</span>`}
+                    </td>
+                </tr>
+            `;
+                tbody.append(row);
             });
         }
 

@@ -28,12 +28,11 @@ class asetController extends Controller
         ]);
 
         // Convert PN & SN menjadi array list (per baris)
-    $pnRaw = (string) $request->pn;
-    $snRaw = (string) $request->sn;
+        $pnRaw = (string) $request->pn;
+        $snRaw = (string) $request->sn;
 
-    $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
-    $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
-
+        $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
+        $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
 
         asetjual::create([
             'pn' => json_encode($pnList),
@@ -42,7 +41,6 @@ class asetController extends Controller
             'merk' => $request->merk,
             'tipe' => $request->tipe,
             'ukuran' => $request->ukuran,
-            'dimensi' => $request->dimensi,
             'qty' => $request->qty,
             'sn' => json_encode($snList),
             'lokasi' => $request->lokasi ?? '',
@@ -62,12 +60,11 @@ class asetController extends Controller
         ]);
 
         // Convert PN & SN menjadi array list (per baris)
-    $pnRaw = (string) $request->pn;
-    $snRaw = (string) $request->sn;
+        $pnRaw = (string) $request->pn;
+        $snRaw = (string) $request->sn;
 
-    $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
-    $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
-
+        $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
+        $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
 
         $inventaris = asetjual::findOrFail($id);
 
@@ -78,7 +75,6 @@ class asetController extends Controller
             'merk' => $request->merk,
             'tipe' => $request->tipe,
             'ukuran' => $request->ukuran,
-            'dimensi' => $request->dimensi,
             'qty' => $request->qty,
             'sn' => json_encode($snList),
             'lokasi' => $request->lokasi ?? $inventaris->lokasi,
@@ -133,7 +129,7 @@ class asetController extends Controller
 
         $exportData->push([
             'No', 'Produk No', 'Nama Barang', 'Jenis', 'Merk', 'Tipe', 'Ukuran',
-            'Dimensi', 'Qty', 'Serial No', 'Lokasi', 'Tanggal Dibuat'
+            'Qty', 'Serial No', 'Lokasi', 'Tanggal Dibuat'
         ]);
 
         foreach ($data as $index => $item) {
@@ -148,7 +144,6 @@ class asetController extends Controller
                 $item->merk,
                 $item->tipe,
                 $item->ukuran,
-                $item->dimensi,
                 $item->qty,
                 is_array($sn) ? implode(", ", $sn) : $item->sn,
                 $item->lokasi,

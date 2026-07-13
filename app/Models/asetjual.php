@@ -21,7 +21,6 @@ class asetjual extends Model
         'merk',
         'tipe',
         'ukuran',
-        'dimensi',
         'qty',
         'sn',
         'lokasi',

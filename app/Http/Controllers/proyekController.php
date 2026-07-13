@@ -34,16 +34,11 @@ class proyekController extends Controller
 
     // Ambil raw PN & SN dari textarea
     $pnRaw = trim((string) $request->pn);
-    $snRaw = trim((string) $request->sn);
 
     // Ubah menjadi array per baris
     $pnList = $pnRaw === ''
         ? []
         : array_values(array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw))));
-
-    $snList = $snRaw === ''
-        ? []
-        : array_values(array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw))));
 
     // Simpan ke database
     projek::create([
@@ -55,7 +50,6 @@ class proyekController extends Controller
         'ukuran'     => $request->ukuran,
         'jumlah'     => $request->jumlah,
         'lokasi'     => $request->lokasi,
-        'sn'         => json_encode($snList),
     ]);
 
     return redirect()->route('view-projek')->with('success', 'Data berhasil ditambahkan.');
@@ -74,16 +68,13 @@ class proyekController extends Controller
 
     // Convert PN & SN menjadi array list (per baris)
     $pnRaw = (string) $request->pn;
-    $snRaw = (string) $request->sn;
 
     $pnList = $pnRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $pnRaw)));
-    $snList = $snRaw === '' ? [] : array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $snRaw)));
 
     $inventaris = projek::findOrFail($id);
 
     $inventaris->update([
         'pn'          => json_encode($pnList),
-        'sn'          => json_encode($snList),
         'nama_barang' => $request->nama_barang,
         'jenis'       => $request->jenis,
         'tipe'        => $request->tipe,
@@ -145,13 +136,13 @@ class proyekController extends Controller
         }
 
         $data = $query->get([
-            'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','sn','lokasi','created_at'
+            'pn','nama_barang','jenis','tipe','merk','ukuran','jumlah','lokasi','created_at'
         ]);
 
         // Siapkan collection untuk export
         $exportData = new Collection();
         $exportData->push([
-            'No','Produk No','Nama Barang','Jenis','Tipe','Merk','Ukuran','Jumlah','Serial No','Lokasi','Tanggal Dibuat'
+            'No','Produk No','Nama Barang','Jenis','Tipe','Merk','Ukuran','Jumlah','Lokasi','Tanggal Dibuat'
         ]);
 
         foreach ($data as $index => $item) {
@@ -165,7 +156,6 @@ class proyekController extends Controller
                 $item->ukuran,
                 $item->jumlah,
                 $item->lokasi,
-                $item->sn,
                 $item->created_at ? $item->created_at->format('d-m-Y') : '',
             ]);
         }
