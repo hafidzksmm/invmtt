@@ -33,9 +33,8 @@ class ActivityLogController extends Controller
 
         $logs = $query->paginate(30)->withQueryString();
 
-        // untuk isi dropdown filter
-        $userNames = ActivityLog::select('user_name')->distinct()->pluck('user_name');
-        $modelTypes = ActivityLog::select('model_type')->distinct()->pluck('model_type');
+        $userNames  = ActivityLog::select('user_name')->distinct()->pluck('user_name');
+        $modelTypes = ActivityLog::whereNotNull('model_type')->select('model_type')->distinct()->pluck('model_type');
 
         return view('inventori.activity-log', compact('logs', 'userNames', 'modelTypes'));
     }

@@ -2,6 +2,9 @@
 @php
     // ✅ true untuk admin ATAU superadmin — dipakai di semua tombol CRUD di halaman ini
     $canManage = auth()->check() && (isAdmin() || auth()->user()->role === 'superadmin');
+    // ✅ role 'user' hanya boleh upload Foto Instalasi — tidak Tambah Project, tidak Delete, tidak tipe file lain
+    $canUploadInstalasiOnly = auth()->check() && auth()->user()->role === 'user' && !$canManage;
+    $canOpenUpload = $canManage || $canUploadInstalasiOnly;
 @endphp
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,16 +126,27 @@
                                         <td style="max-width:200px; white-space:normal; word-break:break-word; text-align:left; vertical-align:top;">
                                             {{ $item->vendor }}
                                         </td>
-                                        <td>
-                                            {{ $item->tanggal_do 
-                                                ? \Carbon\Carbon::parse($item->tanggal_do)->format('d M Y') 
-                                                : '-' 
-                                            }}
+<td>
+                                            @if($canManage)
+                                                {{ $item->tanggal_do 
+                                                    ? \Carbon\Carbon::parse($item->tanggal_do)->format('d M Y') 
+                                                    : '-' 
+                                                }}
+                                            @else
+                                                ➖
+                                            @endif
                                         </td>
-                                        <td>{{ $item->nomor_do ?? '-' }}</td>
+                                        <td>
+                                            @if($canManage)
+                                                {{ $item->nomor_do ?? '-' }}
+                                            @else
+                                                ➖
+                                            @endif
+                                        </td>
 
                                         {{-- DO DISTI (multiple file, sama seperti Tanda Terima) --}}
                                         <td>
+                                        @if($canManage)
                                         @php $doDisti = $item->files->where('type','pdf_do_disti'); @endphp
 
                                         @if($doDisti->count())
@@ -148,10 +162,14 @@
                                         @else
                                             ➖
                                         @endif
+                                        @else
+                                            ➖
+                                        @endif
                                         </td>
 
                                         {{-- TANDA TERIMA --}}
                                         <td>
+                                        @if($canManage)
                                         @php $tt = $item->files->where('type','pdf_tanda_terima'); @endphp
 
                                         @if($tt->count())
@@ -167,9 +185,13 @@
                                         @else
                                             ➖
                                         @endif
+                                        @else
+                                            ➖
+                                        @endif
                                         </td>
                                         {{-- PDF DO CLIENT --}}
                                         <td>
+                                            @if($canManage)
                                             @if($pdf = $item->files->where('type','pdf_do')->first())
 
                                                 <span class="text-success fw-bold d-block"
@@ -184,10 +206,14 @@
                                             @else
                                                 ➖
                                             @endif
+                                            @else
+                                                ➖
+                                            @endif
                                         </td>
 
                                         {{-- FOTO DO --}}
                                         <td>
+                                            @if($canManage)
                                             @php $fotoDo = $item->files->where('type','foto_do'); @endphp
                                             @if($fotoDo->count())
                                                 <span class="text-success fw-bold d-block"
@@ -199,15 +225,23 @@
                                             @else
                                                 ➖
                                             @endif
+                                            @else
+                                                ➖
+                                            @endif
                                         </td>
                                         <td>
-                                            {{ $item->tanggal_bast 
-                                                ? \Carbon\Carbon::parse($item->tanggal_bast)->format('d M Y') 
-                                                : '-' 
-                                            }}
+                                            @if($canManage)
+                                                {{ $item->tanggal_bast 
+                                                    ? \Carbon\Carbon::parse($item->tanggal_bast)->format('d M Y') 
+                                                    : '-' 
+                                                }}
+                                            @else
+                                                ➖
+                                            @endif
                                         </td>
                                         {{-- PDF BAST --}}
                                         <td>
+                                            @if($canManage)
                                             @if($pdf = $item->files->where('type','pdf_bast')->first())
 
                                                 <span class="text-success fw-bold d-block"
@@ -219,6 +253,9 @@
                                                 </span>
 
 
+                                            @else
+                                                ➖
+                                            @endif
                                             @else
                                                 ➖
                                             @endif
@@ -238,10 +275,9 @@
                                                 ➖
                                             @endif
                                         </td>
-
                                         {{-- UPLOAD - ADMIN & SUPERADMIN --}}
                                         <td>
-                                            @if($canManage)
+                                            @if($canOpenUpload)
                                                 <button class="btn btn-sm btn-primary"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#uploadModal{{ $item->id }}">
@@ -251,7 +287,6 @@
                                                 ➖
                                             @endif
                                         </td>
-
                                         {{-- DELETE - ADMIN & SUPERADMIN --}}
                                         <td>
                                             @if($canManage)
@@ -337,8 +372,9 @@
                 <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
+<div class="modal-body">
 
+@if($canManage)
 <div class="mb-3">
     <label>Tanggal DO</label>
     <input type="date"
@@ -388,11 +424,29 @@
                         </button>
                     </div>
                 </div>
+@else
+                {{-- ✅ role 'user': tipe file dikunci ke Foto Instalasi, tanpa pilihan tipe lain --}}
+                <input type="hidden" name="type" value="foto_bast">
+
+                <label class="fw-semibold mb-2 d-block">Foto Instalasi</label>
+                <div class="file-wrapper">
+                    <div class="input-group mb-2 file-row">
+                        <input type="file"
+                               name="file[]"
+                               class="form-control"
+                               required>
+                        <button type="button"
+                                class="btn btn-success btn-add-file">
+                            ➕
+                        </button>
+                    </div>
+                </div>
+@endif
             <small class="text-danger">
                 Maksimal ukuran file 2MB
             </small>
             </div>
-            <div class="modal-footer">
+                        <div class="modal-footer">
                 <button class="btn btn-success">Upload</button>
             </div>
 
@@ -401,148 +455,135 @@
 </div>
 @endforeach
 
-{{-- ================= MODAL FOTO DO ================= --}}
+{{-- ================= MODAL FOTO DO (Foto Delivery) ================= --}}
 @foreach($inventarydo as $item)
-<div class="modal fade" id="fotoDo{{ $item->id }}" tabindex="-1">
+<div class="modal fade lightbox-modal" id="fotoDo{{ $item->id }}" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content bg-transparent border-0">
-            <div class="modal-body">
+        <div class="modal-content lightbox-content" data-theme="mono">
 
-                @php
-                    $photos = $item->files->where('type','foto_do');
-                @endphp
+            @php $photos = $item->files->where('type','foto_do')->values(); @endphp
 
-                @if($photos->count())
-
-                {{-- MAIN IMAGE --}}
-                <div class="d-flex justify-content-center mb-4 position-relative">
-                    <a id="downloadDo{{ $item->id }}"
-                       href="{{ asset('storage/'.$photos->first()->file_path) }}"
-                       download
-                       class="btn btn-sm btn-light position-absolute top-0 end-0 m-2">
-                        ⬇ Unduh
-                    </a>
-
-                    <img id="mainDo{{ $item->id }}"
-                         src="{{ asset('storage/'.$photos->first()->file_path) }}"
-                         style="width:900px;height:520px;object-fit:contain;border-radius:12px;">
+            <div class="lightbox-header">
+                <div class="lightbox-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.5 8.5L14 15l-3-3-6.5 6.5"/><path d="M20.5 8.5V4h-4.5"/></svg>
+                    Foto Delivery
                 </div>
-
-                {{-- THUMBNAILS --}}
-                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    @foreach($photos as $f)
-                    <div class="position-relative">
-
-                        {{-- DELETE BUTTON --}}
-                        <form action="{{ route('inventory-do.file.delete', $f->id) }}"
-                            method="POST"
-                            class="delete-file-form position-absolute"
-                            style="top:-8px; right:-8px; z-index:10;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button"
-                                    class="btn btn-danger btn-sm rounded-circle btn-delete-file"
-                                    data-id="{{ $f->id }}"
-                                    style="width:24px;height:24px;padding:0;">
-                                ×
-                            </button>
-                        </form>
-
-
-                        {{-- THUMB IMAGE --}}
-                        <img src="{{ asset('storage/'.$f->file_path) }}"
-                             class="thumb {{ $loop->first ? 'active' : '' }}"
-                             style="width:100px;height:70px;object-fit:cover;cursor:pointer;border-radius:6px;border:2px solid transparent;"
-                             onclick="
-                                document.getElementById('mainDo{{ $item->id }}').src='{{ asset('storage/'.$f->file_path) }}';
-                                document.getElementById('downloadDo{{ $item->id }}').href='{{ asset('storage/'.$f->file_path) }}';
-
-                                document.querySelectorAll('#fotoDo{{ $item->id }} .thumb')
-                                    .forEach(el => el.classList.remove('active'));
-                                this.classList.add('active');
-                             ">
-                    </div>
-                    @endforeach
-                </div>
-
-                @else
-                    <p class="text-center text-light">Tidak ada foto </p>
-                @endif
-
+                <button type="button" class="lightbox-close" data-bs-dismiss="modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
+
+            @if($photos->count())
+            <div class="lightbox-stage">
+                <button type="button" class="lightbox-nav lightbox-prev" onclick="lbNav('fotoDo{{ $item->id }}',-1)" {{ $photos->count() < 2 ? 'style=display:none' : '' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+
+                <div class="lightbox-image-wrap">
+                    <img id="mainDo{{ $item->id }}" src="{{ asset('storage/'.$photos->first()->file_path) }}" class="lightbox-image">
+
+                    <div class="lightbox-toolbar">
+                        <span class="lightbox-counter" id="counterDo{{ $item->id }}">1 / {{ $photos->count() }}</span>
+                        <a id="downloadDo{{ $item->id }}" href="{{ asset('storage/'.$photos->first()->file_path) }}" download class="lightbox-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Unduh
+                        </a>
+                    </div>
+                </div>
+
+                <button type="button" class="lightbox-nav lightbox-next" onclick="lbNav('fotoDo{{ $item->id }}',1)" {{ $photos->count() < 2 ? 'style=display:none' : '' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+
+            <div class="lightbox-filmstrip" id="filmstripDo{{ $item->id }}">
+                @foreach($photos as $idx => $f)
+                <div class="lightbox-thumb-wrap">
+                    <img src="{{ asset('storage/'.$f->file_path) }}"
+                         class="lightbox-thumb {{ $loop->first ? 'active' : '' }}"
+                         data-index="{{ $idx }}"
+                         onclick="lbGoTo('fotoDo{{ $item->id }}', {{ $idx }})">
+                    <form action="{{ route('inventory-do.file.delete', $f->id) }}" method="POST" class="delete-file-form">
+                        @csrf @method('DELETE')
+                        <button type="button" class="lightbox-thumb-delete btn-delete-file" data-id="{{ $f->id }}">×</button>
+                    </form>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <div class="lightbox-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:56px;height:56px;opacity:.4;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <p>Belum ada foto delivery</p>
+            </div>
+            @endif
+
         </div>
     </div>
 </div>
 @endforeach
 
-{{-- ================= MODAL FOTO BAST ================= --}}
+{{-- ================= MODAL FOTO BAST (Foto Instalasi) ================= --}}
 @foreach($inventarydo as $item)
-<div class="modal fade" id="fotoBast{{ $item->id }}" tabindex="-1">
+<div class="modal fade lightbox-modal" id="fotoBast{{ $item->id }}" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content bg-transparent border-0">
-            <div class="modal-body">
+        <div class="modal-content lightbox-content" data-theme="mono">
 
-                @php
-                    $photos = $item->files->where('type','foto_bast');
-                @endphp
+            @php $photosB = $item->files->where('type','foto_bast')->values(); @endphp
 
-                @if($photos->count())
-
-                {{-- MAIN IMAGE --}}
-                <div class="d-flex justify-content-center mb-4 position-relative">
-                    <a id="downloadBast{{ $item->id }}"
-                       href="{{ asset('storage/'.$photos->first()->file_path) }}"
-                       download
-                       class="btn btn-sm btn-light position-absolute top-0 end-0 m-2">
-                        ⬇ Unduh
-                    </a>
-
-                    <img id="mainBast{{ $item->id }}"
-                         src="{{ asset('storage/'.$photos->first()->file_path) }}"
-                         style="width:900px;height:520px;object-fit:contain;border-radius:12px;">
+            <div class="lightbox-header">
+                <div class="lightbox-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Foto Instalasi
                 </div>
-
-                {{-- THUMBNAILS --}}
-                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    @foreach($photos as $f)
-                    <div class="position-relative">
-
-                        {{-- DELETE BUTTON --}}
-                        <form action="{{ route('inventory-do.file.delete', $f->id) }}"
-                            method="POST"
-                            class="delete-file-form position-absolute"
-                            style="top:-8px; right:-8px; z-index:10;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button"
-                                    class="btn btn-danger btn-sm rounded-circle btn-delete-file"
-                                    data-id="{{ $f->id }}"
-                                    style="width:24px;height:24px;padding:0;">
-                                ×
-                            </button>
-                        </form>
-
-                        {{-- THUMB IMAGE --}}
-                        <img src="{{ asset('storage/'.$f->file_path) }}"
-                             class="thumb {{ $loop->first ? 'active' : '' }}"
-                             style="width:100px;height:70px;object-fit:cover;cursor:pointer;border-radius:6px;border:2px solid transparent;"
-                             onclick="
-                                document.getElementById('mainBast{{ $item->id }}').src='{{ asset('storage/'.$f->file_path) }}';
-                                document.getElementById('downloadBast{{ $item->id }}').href='{{ asset('storage/'.$f->file_path) }}';
-
-                                document.querySelectorAll('#fotoBast{{ $item->id }} .thumb')
-                                    .forEach(el => el.classList.remove('active'));
-                                this.classList.add('active');
-                             ">
-                    </div>
-                    @endforeach
-                </div>
-
-                @else
-                    <p class="text-center text-light">Tidak ada foto </p>
-                @endif
-
+                <button type="button" class="lightbox-close" data-bs-dismiss="modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
+
+            @if($photosB->count())
+            <div class="lightbox-stage">
+                <button type="button" class="lightbox-nav lightbox-prev" onclick="lbNav('fotoBast{{ $item->id }}',-1)" {{ $photosB->count() < 2 ? 'style=display:none' : '' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+
+                <div class="lightbox-image-wrap">
+                    <img id="mainBast{{ $item->id }}" src="{{ asset('storage/'.$photosB->first()->file_path) }}" class="lightbox-image">
+
+                    <div class="lightbox-toolbar">
+                        <span class="lightbox-counter" id="counterBast{{ $item->id }}">1 / {{ $photosB->count() }}</span>
+                        <a id="downloadBast{{ $item->id }}" href="{{ asset('storage/'.$photosB->first()->file_path) }}" download class="lightbox-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Unduh
+                        </a>
+                    </div>
+                </div>
+
+                <button type="button" class="lightbox-nav lightbox-next" onclick="lbNav('fotoBast{{ $item->id }}',1)" {{ $photosB->count() < 2 ? 'style=display:none' : '' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+
+            <div class="lightbox-filmstrip" id="filmstripBast{{ $item->id }}">
+                @foreach($photosB as $idx => $f)
+                <div class="lightbox-thumb-wrap">
+                    <img src="{{ asset('storage/'.$f->file_path) }}"
+                         class="lightbox-thumb {{ $loop->first ? 'active' : '' }}"
+                         data-index="{{ $idx }}"
+                         onclick="lbGoTo('fotoBast{{ $item->id }}', {{ $idx }})">
+                    <form action="{{ route('inventory-do.file.delete', $f->id) }}" method="POST" class="delete-file-form">
+                        @csrf @method('DELETE')
+                        <button type="button" class="lightbox-thumb-delete btn-delete-file" data-id="{{ $f->id }}">×</button>
+                    </form>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <div class="lightbox-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:56px;height:56px;opacity:.4;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <p>Belum ada foto instalasi</p>
+            </div>
+            @endif
+
         </div>
     </div>
 </div>
@@ -805,6 +846,7 @@ $(function () {
     });
 
 });
+
 document.addEventListener("change", function (e) {
 
     if (e.target.classList.contains("file-input")) {
@@ -833,13 +875,13 @@ document.addEventListener("click", function (e) {
         let form = button.closest("form");
         let url = form.action;
 
-        let thumbnailWrapper = button.closest(".position-relative");
+        let thumbnailWrapper = button.closest(".position-relative, .lightbox-thumb-wrap");
         let thumbImg = thumbnailWrapper.querySelector("img");
         let deletedSrc = thumbImg ? thumbImg.src : null;
 
         let modal = button.closest(".modal");
-        let mainImage = modal.querySelector("img[id^='mainBast']");
-        let downloadBtn = modal.querySelector("a[id^='downloadBast']");
+        let mainImage = modal.querySelector("img[id^='mainDo'], img[id^='mainBast']");
+        let downloadBtn = modal.querySelector("a[id^='downloadDo'], a[id^='downloadBast']");
 
         fetch(url, {
             method: "POST",
@@ -858,33 +900,95 @@ document.addEventListener("click", function (e) {
             if (mainImage && deletedSrc && mainImage.src === deletedSrc) {
 
                 let otherThumb = modal.querySelector(
-                    ".thumb:not([src='" + deletedSrc + "'])"
+                    ".lightbox-thumb:not([src='" + deletedSrc + "'])"
                 );
 
                 if (otherThumb) {
                     mainImage.src = otherThumb.src;
                     downloadBtn.href = otherThumb.src;
 
-                    modal.querySelectorAll(".thumb")
+                    modal.querySelectorAll(".lightbox-thumb")
                         .forEach(el => el.classList.remove("active"));
                     otherThumb.classList.add("active");
 
                 } else {
                     // Kalau tidak ada foto tersisa
-                    mainImage.remove();
-                    downloadBtn.remove();
+                    modal.querySelector(".lightbox-stage")?.remove();
+                    modal.querySelector(".lightbox-filmstrip")?.remove();
 
-                    modal.querySelector(".modal-body")
-                        .innerHTML = '<p class="text-center text-light">Tidak ada foto Silahkan upload</p>';
+                    const emptyMsg = document.createElement('div');
+                    emptyMsg.className = 'lightbox-empty';
+                    emptyMsg.innerHTML = '<p>Tidak ada foto, silahkan upload</p>';
+                    modal.querySelector('.lightbox-content').appendChild(emptyMsg);
                 }
             }
 
             thumbnailWrapper.remove();
+
+            // update counter setelah delete
+            const filmstrip = modal.querySelector('.lightbox-filmstrip');
+            if (filmstrip) {
+                const remainingThumbs = filmstrip.querySelectorAll('.lightbox-thumb');
+                const counter = modal.querySelector("[id^='counterDo'], [id^='counterBast']");
+                const activeIdx = [...remainingThumbs].findIndex(t => t.classList.contains('active'));
+                if (counter) counter.textContent = `${activeIdx + 1} / ${remainingThumbs.length}`;
+            }
         })
         .catch(error => {
             alert("Gagal menghapus file");
         });
     }
+});
+
+// ================= LIGHTBOX NAVIGATION =================
+function lbGoTo(modalId, index) {
+    const modal = document.getElementById(modalId);
+    const isDo = modalId.startsWith('fotoDo');
+    const mainImg = modal.querySelector(isDo ? `[id^='mainDo']` : `[id^='mainBast']`);
+    const downloadBtn = modal.querySelector(isDo ? `[id^='downloadDo']` : `[id^='downloadBast']`);
+    const counter = modal.querySelector(isDo ? `[id^='counterDo']` : `[id^='counterBast']`);
+    const thumbs = modal.querySelectorAll('.lightbox-thumb');
+
+    const target = thumbs[index];
+    if (!target) return;
+
+    mainImg.src = target.src;
+    downloadBtn.href = target.src;
+    thumbs.forEach(t => t.classList.remove('active'));
+    target.classList.add('active');
+    modal.dataset.activeIndex = index;
+
+    if (counter) counter.textContent = `${index + 1} / ${thumbs.length}`;
+}
+
+function lbNav(modalId, dir) {
+    const modal = document.getElementById(modalId);
+    const thumbs = modal.querySelectorAll('.lightbox-thumb');
+    if (!thumbs.length) return;
+    let current = parseInt(modal.dataset.activeIndex || 0);
+    let next = (current + dir + thumbs.length) % thumbs.length;
+    lbGoTo(modalId, next);
+}
+
+// Keyboard navigation untuk lightbox yang sedang terbuka
+document.addEventListener('keydown', function (e) {
+    const openModal = document.querySelector('.lightbox-modal.show');
+    if (!openModal) return;
+    if (e.key === 'ArrowLeft') lbNav(openModal.id, -1);
+    if (e.key === 'ArrowRight') lbNav(openModal.id, 1);
+    if (e.key === 'Escape') bootstrap.Modal.getInstance(openModal)?.hide();
+});
+
+// Backdrop solid hitam pekat khusus lightbox (biar tidak "tembus pandang")
+document.querySelectorAll('.lightbox-modal').forEach(modalEl => {
+    modalEl.addEventListener('show.bs.modal', function () {
+        setTimeout(() => {
+            document.querySelectorAll('.modal-backdrop').forEach(bd => {
+                bd.style.backgroundColor = '#000';
+                bd.style.opacity = '0.94';
+            });
+        }, 0);
+    });
 });
 </script>
 <style>
@@ -901,22 +1005,6 @@ document.addEventListener("click", function (e) {
 
 .drag-handle:active {
     cursor: grabbing;
-}
-
-.thumb {
-    opacity: 0.6;
-    transition: 0.2s ease;
-}
-
-.thumb:hover {
-    opacity: 1;
-    transform: scale(1.05);
-}
-
-.thumb.active {
-    opacity: 1;
-    transform: scale(1.05);
-    border: 2px solid #0d6efd !important;
 }
 
 /* ================= HEADER STYLE (tema sama seperti Aset Jual) ================= */
@@ -983,6 +1071,117 @@ document.addEventListener("click", function (e) {
     .greeting-hello{ font-size:18px; }
     .btn-icon-nav span{ display:none; }
     .btn-icon-nav{ padding:12px; }
+}
+
+/* ================= LIGHTBOX GALLERY (monokrom hitam-putih) ================= */
+.lightbox-modal .modal-dialog{ max-width: 960px; }
+.lightbox-content{
+    background: #14161c;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+.lightbox-content[data-theme="mono"]{ --lb-accent: #ffffff; --lb-accent2: #9ca3af; }
+
+.lightbox-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    gap:12px;
+}
+
+.lightbox-close{
+    width:38px; height:38px; border-radius:50%;
+    background: rgba(255,255,255,0.08);
+    border:none; color:#fff; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:.2s ease; flex-shrink:0;
+}
+.lightbox-close svg{ width:18px; height:18px; }
+.lightbox-close:hover{ background:#ffffff; color:#0a0b0f; transform: rotate(90deg); }
+
+.lightbox-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    color:#0a0b0f; font-weight:700; font-size:14px;
+    background: linear-gradient(90deg, var(--lb-accent), var(--lb-accent2));
+    padding:8px 16px; border-radius:999px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.15);
+}
+.lightbox-badge svg{ width:16px; height:16px; }
+
+.lightbox-stage{
+    display:flex; align-items:center; gap:10px;
+}
+.lightbox-image-wrap{
+    position:relative; flex:1;
+    background:#0a0b0f;
+    border-radius:14px;
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    min-height: 460px;
+}
+.lightbox-image{
+    max-width:100%; max-height:520px; object-fit:contain;
+    animation: lbFadeIn .25s ease;
+}
+@keyframes lbFadeIn{ from{opacity:0; transform:scale(.97);} to{opacity:1; transform:scale(1);} }
+
+.lightbox-toolbar{
+    position:absolute; bottom:12px; left:12px; right:12px;
+    display:flex; align-items:center; justify-content:space-between;
+}
+.lightbox-counter{
+    background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+    color:#fff; font-size:13px; font-weight:600;
+    padding:6px 12px; border-radius:999px;
+}
+.lightbox-btn{
+    display:flex; align-items:center; gap:6px;
+    background: linear-gradient(90deg, var(--lb-accent), var(--lb-accent2));
+    color:#0a0b0f; font-size:13px; font-weight:700;
+    padding:8px 16px; border-radius:999px; text-decoration:none;
+    transition:.2s ease;
+}
+.lightbox-btn svg{ width:14px; height:14px; }
+.lightbox-btn:hover{ filter:brightness(1.15); color:#0a0b0f; transform: translateY(-1px); }
+
+.lightbox-nav{
+    flex-shrink:0; width:44px; height:44px; border-radius:50%;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color:#fff; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:.2s ease;
+}
+.lightbox-nav svg{ width:20px; height:20px; }
+.lightbox-nav:hover{ background:#ffffff; border-color:#ffffff; color:#0a0b0f; }
+
+.lightbox-filmstrip{
+    display:flex; gap:10px; overflow-x:auto; margin-top:18px; padding-bottom:4px;
+}
+.lightbox-thumb-wrap{ position:relative; flex-shrink:0; }
+.lightbox-thumb{
+    width:84px; height:60px; object-fit:cover; border-radius:8px; cursor:pointer;
+    opacity:.5; border:2px solid transparent; transition:.2s ease;
+}
+.lightbox-thumb:hover{ opacity:.85; }
+.lightbox-thumb.active{ opacity:1; border-color:#ffffff; transform: translateY(-2px); }
+.lightbox-thumb-delete{
+    position:absolute; top:-6px; right:-6px; width:20px; height:20px;
+    border-radius:50%; background:#3a3a3a; color:#fff; border:1px solid rgba(255,255,255,.3);
+    font-size:12px; line-height:1; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.4);
+    transition:.2s ease;
+}
+.lightbox-thumb-delete:hover{ background:#ffffff; color:#0a0b0f; }
+
+.lightbox-empty{ text-align:center; color:rgba(255,255,255,.6); padding:60px 0; }
+.lightbox-empty p{ margin-top:12px; font-size:14px; }
+
+@media (max-width: 640px){
+    .lightbox-image-wrap{ min-height:280px; }
+    .lightbox-nav{ width:36px; height:36px; }
 }
 </style>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>

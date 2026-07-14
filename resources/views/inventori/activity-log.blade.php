@@ -18,7 +18,7 @@
                     </div>
                     <div class="greeting-text">
                         <span class="greeting-hello">Activity Log</span>
-                        <span class="greeting-role">Riwayat perubahan data oleh user</span>
+                        <span class="greeting-role">Riwayat perubahan data & aktivitas login user</span>
                     </div>
                 </div>
             </div>
@@ -38,6 +38,7 @@
         <!-- PANEL FILTER -->
         <div class="panel table-panel">
             <form method="GET" class="panel-toolbar">
+
                 <div class="toolbar-left" style="flex-wrap:wrap;gap:10px;">
                     <select name="user_name" class="search-input" style="min-width:180px;" onchange="this.form.submit()">
                         <option value="">-- Semua User --</option>
@@ -46,17 +47,19 @@
                         @endforeach
                     </select>
 
-                    <select name="action" class="search-input" style="min-width:160px;" onchange="this.form.submit()">
+                    <select name="action" class="search-input" style="min-width:170px;" onchange="this.form.submit()">
                         <option value="">-- Semua Aksi --</option>
-                        <option value="created" @selected(request('action')==='created')>Tambah</option>
-                        <option value="updated" @selected(request('action')==='updated')>Edit</option>
-                        <option value="deleted" @selected(request('action')==='deleted')>Hapus</option>
+                        <option value="created" @selected(request('action')==='created')>Tambah Data</option>
+                        <option value="updated" @selected(request('action')==='updated')>Edit Data</option>
+                        <option value="deleted" @selected(request('action')==='deleted')>Hapus Data</option>
+                        <option value="login" @selected(request('action')==='login')>Login</option>
+                        <option value="logout" @selected(request('action')==='logout')>Logout</option>
                     </select>
 
                     <select name="model_type" class="search-input" style="min-width:160px;" onchange="this.form.submit()">
                         <option value="">-- Semua Data --</option>
-                        @foreach($modelTypes as $type)
-                            <option value="{{ $type }}" @selected(request('model_type') === $type)>{{ $type }}</option>
+                        @foreach($modelTypes as $modelType)
+                            <option value="{{ $modelType }}" @selected(request('model_type') === $modelType)>{{ class_basename($modelType) }}</option>
                         @endforeach
                     </select>
 
@@ -77,23 +80,44 @@
             <!-- TIMELINE LOG -->
             <div class="p-3">
                 @forelse($logs as $log)
+                    @php
+                        $isAuthLog = in_array($log->action, ['login', 'logout']);
+                    @endphp
                     <div class="log-item log-{{ $log->action }}">
                         <div class="log-icon">
                             @if($log->action === 'created')
                                 <i class="bi bi-plus-lg"></i>
                             @elseif($log->action === 'updated')
                                 <i class="bi bi-pencil-fill"></i>
-                            @else
+                            @elseif($log->action === 'deleted')
                                 <i class="bi bi-trash-fill"></i>
+                            @elseif($log->action === 'login')
+                                <i class="bi bi-box-arrow-in-right"></i>
+                            @elseif($log->action === 'logout')
+                                <i class="bi bi-box-arrow-right"></i>
                             @endif
                         </div>
 
                         <div class="log-body">
                             <div class="log-top">
-                                <span class="log-user">{{ $log->user_name ?? 'System' }}</span>
-                                @if($log->user_role)
-                                    <span class="log-role-badge">{{ ucfirst($log->user_role) }}</span>
+                                <div class="log-top-left">
+                                    <span class="log-user">{{ $log->user_name ?? 'System' }}</span>
+                                    @if($log->user_role)
+                                        <span class="log-role-badge">{{ ucfirst($log->user_role) }}</span>
+                                    @endif
+                                </div>
+
+                                <!-- BADGE KATEGORI: pembeda log credentials vs data, benar-benar di tengah -->
+                                @if($isAuthLog)
+                                    <span class="log-category-badge log-category-credentials">
+                                        <i class="bi bi-shield-lock-fill"></i> Credentials
+                                    </span>
+                                @else
+                                    <span class="log-category-badge log-category-data">
+                                        <i class="bi bi-database-fill"></i> Data
+                                    </span>
                                 @endif
+
                                 <span class="log-time">{{ $log->created_at->diffForHumans() }} · {{ $log->created_at->format('d M Y, H:i') }}</span>
                             </div>
 
@@ -142,6 +166,7 @@
         --red: #E11D2E; --red-dark: #B0121F; --red-light: #FBD3D9;
         --green: #1FA97A; --green-light: #DFF5EC;
         --blue: #2F6FE4; --blue-light: #E6EEFF;
+        --purple: #7C5CE0; --purple-light: #ECE6FB;
         --text: #17181A; --muted: #8A8F98;
         --shadow: 0 1px 2px rgba(16,16,16,0.04), 0 8px 24px rgba(16,16,16,0.04);
     }
@@ -149,7 +174,7 @@
     .main-content{ background:var(--bg) !important; }
     .dash-wrap{ max-width:1420px; margin:0 auto; padding:34px 32px 70px; font-family:'Inter', sans-serif; color:var(--text); }
 
-    .dash-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+    .dash-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:16px; }
     .dash-brand{ display:flex; align-items:center; gap:14px; }
     .dash-greeting{ display:flex; align-items:center; gap:14px; }
     .greeting-avatar{ width:52px; height:52px; border-radius:16px; background:var(--red); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 4px 10px rgba(225,29,46,0.25); }
@@ -195,12 +220,28 @@
     .log-created .log-icon{ background:var(--green); }
     .log-updated .log-icon{ background:var(--blue); }
     .log-deleted .log-icon{ background:var(--red); }
+    .log-login .log-icon{ background:var(--purple); }
+    .log-logout .log-icon{ background:var(--purple); }
 
     .log-body{ flex:1; min-width:0; }
-    .log-top{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
-    .log-user{ font-weight:700; font-family:'Space Grotesk', sans-serif; font-size:14.5px; }
-    .log-role-badge{ background:var(--bg); border:1px solid var(--border); padding:2px 10px; border-radius:999px; font-size:11px; color:var(--muted); text-transform:capitalize; }
-    .log-time{ font-size:12px; color:var(--muted); margin-left:auto; }
+    .log-top{ display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; gap:10px; margin-bottom:6px; }
+    .log-top-left{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; min-width:0; }
+    .log-user{ font-weight:700; font-family:'Space Grotesk', sans-serif; font-size:14.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .log-role-badge{ background:var(--bg); border:1px solid var(--border); padding:2px 10px; border-radius:999px; font-size:11px; color:var(--muted); text-transform:capitalize; flex-shrink:0; }
+    .log-time{ font-size:12px; color:var(--muted); justify-self:end; text-align:right; white-space:nowrap; }
+
+    /* BADGE KATEGORI - pembeda credentials vs data, benar-benar di tengah baris atas */
+    .log-category-badge{
+        display:inline-flex; align-items:center; gap:6px;
+        padding:3px 12px; border-radius:999px;
+        font-size:11px; font-weight:700; letter-spacing:.2px;
+        text-transform:uppercase;
+        justify-self:center;
+        white-space:nowrap;
+    }
+    .log-category-credentials{ background:var(--purple-light); color:var(--purple); }
+    .log-category-data{ background:var(--blue-light); color:var(--blue); }
+
     .log-desc{ font-size:14px; color:var(--text); }
 
     .log-detail-toggle{
@@ -216,7 +257,9 @@
         .greeting-hello{ font-size:18px; }
         .btn-icon-nav span{ display:none; }
         .btn-icon-nav{ padding:12px; }
-        .log-time{ margin-left:0; }
+        .log-top{ grid-template-columns: 1fr; justify-items:start; gap:6px; }
+        .log-category-badge{ justify-self:start; }
+        .log-time{ justify-self:start; text-align:left; }
     }
 </style>
 </x-app-layout>

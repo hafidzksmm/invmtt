@@ -13,7 +13,7 @@ class asetController extends Controller
 {
     public function aset()
     {
-        $asset_jual = Asetjual::orderBy('created_at', 'desc')->get();
+        $asset_jual = Asetjual::orderBy('position')->get();
         return view('inventori.aset', compact('asset_jual'));
     }
 
@@ -185,6 +185,19 @@ class asetController extends Controller
 
         return view('inventori.aset', compact('asset_jual'));
     }
+
+    public function reorder(Request $request)
+{
+    foreach ($request->order as $item) {
+
+        asetjual::where('id', $item['id'])
+            ->update(['position' => $item['position']]);
+    }
+
+    return response()->json([
+        'status' => 'success'
+    ]);
+}
 
     public function search(Request $request)
     {

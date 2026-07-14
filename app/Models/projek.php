@@ -22,8 +22,9 @@ class projek extends Model
         'tipe',
         'merk',
         'ukuran',
-        'jumlah',
         'lokasi',
+        'jumlah',
+        'position',
     ];
 
     public $timestamps = true;

@@ -2,6 +2,8 @@
 @php
     $canManage = auth()->check() && (isAdmin() || auth()->user()->role === 'superadmin');
     $canDelete = auth()->check() && auth()->user()->role === 'superadmin';
+    // ✅ role 'user' boleh upload sertifikat, tapi tidak boleh tambah/edit/hapus vendor
+    $canUploadCert = auth()->check() && (isAdmin() || in_array(auth()->user()->role, ['superadmin', 'user']));
 @endphp
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -171,9 +173,8 @@
             </div>
             <div class="modal-body">
 
-                @if($canManage)
-                <form id="uploadCertForm" method="POST" enctype="multipart/form-data" class="upload-cert-form mb-4">
-                    @csrf
+                @if($canUploadCert)
+                <form id="uploadCertForm" method="POST" enctype="multipart/form-data" class="upload-cert-form mb-4">                    @csrf
                     <input type="hidden" name="provider_id" id="uploadCertProviderId">
                     <div class="row g-2 align-items-end">
                         <div class="col-md-3">
@@ -239,8 +240,8 @@ const csrfToken = "{{ csrf_token() }}";
 
 let certModal, certLightbox;
 document.addEventListener('DOMContentLoaded', function () {
-    certModal = new bootstrap.Modal(document.getElementById('certModal'));
-    certLightbox = new bootstrap.Modal(document.getElementById('certLightbox'));
+    certModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('certModal'));
+    certLightbox = bootstrap.Modal.getOrCreateInstance(document.getElementById('certLightbox'));
 });
 
 // ================= EDIT PROVIDER =================
@@ -251,14 +252,21 @@ function openEditProvider(btn) {
     document.getElementById('editProviderForm').action = `/training-certification/provider/${id}`;
     document.getElementById('editProviderName').value = name;
 
-    const modal = new bootstrap.Modal(document.getElementById('editProviderModal'));
+    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('editProviderModal'));
     modal.show();
 }
 
 // ================= BUKA MODAL SERTIFIKAT =================
 function openCertModal(providerId, providerName) {
     document.getElementById('certModalTitle').textContent = 'Sertifikat — ' + providerName;
-    document.getElementById('uploadCertProviderId').value = providerId;
+
+    // ✅ FIX: elemen ini hanya ada di DOM untuk admin/superadmin (dibungkus kondisi role admin).
+    // Untuk role biasa elemen ini null, jadi harus dicek dulu supaya tidak melempar error
+    // yang menghentikan seluruh fungsi (termasuk certModal.show() di bawah).
+    const providerIdInput = document.getElementById('uploadCertProviderId');
+    if (providerIdInput) {
+        providerIdInput.value = providerId;
+    }
 
     const uploadForm = document.getElementById('uploadCertForm');
     if (uploadForm) {
@@ -266,6 +274,11 @@ function openCertModal(providerId, providerName) {
     }
 
     loadCertificates(providerId);
+
+    // ✅ FIX: pakai getOrCreateInstance supaya tidak bergantung urutan load /
+    // tidak error kalau certModal belum sempat diinisialisasi di DOMContentLoaded.
+    const certModalEl = document.getElementById('certModal');
+    certModal = bootstrap.Modal.getOrCreateInstance(certModalEl);
     certModal.show();
 }
 
@@ -362,6 +375,9 @@ function openLightbox(url, caption) {
     document.getElementById('lightboxImg').src = url;
     document.getElementById('lightboxCaption').textContent = caption;
     document.getElementById('lightboxDownload').href = url;
+
+    const lightboxEl = document.getElementById('certLightbox');
+    certLightbox = bootstrap.Modal.getOrCreateInstance(lightboxEl);
     certLightbox.show();
 }
 

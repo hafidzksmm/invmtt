@@ -86,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/password/change', [UserManagementController::class, 'changePassword'])
     ->name('password.change');
 
-    
+
     Route::get('/activity-log', [App\Http\Controllers\ActivityLogController::class, 'index'])
     ->name('activity-log')
     ->middleware('auth');
@@ -108,9 +108,15 @@ Route::middleware(['auth'])->group(function () {
     route::delete('/inventory-aset-jual/{id}', [asetController::class, 'destroy'])->middleware('role:superadmin')->name('aset.hapus');
     Route::post('/inventory-aset-jual/import', [asetController::class, 'import'])->middleware('role:admin,superadmin')->name('asetjual.import');
     Route::get('/inventory-aset-jual/export', [asetController::class, 'export'])->name('asetjual.export');
-    Route::get('/inventory-aset/filter', [AsetController::class, 'filter'])->name('aset.filter');
+    Route::get('/inventory-aset/filter', [asetController::class, 'filter'])->name('aset.filter');
+    Route::post('/inventory-aset-jual/reorder', [asetController::class, 'reorder'])
+    ->middleware('role:admin,superadmin')
+    ->name('inventory-aset-jual.reorder');
     Route::get('/inventory-aset/get-detail', [AsetController::class, 'getDetail'])->name('aset.getDetail');
-
+Route::middleware(['auth', 'role:admin,superadmin'])->group(function () {
+    Route::get('/aset-jual', [asetController::class, 'index'])->name('asetjual.index');
+    // route workshop juga taruh di sini
+});
     //project
     route::get('/inventory-projek', [proyekController::class, 'projek'])->name('view-projek');
     route::post('/inventory-projek/add', [proyekController::class, 'store'])->middleware('role:admin,superadmin')->name('projek-store');
@@ -120,6 +126,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/inventory-projek/export', [proyekController::class, 'export'])->name('projeks.export');
     route::get('/inventoty-projek/filter', [proyekController::class, 'filter'])->name('projek.filter');
     Route::get('/inventory-projek/get-detail', [proyekController::class, 'getDetail'])->name('projek.getDetail');
+    Route::post('/inventory-projek/reorder', [proyekController::class, 'reorder'])
+    ->middleware('role:admin,superadmin')
+    ->name('inventory-projek.reorder');
 
     // ===============================
 // DO MANAGEMENT (YEAR BASED)
@@ -195,5 +204,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/training-certification/certificate/{id}', [TrainingCertificationController::class, 'destroyCertificate'])
         ->middleware('role:superadmin')
         ->name('training-certificate.destroy');
+
 
 });

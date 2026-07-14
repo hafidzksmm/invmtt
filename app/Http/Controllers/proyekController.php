@@ -15,12 +15,22 @@ class proyekController extends Controller
     /**
      * Tampilkan halaman inventori projek
      */
-    public function projek()
-    {
-        $inventaryprojek = projek::orderBy('created_at', 'desc')->get();
-        return view('inventori.proyek', compact('inventaryprojek'));
+public function projek()
+{
+    $inventaryprojek = projek::orderBy('position')->get(); // ganti Proyek dengan nama model asli
+
+    return view('inventori.proyek', compact('inventaryprojek'));
+}
+
+public function reorder(Request $request)
+{
+    foreach ($request->order as $item) {
+        projek::where('id', $item['id'])
+            ->update(['position' => $item['position']]);
     }
 
+    return response()->json(['status' => 'success']);
+}
     /**
      * Simpan data baru
      */

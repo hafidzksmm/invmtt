@@ -24,6 +24,7 @@ class asetjual extends Model
         'qty',
         'sn',
         'lokasi',
+        'position',
     ];
 
     public $timestamps = true;

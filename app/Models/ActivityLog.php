@@ -8,7 +8,7 @@ class ActivityLog extends Model
 {
     protected $table = 'activity_logs';
 
-    public $timestamps = false; // cuma pakai created_at manual
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',
@@ -35,10 +35,6 @@ class ActivityLog extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
-    /**
-     * 🔥 Ambil field yang benar-benar berubah (dipakai di view untuk highlight)
-     * Bandingkan old_values vs new_values, kembalikan hanya key yang beda.
-     */
     public function getChangedFieldsAttribute()
     {
         if (!$this->old_values || !$this->new_values) {

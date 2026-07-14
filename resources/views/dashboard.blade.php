@@ -90,39 +90,51 @@
             <!-- ICON ROW — HORIZONTAL, TANPA JUDUL SECTION -->
             <div class="icon-row">
 
-                <div class="icon-col" onclick="window.location.href='{{ route('view-ws') }}'">
-                    <div class="icon-tile tile-workshop" style="background-color: #dc3545;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 21h18"/>
-                            <path d="M5 21V7l8-4v18"/>
-                            <path d="M19 21V11l-6-4"/>
-                            <line x1="9" y1="9" x2="9" y2="9.01"/>
-                            <line x1="9" y1="13" x2="9" y2="13.01"/>
-                        </svg>
+                {{-- ✅ Icon di bawah ini HANYA tampil untuk role admin & superadmin --}}
+                @if (in_array(auth()->user()->role, ['admin', 'superadmin']))
+                    <div class="icon-col" onclick="window.location.href='{{ route('view-ws') }}'">
+                        <div class="icon-tile tile-workshop" style="background-color: #dc3545;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 21h18"/>
+                                <path d="M5 21V7l8-4v18"/>
+                                <path d="M19 21V11l-6-4"/>
+                                <line x1="9" y1="9" x2="9" y2="9.01"/>
+                                <line x1="9" y1="13" x2="9" y2="13.01"/>
+                            </svg>
+                        </div>
+                        <span class="icon-label">Workshop</span>
                     </div>
-                    <span class="icon-label">Workshop</span>
-                </div>
-                <div class="icon-col" onclick="window.location.href='{{ route('view-projek') }}'">
-                    <div class="icon-tile tile-project" style="background-color: #dc3545;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                    </div>
-                    <span class="icon-label">Project</span>
-                </div>
+                @endif
 
-                <div class="icon-col" onclick="window.location.href='{{ route('view-aset') }}'">
-                    <div class="icon-tile tile-asset" style="background-color: #dc3545;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+                {{-- ✅ Project (Inventory Project) tampil untuk admin, superadmin, DAN user --}}
+                @if (in_array(auth()->user()->role, ['admin', 'superadmin', 'user']))
+                    <div class="icon-col" onclick="window.location.href='{{ route('view-projek') }}'">
+                        <div class="icon-tile tile-project" style="background-color: #dc3545;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                        </div>
+                        <span class="icon-label">Project</span>
                     </div>
-                    <span class="icon-label">Selling Assets</span>
-                </div>
+                @endif
 
-                <div class="icon-col" onclick="openYearModal()">
-                    <div class="icon-tile tile-files" style="background-color: #dc3545;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                {{-- ✅ Selling Assets HANYA untuk admin & superadmin --}}
+                @if (in_array(auth()->user()->role, ['admin', 'superadmin']))
+                    <div class="icon-col" onclick="window.location.href='{{ route('view-aset') }}'">
+                        <div class="icon-tile tile-asset" style="background-color: #dc3545;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+                        </div>
+                        <span class="icon-label">Selling Assets</span>
                     </div>
-                    <span class="icon-label">Project Files</span>
-                </div>
+                @endif
 
+                {{-- ✅ Project Files tampil untuk admin, superadmin, DAN user --}}
+                @if (in_array(auth()->user()->role, ['admin', 'superadmin', 'user']))
+                    <div class="icon-col" onclick="openYearModal()">
+                        <div class="icon-tile tile-files" style="background-color: #dc3545;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <span class="icon-label">Project Files</span>
+                    </div>
+                @endif  
                 <div class="icon-col" onclick="window.location.href='{{ route('view-training-certification') }}'">
                     <div class="icon-tile tile-activity" style="background-color: #dc3545;">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
@@ -130,11 +142,11 @@
                     <span class="icon-label">Training <br>Certification</span>
                 </div>
 
-                <div class="icon-col" onclick="window.open('http://project.mttech.co.id:8080/', '_blank')">
+                <div class="icon-col" onclick="window.open('http://monitoring.mttech.co.id:8080/', '_blank')">
                     <div class="icon-tile tile-company" style="background-color: #dc3545;">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     </div>
-                    <span class="icon-label">Monitoring <br>Project</span>
+                    <span class="icon-label">IP <br>Monitoring</span>
                 </div>
 
             </div>
@@ -234,6 +246,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const colors = ['#E11D2E', '#F1637A', '#FBD3D9', '#A8D5FF'];
     const labelTextColors = ['#FFFFFF', '#FFFFFF', '#7A1420', '#1A5299'];
 
+    const isPrivileged = {{ in_array(auth()->user()->role, ['admin', 'superadmin']) ? 'true' : 'false' }};
+
     const chart = new Chart(chartCtx, {
         type: 'doughnut',
         data: {
@@ -275,6 +289,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!elements.length) return;
                 const index = elements[0].index;
 
+                // index 0,1,2,3 = Project, Workshop, Aset, Documentation -> khusus admin & superadmin
+                if (!isPrivileged) return;
+
                 if (index === 0) {
                     window.location.href = "{{ route('view-projek') }}";
                 } else if (index === 1) {
@@ -288,7 +305,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             onHover: (event, elements) => {
                 const canvas = event.native ? event.native.target : event.target;
-                canvas.style.cursor = elements.length ? 'pointer' : 'default';
+                const clickable = elements.length && isPrivileged;
+                canvas.style.cursor = clickable ? 'pointer' : 'default';
             }
         },
         plugins: [{

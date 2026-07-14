@@ -11,6 +11,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg overflow-hidden">
     <x-app.navbar />
@@ -243,6 +244,7 @@
                 <table id="dataTable" class="table table-hover align-items-center text-center mb-0">
                     <thead>
                         <tr>
+                            <th rowspan="0"></th>
                             <th style="cursor: default;">No</th>
                             <th class="sortable-header" data-column="pn">Produk No <span class="sort-indicator"></span></th>
                             <th class="sortable-header" data-column="nama_barang">Nama Barang <span class="sort-indicator"></span></th>
@@ -256,9 +258,15 @@
                             <th style="cursor: default;">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="sortableTable">
                         @forelse ($asset_jual as $index => $item)
-                            <tr>
+                            <tr data-id="{{ $item->id }}">
+                                        <td class="text-center">
+                                            <span class="drag-handle" style="cursor:grab; color:#999;">
+                                                ⋮⋮
+                                            </span>
+                                        </td>
+                                
                                 <td>{{ $index + 1 }}</td>
                                 <td class="text-wrap">
                                     @php $pns = json_decode($item->pn ?? '[]', true); @endphp
@@ -401,6 +409,15 @@
 
 <!-- 🎨 STYLING — TEMA DASHBOARD (MINIMALIS PUTIH-MERAH) -->
 <style>
+.drag-handle {
+    font-size: 18px;
+    user-select: none;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
     :root{
         --bg: #FAFAFA;
         --surface: #FFFFFF;
@@ -611,9 +628,67 @@
 
 </x-app-layout>
 
-@push('scripts')
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
-    $(document).ready(function () {
+$(function () {
+
+    if (typeof $.fn.sortable !== 'function') {
+        console.error('jQuery UI belum ter-load. Drag & drop tidak akan berfungsi.');
+        return;
+    }
+
+    $("#sortableTable").sortable({
+        handle: ".drag-handle",
+        placeholder: "sortable-placeholder",
+        helper: function (e, tr) {
+            // biar lebar kolom tidak collapse saat drag
+            let $originals = tr.children();
+            let $helper = tr.clone();
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width());
+            });
+            return $helper;
+        },
+        update: function () {
+
+            let order = [];
+
+            $("#sortableTable tr").each(function (index) {
+                let id = $(this).data("id");
+                if (id !== undefined) {
+                    order.push({
+                        id: id,
+                        position: index + 1
+                    });
+                }
+            });
+
+            if (order.length === 0) {
+                console.error('Tidak ada data-id yang ditemukan pada baris tabel.');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('inventory-aset-jual.reorder') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    order: order
+                },
+                success: function () {
+                    location.reload();
+                },
+                error: function (xhr) {
+                    console.error('Gagal menyimpan urutan:', xhr.responseText);
+                    alert('Gagal menyimpan urutan data. Silakan cek console untuk detail.');
+                }
+            });
+        }
+    });
+
+});
+
+$(document).ready(function () {
         let asetData = @json($asset_jual);
         let isUserAdmin = {{ $canManage ? 'true' : 'false' }}; // ✅ true untuk admin & superadmin
         let currentSortColumn = null;
@@ -815,4 +890,3 @@
         document.getElementById(textareaId).value = result.join("\n");
     }
 </script>
-@endpush
